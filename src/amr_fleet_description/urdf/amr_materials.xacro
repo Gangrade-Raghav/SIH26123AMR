@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <material name="amr_orange">
+    <color rgba="0.95 0.45 0.1 1.0"/>
+  </material>
+
+  <material name="amr_dark_grey">
+    <color rgba="0.2 0.2 0.25 1.0"/>
+  </material>
+
+  <material name="amr_light_grey">
+    <color rgba="0.7 0.7 0.75 1.0"/>
+  </material>
+
+  <material name="amr_black">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+
+  <material name="amr_blue">
+    <color rgba="0.1 0.5 0.9 1.0"/>
+  </material>
+
+</robot>
