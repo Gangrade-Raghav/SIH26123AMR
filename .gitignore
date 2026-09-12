@@ -1,0 +1,14 @@
+build/
+install/
+log/
+logs/
+*.bag
+*.db3
+rosbag/
+results/raw/
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+.env
+.DS_Store
