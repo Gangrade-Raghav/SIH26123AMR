@@ -25,14 +25,20 @@ LOG_DIR = WORKSPACE_ROOT / "docs" / "checkpoints" / "raw_integration_logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def run_cmd(cmd_list, timeout=10, capture_output=True):
+def run_cmd(cmd_list, timeout=15, capture_output=True):
     """Execute a CLI command within ROS 2 environment."""
-    env = os.environ.copy()
+    install_setup = WORKSPACE_ROOT / "install" / "setup.bash"
+    if isinstance(cmd_list, list):
+        cmd_str = " ".join(f'"{c}"' if " " in c or ">" in c else c for c in cmd_list)
+    else:
+        cmd_str = str(cmd_list)
+    full_cmd = f"source /opt/ros/jazzy/setup.bash && if [ -f '{install_setup}' ]; then source '{install_setup}'; fi && {cmd_str}"
     try:
         proc = subprocess.run(
-            cmd_list,
+            full_cmd,
+            shell=True,
+            executable="/bin/bash",
             cwd=str(WORKSPACE_ROOT),
-            env=env,
             capture_output=capture_output,
             text=True,
             timeout=timeout
@@ -65,9 +71,12 @@ def measure_topic_hz(topic, sample_duration=4.0):
     Handles timeout, process group SIGINT, stream decoding,
     and distinguishes between active publishing and topic unavailability.
     """
-    cmd = ["ros2", "topic", "hz", topic, "--window", "10"]
+    install_setup = WORKSPACE_ROOT / "install" / "setup.bash"
+    full_cmd = f"source /opt/ros/jazzy/setup.bash && if [ -f '{install_setup}' ]; then source '{install_setup}'; fi && ros2 topic hz '{topic}' --window 10"
     proc = subprocess.Popen(
-        cmd,
+        full_cmd,
+        shell=True,
+        executable="/bin/bash",
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -225,8 +234,17 @@ def validate_fleet(robot_count, config_file):
     launch_log_path = LOG_DIR / f"launch_{robot_count}_robots.log"
     launch_log_file = open(launch_log_path, "w")
 
+    install_setup = WORKSPACE_ROOT / "install" / "setup.bash"
+    full_launch_cmd = (
+        f"source /opt/ros/jazzy/setup.bash && "
+        f"if [ -f '{install_setup}' ]; then source '{install_setup}'; fi && "
+        f"{' '.join(launch_cmd)}"
+    )
+
     launch_proc = subprocess.Popen(
-        launch_cmd,
+        full_launch_cmd,
+        shell=True,
+        executable="/bin/bash",
         cwd=str(WORKSPACE_ROOT),
         stdout=launch_log_file,
         stderr=subprocess.STDOUT,

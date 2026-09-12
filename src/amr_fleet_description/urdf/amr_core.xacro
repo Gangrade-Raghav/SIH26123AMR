@@ -3,6 +3,7 @@
 
   <xacro:macro name="amr_core" params="
     prefix
+    robot_name:=amr_0
     chassis_length:=0.65
     chassis_width:=0.45
     chassis_height:=0.18
@@ -26,14 +27,61 @@
     </joint>
 
     <link name="${prefix}base_link">
-      <visual>
-        <origin xyz="0 0 ${chassis_height / 2.0}" rpy="0 0 0"/>
+      <!-- 1. Lower Industrial Chassis Base -->
+      <visual name="chassis_lower">
+        <origin xyz="0 0 ${chassis_height * 0.35}" rpy="0 0 0"/>
         <geometry>
-          <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height * 0.70}"/>
         </geometry>
-        <material name="amr_orange"/>
+        <material name="amr_chassis_dark"/>
       </visual>
 
+      <!-- 2. Upper Protective Shell & Deck (Safety Orange) -->
+      <visual name="chassis_upper_shell">
+        <origin xyz="0 0 ${chassis_height * 0.82}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${chassis_length * 0.96} ${chassis_width * 0.94} ${chassis_height * 0.28}"/>
+        </geometry>
+        <material name="amr_safety_orange"/>
+      </visual>
+
+      <!-- 3. Identification Badge Base (Dark Contrast Plate) -->
+      <visual name="id_badge_base">
+        <origin xyz="0 0 ${chassis_height + 0.003}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.22 0.26 0.006"/>
+        </geometry>
+        <material name="amr_badge_panel"/>
+      </visual>
+
+      <!-- 4. Identification Accent Trim -->
+      <visual name="id_badge_trim">
+        <origin xyz="0 0 ${chassis_height + 0.007}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.20 0.24 0.004"/>
+        </geometry>
+        <material name="amr_accent_cyan"/>
+      </visual>
+
+      <!-- 5. Identification Nameplate Face -->
+      <visual name="id_badge_face">
+        <origin xyz="0 0 ${chassis_height + 0.010}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.16 0.20 0.004"/>
+        </geometry>
+        <material name="amr_white_text"/>
+      </visual>
+
+      <!-- 6. Active Autonomous Status Indicator Ring (Rear Center Deck) -->
+      <visual name="status_beacon">
+        <origin xyz="${-chassis_length / 2.0 + 0.09} 0.0 ${chassis_height + 0.012}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.035" length="0.024"/>
+        </geometry>
+        <material name="amr_status_green"/>
+      </visual>
+
+      <!-- Exact collision box preserved from M1/M2 -->
       <collision>
         <origin xyz="0 0 ${chassis_height / 2.0}" rpy="0 0 0"/>
         <geometry>
@@ -41,6 +89,7 @@
         </geometry>
       </collision>
 
+      <!-- Exact inertial parameters preserved from M1/M2 -->
       <inertial>
         <origin xyz="0 0 ${chassis_height / 2.0}" rpy="0 0 0"/>
         <mass value="${chassis_mass}"/>
@@ -63,14 +112,25 @@
     </joint>
 
     <link name="${prefix}left_wheel">
-      <visual>
+      <!-- Rubber Tire Tread -->
+      <visual name="tire">
         <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
         <geometry>
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
-        <material name="amr_black"/>
+        <material name="amr_rubber_black"/>
       </visual>
 
+      <!-- Silver Alloy Rim Hub -->
+      <visual name="rim">
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius * 0.62}" length="${wheel_width + 0.002}"/>
+        </geometry>
+        <material name="amr_rim_silver"/>
+      </visual>
+
+      <!-- Exact collision preserved -->
       <collision>
         <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
         <geometry>
@@ -78,6 +138,7 @@
         </geometry>
       </collision>
 
+      <!-- Exact inertial preserved -->
       <inertial>
         <mass value="${wheel_mass}"/>
         <inertia
@@ -99,14 +160,25 @@
     </joint>
 
     <link name="${prefix}right_wheel">
-      <visual>
+      <!-- Rubber Tire Tread -->
+      <visual name="tire">
         <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
         <geometry>
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
-        <material name="amr_black"/>
+        <material name="amr_rubber_black"/>
       </visual>
 
+      <!-- Silver Alloy Rim Hub -->
+      <visual name="rim">
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius * 0.62}" length="${wheel_width + 0.002}"/>
+        </geometry>
+        <material name="amr_rim_silver"/>
+      </visual>
+
+      <!-- Exact collision preserved -->
       <collision>
         <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
         <geometry>
@@ -114,6 +186,7 @@
         </geometry>
       </collision>
 
+      <!-- Exact inertial preserved -->
       <inertial>
         <mass value="${wheel_mass}"/>
         <inertia

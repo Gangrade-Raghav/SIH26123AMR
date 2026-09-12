@@ -19,6 +19,7 @@
 
   <!-- Instantiate components -->
   <xacro:amr_core
+    robot_name="$(arg robot_name)"
     prefix="$(arg prefix)"
     chassis_length="$(arg chassis_length)"
     chassis_width="$(arg chassis_width)"

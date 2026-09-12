@@ -15,14 +15,34 @@
     </joint>
 
     <link name="${prefix}laser_frame">
-      <visual>
-        <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <!-- 1. Lower Turret Mount Base -->
+      <visual name="lidar_mount">
+        <origin xyz="0 0 0.010" rpy="0 0 0"/>
         <geometry>
-          <cylinder radius="0.04" length="0.04"/>
+          <cylinder radius="0.048" length="0.020"/>
         </geometry>
-        <material name="amr_blue"/>
+        <material name="amr_chassis_dark"/>
       </visual>
 
+      <!-- 2. Rotating Sensor Turret Body -->
+      <visual name="lidar_turret">
+        <origin xyz="0 0 0.028" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.038" length="0.022"/>
+        </geometry>
+        <material name="amr_dark_grey"/>
+      </visual>
+
+      <!-- 3. Optical Sensor Window Aperture -->
+      <visual name="lidar_optical_window">
+        <origin xyz="0 0 0.028" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.041" length="0.010"/>
+        </geometry>
+        <material name="amr_sensor_lens"/>
+      </visual>
+
+      <!-- Exact collision geometry preserved from M1/M2 -->
       <collision>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <geometry>
@@ -30,6 +50,7 @@
         </geometry>
       </collision>
 
+      <!-- Exact inertial parameters preserved from M1/M2 -->
       <inertial>
         <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <mass value="0.2"/>
