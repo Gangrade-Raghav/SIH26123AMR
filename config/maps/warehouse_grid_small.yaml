@@ -1,0 +1,33 @@
+# Small Benchmark Warehouse Grid Configuration
+map_id: "warehouse_grid_small"
+dimensions:
+  width: 16
+  height: 16
+  resolution: 1.0 # meters per cell
+
+stations:
+  pickups:
+    - [2, 2]
+    - [2, 13]
+    - [13, 2]
+    - [13, 13]
+  dropoffs:
+    - [7, 7]
+    - [7, 8]
+    - [8, 7]
+    - [8, 8]
+
+# Static storage racks / obstacles (bounding boxes [x, y])
+obstacles:
+  - [4, 4]
+  - [4, 5]
+  - [4, 6]
+  - [4, 9]
+  - [4, 10]
+  - [4, 11]
+  - [11, 4]
+  - [11, 5]
+  - [11, 6]
+  - [11, 9]
+  - [11, 10]
+  - [11, 11]
