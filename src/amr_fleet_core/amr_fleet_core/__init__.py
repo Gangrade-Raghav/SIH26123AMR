@@ -1,5 +1,6 @@
 """Core interfaces and state abstractions for NRDAS AMR Fleet Coordination."""
 
+from .fleet_state import FleetState, RobotInfo
 from .interfaces import (
     DeadlockManager,
     GlobalPlanner,
@@ -22,4 +23,6 @@ __all__ = [
     'RobotLifecycleState',
     'RobotStateMachine',
     'InvalidStateTransitionError',
+    'FleetState',
+    'RobotInfo',
 ]

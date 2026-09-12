@@ -70,6 +70,7 @@ def generate_launch_description():
     spawn_entity_node = Node(
         package='ros_gz_sim',
         executable='create',
+        name=[robot_name, '_spawner'],
         output='screen',
         arguments=[
             '-name', robot_name,
@@ -86,6 +87,7 @@ def generate_launch_description():
     bridge_node = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
+        name=[robot_name, '_bridge'],
         output='screen',
         arguments=[
             # cmd_vel (ROS -> GZ)
