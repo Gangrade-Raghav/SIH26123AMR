@@ -1,0 +1,743 @@
+{
+  "timestamp": "2026-09-13T02:05:39Z",
+  "milestone": "M5",
+  "demonstration": "Real ROS 2 + Gazebo Harmonic Rolling-Horizon Planning",
+  "robot_count": 5,
+  "summary": {
+    "bundles_ingested": 5,
+    "plans_generated": 5,
+    "all_plans_valid": true,
+    "total_requests": 37,
+    "total_responses": 37,
+    "average_latency_ms": 0.09
+  },
+  "initial_poses": {
+    "amr_0": {
+      "x": 2.0,
+      "y": 2.0
+    },
+    "amr_3": {
+      "x": 2.0,
+      "y": 11.0
+    },
+    "amr_1": {
+      "x": 2.0,
+      "y": 5.0
+    },
+    "amr_2": {
+      "x": 2.0,
+      "y": 8.0
+    },
+    "amr_4": {
+      "x": 2.0,
+      "y": 14.0
+    }
+  },
+  "final_poses": {
+    "amr_0": {
+      "x": 6.81,
+      "y": 2.392
+    },
+    "amr_3": {
+      "x": 6.36,
+      "y": 12.249
+    },
+    "amr_1": {
+      "x": 3.853,
+      "y": 2.258
+    },
+    "amr_2": {
+      "x": 2.25,
+      "y": 12.624
+    },
+    "amr_4": {
+      "x": 5.894,
+      "y": 13.25
+    }
+  },
+  "bundles": {
+    "amr_1": [
+      "task_small_0002"
+    ],
+    "amr_0": [
+      "task_small_0001"
+    ],
+    "amr_2": [
+      "task_small_0003"
+    ],
+    "amr_4": [
+      "task_small_0005"
+    ],
+    "amr_3": [
+      "task_small_0004"
+    ]
+  },
+  "plans": {
+    "amr_0": {
+      "task_id": "task_small_0001",
+      "phase": "TRANSIT_TO_DROPOFF",
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_len": 11,
+      "execution_len": 5,
+      "horizon_steps": 10,
+      "execution_window": 4,
+      "replan_count": 10,
+      "latency_ms": 0.05,
+      "is_valid": true,
+      "horizon_path": [
+        [
+          6.75,
+          2.25
+        ],
+        [
+          7.25,
+          2.25
+        ],
+        [
+          7.25,
+          2.75
+        ],
+        [
+          7.25,
+          3.25
+        ],
+        [
+          7.25,
+          3.75
+        ],
+        [
+          7.25,
+          4.25
+        ],
+        [
+          7.25,
+          4.75
+        ],
+        [
+          7.25,
+          5.25
+        ],
+        [
+          7.25,
+          5.75
+        ],
+        [
+          7.25,
+          6.25
+        ],
+        [
+          7.25,
+          6.75
+        ]
+      ],
+      "execution_path": [
+        [
+          6.75,
+          2.25
+        ],
+        [
+          7.25,
+          2.25
+        ],
+        [
+          7.25,
+          2.75
+        ],
+        [
+          7.25,
+          3.25
+        ],
+        [
+          7.25,
+          3.75
+        ]
+      ]
+    },
+    "amr_4": {
+      "task_id": "task_small_0005",
+      "phase": "TRANSIT_TO_DROPOFF",
+      "goal": [
+        8.0,
+        8.0
+      ],
+      "horizon_len": 11,
+      "execution_len": 5,
+      "horizon_steps": 10,
+      "execution_window": 4,
+      "replan_count": 9,
+      "latency_ms": 0.08,
+      "is_valid": true,
+      "horizon_path": [
+        [
+          5.75,
+          13.25
+        ],
+        [
+          6.25,
+          13.25
+        ],
+        [
+          6.75,
+          13.25
+        ],
+        [
+          7.25,
+          13.25
+        ],
+        [
+          7.75,
+          13.25
+        ],
+        [
+          8.25,
+          13.25
+        ],
+        [
+          8.25,
+          12.75
+        ],
+        [
+          8.25,
+          12.25
+        ],
+        [
+          8.25,
+          11.75
+        ],
+        [
+          8.25,
+          11.25
+        ],
+        [
+          8.25,
+          10.75
+        ]
+      ],
+      "execution_path": [
+        [
+          5.75,
+          13.25
+        ],
+        [
+          6.25,
+          13.25
+        ],
+        [
+          6.75,
+          13.25
+        ],
+        [
+          7.25,
+          13.25
+        ],
+        [
+          7.75,
+          13.25
+        ]
+      ]
+    },
+    "amr_1": {
+      "task_id": "task_small_0002",
+      "phase": "TRANSIT_TO_DROPOFF",
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_len": 11,
+      "execution_len": 5,
+      "horizon_steps": 10,
+      "execution_window": 4,
+      "replan_count": 9,
+      "latency_ms": 0.08,
+      "is_valid": true,
+      "horizon_path": [
+        [
+          3.75,
+          2.25
+        ],
+        [
+          4.25,
+          2.25
+        ],
+        [
+          4.75,
+          2.25
+        ],
+        [
+          5.25,
+          2.25
+        ],
+        [
+          5.75,
+          2.25
+        ],
+        [
+          6.25,
+          2.25
+        ],
+        [
+          6.75,
+          2.25
+        ],
+        [
+          7.25,
+          2.25
+        ],
+        [
+          7.25,
+          2.75
+        ],
+        [
+          7.25,
+          3.25
+        ],
+        [
+          7.25,
+          3.75
+        ]
+      ],
+      "execution_path": [
+        [
+          3.75,
+          2.25
+        ],
+        [
+          4.25,
+          2.25
+        ],
+        [
+          4.75,
+          2.25
+        ],
+        [
+          5.25,
+          2.25
+        ],
+        [
+          5.75,
+          2.25
+        ]
+      ]
+    },
+    "amr_2": {
+      "task_id": "task_small_0003",
+      "phase": "TRANSIT_TO_DROPOFF",
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_len": 11,
+      "execution_len": 5,
+      "horizon_steps": 10,
+      "execution_window": 4,
+      "replan_count": 9,
+      "latency_ms": 0.14,
+      "is_valid": true,
+      "horizon_path": [
+        [
+          2.25,
+          12.75
+        ],
+        [
+          2.75,
+          12.75
+        ],
+        [
+          3.25,
+          12.75
+        ],
+        [
+          3.75,
+          12.75
+        ],
+        [
+          4.25,
+          12.75
+        ],
+        [
+          4.75,
+          12.75
+        ],
+        [
+          5.25,
+          12.75
+        ],
+        [
+          5.75,
+          12.75
+        ],
+        [
+          6.25,
+          12.75
+        ],
+        [
+          6.75,
+          12.75
+        ],
+        [
+          7.25,
+          12.75
+        ]
+      ],
+      "execution_path": [
+        [
+          2.25,
+          12.75
+        ],
+        [
+          2.75,
+          12.75
+        ],
+        [
+          3.25,
+          12.75
+        ],
+        [
+          3.75,
+          12.75
+        ],
+        [
+          4.25,
+          12.75
+        ]
+      ]
+    },
+    "amr_3": {
+      "task_id": "task_small_0004",
+      "phase": "TRANSIT_TO_PICKUP",
+      "goal": [
+        13.0,
+        13.0
+      ],
+      "horizon_len": 11,
+      "execution_len": 5,
+      "horizon_steps": 10,
+      "execution_window": 4,
+      "replan_count": 9,
+      "latency_ms": 0.08,
+      "is_valid": true,
+      "horizon_path": [
+        [
+          6.25,
+          12.25
+        ],
+        [
+          6.75,
+          12.25
+        ],
+        [
+          7.25,
+          12.25
+        ],
+        [
+          7.75,
+          12.25
+        ],
+        [
+          8.25,
+          12.25
+        ],
+        [
+          8.75,
+          12.25
+        ],
+        [
+          9.25,
+          12.25
+        ],
+        [
+          9.75,
+          12.25
+        ],
+        [
+          10.25,
+          12.25
+        ],
+        [
+          10.75,
+          12.25
+        ],
+        [
+          11.25,
+          12.25
+        ]
+      ],
+      "execution_path": [
+        [
+          6.25,
+          12.25
+        ],
+        [
+          6.75,
+          12.25
+        ],
+        [
+          7.25,
+          12.25
+        ],
+        [
+          7.75,
+          12.25
+        ],
+        [
+          8.25,
+          12.25
+        ]
+      ]
+    }
+  },
+  "distances_traveled_m": {
+    "amr_0": 4.863289549161918,
+    "amr_1": 4.231904766908322,
+    "amr_2": 4.649285536111151,
+    "amr_3": 4.7085177343662,
+    "amr_4": 4.343261845716932
+  },
+  "recent_requests": [
+    {
+      "robot_id": "amr_2",
+      "task_id": "task_small_0003",
+      "sub_goal_type": "TRANSIT_TO_PICKUP",
+      "start": [
+        2.25,
+        11.45
+      ],
+      "goal": [
+        2.0,
+        13.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_0",
+      "task_id": "task_small_0001",
+      "sub_goal_type": "TRANSIT_TO_DROPOFF",
+      "start": [
+        6.43,
+        2.25
+      ],
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_3",
+      "task_id": "task_small_0004",
+      "sub_goal_type": "TRANSIT_TO_PICKUP",
+      "start": [
+        5.4,
+        12.23
+      ],
+      "goal": [
+        13.0,
+        13.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_4",
+      "task_id": "task_small_0005",
+      "sub_goal_type": "TRANSIT_TO_DROPOFF",
+      "start": [
+        4.95,
+        13.25
+      ],
+      "goal": [
+        8.0,
+        8.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_1",
+      "task_id": "task_small_0002",
+      "sub_goal_type": "TRANSIT_TO_DROPOFF",
+      "start": [
+        2.89,
+        2.35
+      ],
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_2",
+      "task_id": "task_small_0003",
+      "sub_goal_type": "TRANSIT_TO_PICKUP",
+      "start": [
+        2.25,
+        12.07
+      ],
+      "goal": [
+        2.0,
+        13.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_0",
+      "task_id": "task_small_0001",
+      "sub_goal_type": "TRANSIT_TO_DROPOFF",
+      "start": [
+        6.71,
+        2.32
+      ],
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_3",
+      "task_id": "task_small_0004",
+      "sub_goal_type": "TRANSIT_TO_PICKUP",
+      "start": [
+        6.03,
+        12.25
+      ],
+      "goal": [
+        13.0,
+        13.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_4",
+      "task_id": "task_small_0005",
+      "sub_goal_type": "TRANSIT_TO_DROPOFF",
+      "start": [
+        5.56,
+        13.25
+      ],
+      "goal": [
+        8.0,
+        8.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    },
+    {
+      "robot_id": "amr_1",
+      "task_id": "task_small_0002",
+      "sub_goal_type": "TRANSIT_TO_DROPOFF",
+      "start": [
+        3.52,
+        2.27
+      ],
+      "goal": [
+        7.0,
+        7.0
+      ],
+      "horizon_steps": 10,
+      "execution_window": 4
+    }
+  ],
+  "recent_responses": [
+    {
+      "robot_id": "amr_2",
+      "task_id": "task_small_0003",
+      "sub_goal_type": "PICKUP",
+      "success": true,
+      "latency_ms": 0.03,
+      "total_cost": 2.0,
+      "replan_count": 7
+    },
+    {
+      "robot_id": "amr_0",
+      "task_id": "task_small_0001",
+      "sub_goal_type": "DROPOFF",
+      "success": true,
+      "latency_ms": 0.06,
+      "total_cost": 6.0,
+      "replan_count": 9
+    },
+    {
+      "robot_id": "amr_3",
+      "task_id": "task_small_0004",
+      "sub_goal_type": "PICKUP",
+      "success": true,
+      "latency_ms": 0.08,
+      "total_cost": 9.0,
+      "replan_count": 8
+    },
+    {
+      "robot_id": "amr_4",
+      "task_id": "task_small_0005",
+      "sub_goal_type": "DROPOFF",
+      "success": true,
+      "latency_ms": 0.08,
+      "total_cost": 8.5,
+      "replan_count": 8
+    },
+    {
+      "robot_id": "amr_1",
+      "task_id": "task_small_0002",
+      "sub_goal_type": "DROPOFF",
+      "success": true,
+      "latency_ms": 0.11,
+      "total_cost": 9.5,
+      "replan_count": 8
+    },
+    {
+      "robot_id": "amr_2",
+      "task_id": "task_small_0003",
+      "sub_goal_type": "PICKUP",
+      "success": true,
+      "latency_ms": 0.03,
+      "total_cost": 1.0,
+      "replan_count": 8
+    },
+    {
+      "robot_id": "amr_0",
+      "task_id": "task_small_0001",
+      "sub_goal_type": "DROPOFF",
+      "success": true,
+      "latency_ms": 0.05,
+      "total_cost": 5.5,
+      "replan_count": 10
+    },
+    {
+      "robot_id": "amr_3",
+      "task_id": "task_small_0004",
+      "sub_goal_type": "PICKUP",
+      "success": true,
+      "latency_ms": 0.08,
+      "total_cost": 8.0,
+      "replan_count": 9
+    },
+    {
+      "robot_id": "amr_4",
+      "task_id": "task_small_0005",
+      "sub_goal_type": "DROPOFF",
+      "success": true,
+      "latency_ms": 0.08,
+      "total_cost": 7.5,
+      "replan_count": 9
+    },
+    {
+      "robot_id": "amr_1",
+      "task_id": "task_small_0002",
+      "sub_goal_type": "DROPOFF",
+      "success": true,
+      "latency_ms": 0.08,
+      "total_cost": 8.5,
+      "replan_count": 9
+    }
+  ]
+}

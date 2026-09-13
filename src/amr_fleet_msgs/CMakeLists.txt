@@ -22,6 +22,9 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/TaskList.msg"
   "msg/CBBABid.msg"
   "msg/RobotBundle.msg"
+  "msg/PlanningRequest.msg"
+  "msg/PlanningResponse.msg"
+  "msg/RollingHorizonPlan.msg"
   DEPENDENCIES
     std_msgs
     geometry_msgs

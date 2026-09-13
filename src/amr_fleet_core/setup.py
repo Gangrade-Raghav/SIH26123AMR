@@ -21,6 +21,7 @@ setup(
         'console_scripts': [
             'task_manager = amr_fleet_core.task_manager_node:main',
             'cbba_node = amr_fleet_core.cbba_node:main',
+            'rh_node = amr_fleet_core.rh_node:main',
         ],
     },
 )

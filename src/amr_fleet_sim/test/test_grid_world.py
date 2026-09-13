@@ -63,3 +63,38 @@ def test_from_ascii():
     assert grid.height == 3
     assert not grid.is_free((1, 1))
     assert grid.is_free((0, 0))
+
+
+def test_coordinate_conversion():
+    grid = GridWorld(32, 32, resolution=0.5)
+    assert grid.to_grid(0.2, 0.2) == (0, 0)
+    assert grid.to_grid(2.2, 5.7) == (4, 11)
+    assert grid.to_grid(16.0, 16.0) == (31, 31)
+
+    # Round-trip center check
+    grid_pos = (4, 11)
+    world_pos = grid.to_world(grid_pos)
+    assert world_pos == (2.25, 5.75)
+    assert grid.to_grid(world_pos[0], world_pos[1]) == grid_pos
+
+
+def test_create_warehouse_grid():
+    grid = GridWorld.create_warehouse_grid(resolution=0.5, warehouse_size=16.0)
+    assert grid.width == 32
+    assert grid.height == 32
+    assert grid.resolution == 0.5
+
+    # Center of warehouse corridor (8.0, 2.0) should be free
+    assert grid.is_free(grid.to_grid(8.0, 2.0))
+    # Pickup stations at (2.0, 2.0) and (2.0, 13.0) should be free
+    assert grid.is_free(grid.to_grid(2.0, 2.0))
+    assert grid.is_free(grid.to_grid(2.0, 13.0))
+
+    # Rack 1 at center (4.5, 5.5) must be an obstacle
+    assert not grid.is_free(grid.to_grid(4.5, 5.5))
+    # Rack 2 at center (4.5, 10.5) must be an obstacle
+    assert not grid.is_free(grid.to_grid(4.5, 10.5))
+
+    # Perimeter walls must be obstacles
+    assert not grid.is_free(grid.to_grid(0.1, 8.0))
+    assert not grid.is_free(grid.to_grid(15.9, 8.0))

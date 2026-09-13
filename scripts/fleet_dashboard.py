@@ -35,6 +35,7 @@ try:
     from amr_fleet_msgs.msg import (
         CBBABid,
         RobotBundle,
+        RollingHorizonPlan,
         TaskDefinition,
         TaskEvent as TaskEventMsg,
         TaskList,
@@ -110,6 +111,34 @@ class RobotTelemetryTracker:
         self.min_scan_range = float('inf')
         self._last_scan_times: List[float] = []
 
+        # M5 Rolling Horizon Plan
+        self.current_plan: Dict[str, Any] = {
+            'task_id': '',
+            'sub_goal_type': 'NONE',
+            'horizon_steps': 0,
+            'execution_window': 0,
+            'horizon_path': [],
+            'execution_path': [],
+            'replan_count': 0,
+            'latency_ms': 0.0,
+            'is_valid': False,
+        }
+
+    def update_plan(self, msg: Any) -> None:
+        horizon_pts = [[round(p.x, 2), round(p.y, 2)] for p in msg.horizon_path]
+        exec_pts = [[round(p.x, 2), round(p.y, 2)] for p in msg.execution_path]
+        self.current_plan = {
+            'task_id': getattr(msg, 'current_task_id', getattr(msg, 'task_id', '')),
+            'sub_goal_type': getattr(msg, 'current_phase', getattr(msg, 'sub_goal_type', 'NONE')),
+            'horizon_steps': msg.horizon_steps,
+            'execution_window': msg.execution_window,
+            'horizon_path': horizon_pts,
+            'execution_path': exec_pts,
+            'replan_count': msg.replan_count,
+            'latency_ms': round(msg.planning_latency_ms, 2),
+            'is_valid': msg.is_valid,
+        }
+
     def update_odometry(self, msg: Odometry) -> None:
         now = time.time()
         self.last_odom_time = now
@@ -171,6 +200,7 @@ class RobotTelemetryTracker:
             'lidar_hz': self.lidar_rate_hz,
             'min_obstacle_m': round(self.min_scan_range, 2) if self.min_scan_range != float('inf') else None,
             'last_update_sec_ago': round(time.time() - self.last_odom_time, 1) if self.last_odom_time > 0 else None,
+            'plan': self.current_plan,
         }
 
 
@@ -243,6 +273,7 @@ class FleetMonitorNode(Node):
             'last_bid_time': 0.0,
         }
         self._bundle_subs: set = set()
+        self._plan_subs: set = set()
 
         if HAVE_TASK_MSGS:
             self.create_subscription(TaskList, '/tasks/all', self._tasks_cb, 10)
@@ -373,6 +404,15 @@ class FleetMonitorNode(Node):
                 self.create_subscription(RobotBundle, bundle_topic, make_bundle_cb(r_id), 10)
                 self._bundle_subs.add(r_id)
 
+            plan_topic = f'/{r_id}/rolling_plan'
+            if HAVE_TASK_MSGS and plan_topic in existing_topics and r_id not in self._plan_subs:
+                tracker = self.robots.get(r_id)
+                if tracker:
+                    def make_plan_cb(t):
+                        return lambda msg: t.update_plan(msg)
+                    self.create_subscription(RollingHorizonPlan, plan_topic, make_plan_cb(tracker), 10)
+                    self._plan_subs.add(r_id)
+
     def get_fleet_summary(self) -> Dict[str, Any]:
         node_names = self.get_node_names()
         topics = [t[0] for t in self.get_topic_names_and_types()]
@@ -411,6 +451,10 @@ class FleetMonitorNode(Node):
                 max_dist = d
         self.cbba_data['makespan_sec'] = round(max_dist / 0.5, 1) if max_dist > 0 else 0.0
 
+        valid_latencies = [r['plan']['latency_ms'] for r in robot_data if r['plan']['latency_ms'] > 0]
+        rh_avg_lat = round(sum(valid_latencies) / len(valid_latencies), 2) if valid_latencies else None
+        rh_status_str = f"{rh_avg_lat} ms (M5 RHCR A*)" if rh_avg_lat is not None else "Idle (Awaiting Plans)"
+
         return {
             'timestamp': datetime.now().isoformat(),
             'simulation': {
@@ -426,15 +470,8 @@ class FleetMonitorNode(Node):
                 'robots': robot_data,
             },
             'tasks': {
-                'status': self.tasks_data['status'],
-                'total': self.tasks_data['total'],
-                'pending': self.tasks_data['pending'],
-                'active': self.tasks_data['assigned'] + self.tasks_data['in_progress'],
-                'completed': self.tasks_data['completed'],
-                'failed': self.tasks_data['failed'],
-                'cancelled': self.tasks_data['cancelled'],
-                'tasks': self.tasks_data.get('tasks', []),
-                'recent_events': self.tasks_data.get('recent_events', []),
+                **self.tasks_data,
+                'active': self.tasks_data.get('assigned', 0) + self.tasks_data.get('in_progress', 0),
             },
             'cbba': self.cbba_data,
             'network': {
@@ -448,7 +485,7 @@ class FleetMonitorNode(Node):
                 'host_ram_used_mb': ram['used_mb'],
                 'host_ram_total_mb': ram['total_mb'],
                 'host_ram_percent': ram['percent'],
-                'mapf_planning_latency': 'N/A — Pending M6 PIBT/RHCR',
+                'mapf_planning_latency': rh_status_str,
                 'fleet_throughput': (
                     f"{self.tasks_data['completed']} / {self.tasks_data['total']} completed"
                     if self.tasks_data['total'] > 0 else '0 tasks/hr'
@@ -1103,6 +1140,51 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         ctx.setLineDash([]);
       }
 
+      // Draw Rolling Horizon Plans (M5 RHCR Engine Paths)
+      if (robots && robots.length > 0) {
+        robots.forEach(bot => {
+          if (bot.plan && bot.plan.horizon_path && bot.plan.horizon_path.length > 1) {
+            const hp = bot.plan.horizon_path;
+            const ep = bot.plan.execution_path || [];
+
+            // 1. Full Planning Horizon (h) — Bright Orange Dashed Path
+            ctx.beginPath();
+            ctx.strokeStyle = '#ff8800';
+            ctx.lineWidth = 2.0;
+            ctx.setLineDash([5, 4]);
+            ctx.moveTo(toX(hp[0][0]), toY(hp[0][1]));
+            for (let i = 1; i < hp.length; i++) {
+              ctx.lineTo(toX(hp[i][0]), toY(hp[i][1]));
+            }
+            ctx.stroke();
+
+            // 2. Active Execution Window (w) — Solid White Bold Trajectory
+            if (ep.length > 1) {
+              ctx.beginPath();
+              ctx.strokeStyle = '#ffffff';
+              ctx.lineWidth = 3.0;
+              ctx.setLineDash([]);
+              ctx.moveTo(toX(ep[0][0]), toY(ep[0][1]));
+              for (let i = 1; i < ep.length; i++) {
+                ctx.lineTo(toX(ep[i][0]), toY(ep[i][1]));
+              }
+              ctx.stroke();
+
+              // Window endpoint target marker
+              const target = ep[ep.length - 1];
+              ctx.beginPath();
+              ctx.arc(toX(target[0]), toY(target[1]), 3.5, 0, 2 * Math.PI);
+              ctx.fillStyle = '#ff5500';
+              ctx.fill();
+              ctx.strokeStyle = '#ffffff';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+            ctx.setLineDash([]);
+          }
+        });
+      }
+
       // Draw Robots (Heavy Brutalist Industrial Tokens)
       if (robots && robots.length > 0) {
         robots.forEach(bot => {
@@ -1168,6 +1250,8 @@ DASHBOARD_HTML = """<!DOCTYPE html>
                 <span class="status-badge status-${r.status}">[ ${r.status} ]</span>
               </div>
               <div class="robot-kv"><span class="k">POSE:</span><span class="v">(${r.x}, ${r.y})</span></div>
+              <div class="robot-kv"><span class="k">PLAN:</span><span class="v" style="color:var(--c-orange);font-weight:900;">${r.plan?.task_id || 'IDLE'} [${r.plan?.sub_goal_type || 'NONE'}]</span></div>
+              <div class="robot-kv"><span class="k">HORIZON:</span><span class="v">h=${r.plan?.horizon_steps || 0} / w=${r.plan?.execution_window || 0} (${r.plan?.replan_count || 0} rpl)</span></div>
               <div class="robot-kv"><span class="k">HEADING:</span><span class="v">${r.yaw_deg}&deg;</span></div>
               <div class="robot-kv"><span class="k">SPEED:</span><span class="v">${r.linear_speed} m/s</span></div>
               <div class="robot-kv"><span class="k">ODOM:</span><span class="v">${r.distance_m} m</span></div>

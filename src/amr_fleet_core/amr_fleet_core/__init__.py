@@ -11,6 +11,14 @@ from .interfaces import (
     MetricsCollector,
     TaskAllocator,
 )
+from .rh_node import RollingHorizonPlannerNode
+from .rh_planner import (
+    PlanningResponseData,
+    RHConfig,
+    RollingHorizonPlanner,
+    SingleAgentAStar,
+    TaskSequencer,
+)
 from .state_machine import (
     InvalidStateTransitionError,
     RobotLifecycleState,
@@ -50,4 +58,10 @@ __all__ = [
     'CBBALocalState',
     'CBBAAllocator',
     'CBBANode',
+    'RHConfig',
+    'PlanningResponseData',
+    'SingleAgentAStar',
+    'TaskSequencer',
+    'RollingHorizonPlanner',
+    'RollingHorizonPlannerNode',
 ]
