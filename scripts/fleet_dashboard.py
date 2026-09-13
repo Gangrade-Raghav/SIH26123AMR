@@ -30,6 +30,12 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from rosgraph_msgs.msg import Clock
 
+try:
+    from amr_fleet_msgs.msg import TaskDefinition, TaskEvent as TaskEventMsg, TaskList
+    HAVE_TASK_MSGS = True
+except ImportError:
+    HAVE_TASK_MSGS = False
+
 
 class SystemMetricsReader:
     """Reads host CPU and memory usage from Linux /proc filesystem."""
@@ -181,8 +187,85 @@ class FleetMonitorNode(Node):
         # Subscribe to simulation clock
         self.create_subscription(Clock, '/clock', self._clock_cb, 10)
 
+        # M3 Task State Tracking
+        self.tasks_data: Dict[str, Any] = {
+            'status': 'AWAITING /tasks/all',
+            'total': 0,
+            'pending': 0,
+            'assigned': 0,
+            'in_progress': 0,
+            'completed': 0,
+            'failed': 0,
+            'cancelled': 0,
+            'tasks': [],
+            'recent_events': [],
+        }
+
+        if HAVE_TASK_MSGS:
+            self.create_subscription(TaskList, '/tasks/all', self._tasks_cb, 10)
+            self.create_subscription(TaskEventMsg, '/tasks/events', self._task_event_cb, 20)
+
         # Dynamic topic discovery timer
         self.create_timer(1.0, self._discover_fleet_topics)
+
+    def _tasks_cb(self, msg: 'TaskList') -> None:
+        tasks_list = []
+        pending = 0
+        assigned = 0
+        in_progress = 0
+        completed = 0
+        failed = 0
+        cancelled = 0
+
+        for t in msg.tasks:
+            status = t.status.upper()
+            if status == 'PENDING':
+                pending += 1
+            elif status == 'ASSIGNED':
+                assigned += 1
+            elif status == 'IN_PROGRESS':
+                in_progress += 1
+            elif status == 'COMPLETED':
+                completed += 1
+            elif status == 'FAILED':
+                failed += 1
+            elif status == 'CANCELLED':
+                cancelled += 1
+
+            tasks_list.append({
+                'id': t.task_id,
+                'pickup': [round(t.pickup_pose.x, 2), round(t.pickup_pose.y, 2)],
+                'dropoff': [round(t.dropoff_pose.x, 2), round(t.dropoff_pose.y, 2)],
+                'priority': t.priority,
+                'status': t.status,
+                'robot': t.assigned_robot_id or None,
+            })
+
+        self.tasks_data = {
+            'status': 'ONLINE — M3 Lifecycle Active',
+            'total': len(msg.tasks),
+            'pending': pending,
+            'assigned': assigned,
+            'in_progress': in_progress,
+            'completed': completed,
+            'failed': failed,
+            'cancelled': cancelled,
+            'tasks': tasks_list,
+            'recent_events': self.tasks_data.get('recent_events', []),
+        }
+
+    def _task_event_cb(self, msg: 'TaskEventMsg') -> None:
+        ev = {
+            'task_id': msg.task_id,
+            'event': msg.event_type,
+            'from': msg.previous_state,
+            'to': msg.new_state,
+            'robot': msg.robot_id or 'none',
+            'details': msg.details,
+        }
+        recent = self.tasks_data.get('recent_events', [])
+        recent.insert(0, ev)
+        self.tasks_data['recent_events'] = recent[:5]
 
     def _clock_cb(self, msg: Clock) -> None:
         now_sim = msg.clock.sec + msg.clock.nanosec * 1e-9
@@ -254,11 +337,15 @@ class FleetMonitorNode(Node):
                 'robots': robot_data,
             },
             'tasks': {
-                'status': 'N/A — Pending M3 Task Engine',
-                'pending': 0,
-                'active': 0,
-                'completed': 0,
-                'failed': 0,
+                'status': self.tasks_data['status'],
+                'total': self.tasks_data['total'],
+                'pending': self.tasks_data['pending'],
+                'active': self.tasks_data['assigned'] + self.tasks_data['in_progress'],
+                'completed': self.tasks_data['completed'],
+                'failed': self.tasks_data['failed'],
+                'cancelled': self.tasks_data['cancelled'],
+                'tasks': self.tasks_data.get('tasks', []),
+                'recent_events': self.tasks_data.get('recent_events', []),
             },
             'network': {
                 'ros2_nodes_count': len(node_names),
@@ -272,7 +359,10 @@ class FleetMonitorNode(Node):
                 'host_ram_total_mb': ram['total_mb'],
                 'host_ram_percent': ram['percent'],
                 'mapf_planning_latency': 'N/A — Pending M6 PIBT/RHCR',
-                'fleet_throughput': 'N/A — Pending M3 Task Engine',
+                'fleet_throughput': (
+                    f"{self.tasks_data['completed']} / {self.tasks_data['total']} completed"
+                    if self.tasks_data['total'] > 0 else '0 tasks/hr'
+                ),
             },
             'safety': {
                 'estop_status': 'NORMAL — DISENGAGED',
@@ -474,12 +564,13 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     <!-- Right Column: System Observability -->
     <div>
       <div class="card">
-        <div class="card-title">Task Engine & Dispatch</div>
-        <div class="metric-row"><span class="metric-key">Engine Status:</span><span class="metric-pending">Pending M3 Task Engine</span></div>
-        <div class="metric-row"><span class="metric-key">Active Tasks:</span><span class="metric-val">0</span></div>
-        <div class="metric-row"><span class="metric-key">Pending Tasks:</span><span class="metric-val">0</span></div>
-        <div class="metric-row"><span class="metric-key">Completed Tasks:</span><span class="metric-val">0</span></div>
-        <div class="metric-row"><span class="metric-key">Throughput:</span><span class="metric-pending">Pending M3 (0 tasks/hr)</span></div>
+        <div class="card-title">Task Engine & Dispatch (M3)</div>
+        <div class="metric-row"><span class="metric-key">Engine Status:</span><span class="metric-val" id="task-status">Awaiting /tasks/all</span></div>
+        <div class="metric-row"><span class="metric-key">Total Pool:</span><span class="metric-val" id="task-total">0</span></div>
+        <div class="metric-row"><span class="metric-key">Pending Tasks:</span><span class="metric-val" id="task-pending" style="color: var(--accent-cyan);">0</span></div>
+        <div class="metric-row"><span class="metric-key">Active Tasks:</span><span class="metric-val" id="task-active" style="color: var(--accent-orange);">0</span></div>
+        <div class="metric-row"><span class="metric-key">Completed Tasks:</span><span class="metric-val" id="task-completed" style="color: var(--accent-green);">0</span></div>
+        <div class="metric-row"><span class="metric-key">Throughput:</span><span class="metric-val" id="task-throughput">0 tasks/hr</span></div>
       </div>
 
       <div class="card">
@@ -651,6 +742,23 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         // Map
         drawWarehouseMap(robots);
 
+        // Tasks (M3)
+        if (data.tasks) {
+          const ts = data.tasks;
+          const statusEl = document.getElementById('task-status');
+          statusEl.textContent = ts.status;
+          if (ts.status.includes('ONLINE')) {
+            statusEl.style.color = 'var(--accent-green)';
+          } else {
+            statusEl.style.color = 'var(--text-muted)';
+          }
+          document.getElementById('task-total').textContent = ts.total || 0;
+          document.getElementById('task-pending').textContent = ts.pending || 0;
+          document.getElementById('task-active').textContent = ts.active || 0;
+          document.getElementById('task-completed').textContent = ts.completed || 0;
+          document.getElementById('task-throughput').textContent = data.performance.fleet_throughput || '0 tasks/hr';
+        }
+
         // Network
         document.getElementById('net-nodes').textContent = data.network.ros2_nodes_count;
         document.getElementById('net-topics').textContent = data.network.ros2_topics_count;
@@ -765,7 +873,19 @@ def run_tui(node: FleetMonitorNode) -> None:
             layout["main"].update(table)
 
             # Footer
-            footer_text = f"[bold]TASKS:[/bold] {data['tasks']['status']} | [bold]MAPF:[/bold] {data['performance']['mapf_planning_latency']}\n[bold]SAFETY:[/bold] [green]{data['safety']['active_safety_zone']}[/green] | [bold]E-STOP:[/bold] {data['safety']['estop_status']} | [bold]MIDDLEWARE:[/bold] {data['network']['ros2_topics_count']} topics across {data['network']['ros2_nodes_count']} nodes"
+            t_info = (
+                f"{data['tasks']['status']} "
+                f"(Total: {data['tasks']['total']}, Pending: {data['tasks']['pending']}, "
+                f"Active: {data['tasks']['active']}, Done: {data['tasks']['completed']})"
+            )
+            footer_text = (
+                f"[bold]TASKS:[/bold] {t_info} | "
+                f"[bold]MAPF:[/bold] {data['performance']['mapf_planning_latency']}\n"
+                f"[bold]SAFETY:[/bold] [green]{data['safety']['active_safety_zone']}[/green] | "
+                f"[bold]E-STOP:[/bold] {data['safety']['estop_status']} | "
+                f"[bold]MIDDLEWARE:[/bold] {data['network']['ros2_topics_count']} topics "
+                f"across {data['network']['ros2_nodes_count']} nodes"
+            )
             layout["footer"].update(Panel(footer_text, border_style="green"))
 
             live.update(layout)

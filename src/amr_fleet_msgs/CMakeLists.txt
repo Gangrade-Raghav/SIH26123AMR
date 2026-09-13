@@ -17,6 +17,9 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/TaskAssignment.msg"
   "msg/BlockedResource.msg"
   "msg/FleetMetrics.msg"
+  "msg/TaskDefinition.msg"
+  "msg/TaskEvent.msg"
+  "msg/TaskList.msg"
   DEPENDENCIES
     std_msgs
     geometry_msgs

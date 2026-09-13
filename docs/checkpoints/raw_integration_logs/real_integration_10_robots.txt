@@ -3,29 +3,29 @@
 ros2 launch amr_fleet_bringup fleet.launch.py fleet_config:=config/robots/fleet_10_robots.yaml robot_count:=10 headless:=true
 
 === RUNNING SIMULATION PROCESSES (ps aux) ===
-raghav     77975  0.0  0.0   2840  1860 ?        S    04:41   0:00 /bin/sh -c ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf --force-version 8
-raghav     77976  5.5  0.1 1100768 58160 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock --ros-args -r __node:=clock_bridge
-raghav     77977  2.5  0.1 834252 40568 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_0 --params-file /tmp/launch_params_xayf0yqk -r tf:=/tf -r tf_static:=/tf_static
-raghav     77978 66.7  1.2 5524560 418756 ?      Sl   04:41   0:05 gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf
-raghav     77980  4.7  0.1 1175812 61892 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_0/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_0/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_0/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_0/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_0_bridge --params-file /tmp/launch_params_re71wylv -r /amr_0/tf:=/tf
-raghav     77981  2.7  0.1 834264 40600 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_1 --params-file /tmp/launch_params_45gwy301 -r tf:=/tf -r tf_static:=/tf_static
-raghav     77983  4.7  0.1 1175792 61572 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_1/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_1/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_1/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_1/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_1_bridge --params-file /tmp/launch_params_ck404251 -r /amr_1/tf:=/tf
-raghav     77984  2.4  0.1 834256 40748 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_2 --params-file /tmp/launch_params_7ymnv5wc -r tf:=/tf -r tf_static:=/tf_static
-raghav     77986  4.6  0.1 1175780 61724 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_2/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_2/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_2/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_2/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_2_bridge --params-file /tmp/launch_params_igj2ovx7 -r /amr_2/tf:=/tf
-raghav     77987  2.7  0.1 834804 40392 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_3 --params-file /tmp/launch_params_06d5f5g4 -r tf:=/tf -r tf_static:=/tf_static
-raghav     77989  4.7  0.1 1175808 61460 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_3/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_3/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_3/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_3/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_3_bridge --params-file /tmp/launch_params_q45nlqii -r /amr_3/tf:=/tf
-raghav     77990  2.7  0.1 834344 40732 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_4 --params-file /tmp/launch_params_9jyjphwr -r tf:=/tf -r tf_static:=/tf_static
-raghav     77992  4.7  0.1 1176216 61604 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_4/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_4/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_4/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_4/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_4_bridge --params-file /tmp/launch_params__q6mq92i -r /amr_4/tf:=/tf
-raghav     77997  2.3  0.1 834748 40728 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_5 --params-file /tmp/launch_params_909q_5lp -r tf:=/tf -r tf_static:=/tf_static
-raghav     78002  4.8  0.1 1176084 61600 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_5/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_5/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_5/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_5/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_5_bridge --params-file /tmp/launch_params_035k9w__ -r /amr_5/tf:=/tf
-raghav     78004  2.3  0.1 834268 40620 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_6 --params-file /tmp/launch_params_b5psctdm -r tf:=/tf -r tf_static:=/tf_static
-raghav     78007  4.5  0.1 1175812 61628 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_6/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_6/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_6/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_6/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_6_bridge --params-file /tmp/launch_params_meqj8dxj -r /amr_6/tf:=/tf
-raghav     78021  2.4  0.1 834408 40572 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_7 --params-file /tmp/launch_params_ocec5ra5 -r tf:=/tf -r tf_static:=/tf_static
-raghav     78077  4.5  0.1 1176336 61724 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_7/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_7/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_7/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_7/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_7_bridge --params-file /tmp/launch_params_pd1pxumu -r /amr_7/tf:=/tf
-raghav     78080  2.3  0.1 834268 40452 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_8 --params-file /tmp/launch_params_et659jvs -r tf:=/tf -r tf_static:=/tf_static
-raghav     78111  4.5  0.1 1176204 61668 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_8/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_8/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_8/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_8/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_8_bridge --params-file /tmp/launch_params_k6le0ze2 -r /amr_8/tf:=/tf
-raghav     78119  2.3  0.1 834940 40716 ?        Sl   04:41   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_9 --params-file /tmp/launch_params_f6wxs2i6 -r tf:=/tf -r tf_static:=/tf_static
-raghav     78131  4.8  0.1 1176064 61648 ?       Sl   04:41   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_9/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_9/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_9/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_9/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_9_bridge --params-file /tmp/launch_params_2xcf3qav -r /amr_9/tf:=/tf
+raghav     89068  0.0  0.0   2840  1856 ?        S    05:40   0:00 /bin/sh -c ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf --force-version 8
+raghav     89069  5.8  0.1 1100684 58144 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock --ros-args -r __node:=clock_bridge
+raghav     89070 66.1  1.2 5524696 418036 ?      Sl   05:40   0:05 gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf
+raghav     89071  2.7  0.1 834900 40912 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_0 --params-file /tmp/launch_params_qmiggqik -r tf:=/tf -r tf_static:=/tf_static
+raghav     89073  4.6  0.1 1177276 62080 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_0/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_0/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_0/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_0/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_0_bridge --params-file /tmp/launch_params_ggyw0ph6 -r /amr_0/tf:=/tf
+raghav     89074  2.7  0.1 834988 40724 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_1 --params-file /tmp/launch_params_o2spuzj9 -r tf:=/tf -r tf_static:=/tf_static
+raghav     89076  4.7  0.1 1176592 62068 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_1/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_1/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_1/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_1/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_1_bridge --params-file /tmp/launch_params_g4a4tq3y -r /amr_1/tf:=/tf
+raghav     89077  2.5  0.1 834948 41116 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_2 --params-file /tmp/launch_params_s_zlsoie -r tf:=/tf -r tf_static:=/tf_static
+raghav     89079  4.9  0.1 1177008 62080 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_2/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_2/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_2/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_2/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_2_bridge --params-file /tmp/launch_params_bxzq7mnd -r /amr_2/tf:=/tf
+raghav     89080  2.8  0.1 834900 41200 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_3 --params-file /tmp/launch_params_elou8zgo -r tf:=/tf -r tf_static:=/tf_static
+raghav     89082  4.6  0.1 1176712 61832 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_3/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_3/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_3/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_3/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_3_bridge --params-file /tmp/launch_params_t2wxhq67 -r /amr_3/tf:=/tf
+raghav     89083  2.7  0.1 834996 41084 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_4 --params-file /tmp/launch_params_grjsaj4n -r tf:=/tf -r tf_static:=/tf_static
+raghav     89085  4.9  0.1 1176716 61864 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_4/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_4/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_4/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_4/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_4_bridge --params-file /tmp/launch_params_96um329m -r /amr_4/tf:=/tf
+raghav     89089  2.7  0.1 834952 40984 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_5 --params-file /tmp/launch_params_m_973bgg -r tf:=/tf -r tf_static:=/tf_static
+raghav     89096  4.7  0.1 1177132 62132 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_5/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_5/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_5/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_5/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_5_bridge --params-file /tmp/launch_params_q0oi76r1 -r /amr_5/tf:=/tf
+raghav     89101  2.9  0.1 834884 41076 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_6 --params-file /tmp/launch_params_ha5byg9g -r tf:=/tf -r tf_static:=/tf_static
+raghav     89105  5.0  0.1 1176876 61980 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_6/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_6/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_6/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_6/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_6_bridge --params-file /tmp/launch_params_rrf0td49 -r /amr_6/tf:=/tf
+raghav     89108  2.7  0.1 834924 41012 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_7 --params-file /tmp/launch_params_amndac5_ -r tf:=/tf -r tf_static:=/tf_static
+raghav     89143  5.0  0.1 1176616 61656 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_7/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_7/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_7/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_7/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_7_bridge --params-file /tmp/launch_params_unyq8dzo -r /amr_7/tf:=/tf
+raghav     89158  2.4  0.1 835164 40896 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_8 --params-file /tmp/launch_params_jk7315o0 -r tf:=/tf -r tf_static:=/tf_static
+raghav     89178  4.6  0.1 1176588 62036 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_8/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_8/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_8/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_8/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_8_bridge --params-file /tmp/launch_params_t6ibg_nk -r /amr_8/tf:=/tf
+raghav     89197  2.3  0.1 835204 40908 ?        Sl   05:40   0:00 /opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __ns:=/amr_9 --params-file /tmp/launch_params_he0wbss6 -r tf:=/tf -r tf_static:=/tf_static
+raghav     89222  5.0  0.1 1176584 61892 ?       Sl   05:40   0:00 /opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge /amr_9/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist /amr_9/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry /amr_9/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan /amr_9/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V --ros-args -r __node:=amr_9_bridge --params-file /tmp/launch_params_u1x1m1vn -r /amr_9/tf:=/tf
 
 === GAZEBO MODELS (gz model --list) ===
 Requesting state for world [warehouse_small]...
@@ -42,16 +42,16 @@ Available models:
     - rack_2
     - rack_3
     - rack_4
-    - amr_9
-    - amr_2
-    - amr_8
-    - amr_7
     - amr_0
-    - amr_6
-    - amr_1
+    - amr_9
     - amr_4
-    - amr_5
+    - amr_8
     - amr_3
+    - amr_2
+    - amr_5
+    - amr_1
+    - amr_7
+    - amr_6
 
 === ACTIVE ROS 2 NODES (ros2 node list) ===
 /amr_0/robot_state_publisher
@@ -74,6 +74,7 @@ Available models:
 /amr_8_bridge
 /amr_9/robot_state_publisher
 /amr_9_bridge
+/amr_fleet_monitor
 /clock_bridge
 
 === ACTIVE ROS 2 TOPICS (ros2 topic list) ===
@@ -136,13 +137,13 @@ Available models:
 === TOPIC INFO /amr_0/scan ===
 Type: sensor_msgs/msg/LaserScan
 Publisher count: 1
-Subscription count: 0
+Subscription count: 1
 
 === LIDAR MESSAGE /amr_0/scan (ros2 topic echo --once --full-length) ===
 header:
   stamp:
     sec: 9
-    nanosec: 100000000
+    nanosec: 400000000
   frame_id: amr_0/laser_frame
 angle_min: -3.1415927410125732
 angle_max: 3.1415927410125732
@@ -152,177 +153,177 @@ scan_time: 0.0
 range_min: 0.15000000596046448
 range_max: 12.0
 ranges:
-- 2.003944158554077
-- 2.012523889541626
-- 2.002387285232544
-- 2.023508310317993
-- 2.0093038082122803
-- 2.01556658744812
-- 2.021935224533081
-- 2.023629903793335
-- 2.0358872413635254
-- 2.0349297523498535
-- 2.039630889892578
-- 2.048706531524658
-- 2.0470409393310547
-- 2.064415454864502
-- 2.0625967979431152
-- 2.0814244747161865
-- 2.0923874378204346
-- 2.1023123264312744
-- 2.1098716259002686
-- 2.138073444366455
-- 2.1474647521972656
-- 2.150418996810913
-- 2.1591498851776123
-- 2.180676221847534
-- 2.199688673019409
-- 2.2004010677337646
-- 2.241579532623291
-- 2.2550816535949707
-- 2.2842214107513428
-- 2.303387403488159
-- 2.328718423843384
-- 2.3438682556152344
-- 2.3782174587249756
-- 2.3937554359436035
-- 2.425419330596924
-- 2.451455593109131
-- 2.4840099811553955
-- 2.5185399055480957
-- 2.5619654655456543
-- 2.6016855239868164
-- 2.611992835998535
-- 2.6696548461914062
-- 2.669391393661499
-- 2.6199562549591064
-- 2.563645839691162
-- 2.5239953994750977
-- 2.4830095767974854
-- 2.446054697036743
-- 2.4000606536865234
-- 2.376735210418701
-- 2.332716703414917
-- 2.2974207401275635
-- 2.2654380798339844
-- 2.2241127490997314
-- 2.203080177307129
-- 2.179802894592285
-- 2.1480636596679688
-- 2.132500171661377
-- 2.098203182220459
-- 2.0928702354431152
-- 2.059401750564575
-- 2.0444703102111816
-- 2.013410806655884
-- 1.9983681440353394
-- 1.98148512840271
-- 1.9729647636413574
-- 1.9535455703735352
-- 1.9425204992294312
-- 1.917277455329895
-- 1.9037318229675293
-- 1.904407024383545
-- 1.8938267230987549
-- 1.871612787246704
-- 1.865315556526184
-- 1.8747751712799072
-- 1.8451811075210571
-- 1.8371431827545166
-- 1.8232465982437134
-- 1.8326342105865479
-- 1.8235549926757812
-- 1.8070027828216553
-- 1.8078155517578125
-- 1.8061413764953613
-- 1.7967431545257568
-- 1.7968324422836304
-- 1.7932655811309814
-- 1.7920280694961548
-- 1.7945387363433838
-- 1.7907894849777222
-- 1.7853142023086548
-- 1.7858715057373047
-- 1.7882986068725586
-- 1.7874631881713867
-- 1.7871170043945312
-- 1.7925721406936646
-- 1.795676827430725
-- 1.7992281913757324
-- 1.8127241134643555
-- 1.815879464149475
-- 1.813496470451355
-- 1.8231501579284668
-- 1.8260102272033691
-- 1.8289401531219482
-- 1.8368847370147705
-- 1.8481236696243286
-- 1.8553040027618408
-- 1.8589407205581665
-- 1.8703539371490479
-- 1.8845527172088623
-- 1.9039498567581177
-- 1.9156664609909058
-- 1.9235986471176147
-- 1.9356087446212769
-- 1.9500033855438232
-- 1.9538848400115967
-- 1.9708945751190186
-- 1.9990614652633667
-- 2.0182979106903076
-- 2.0398306846618652
-- 2.049046754837036
-- 2.0734574794769287
-- 2.0854201316833496
-- 2.116741895675659
-- 2.142279863357544
-- 2.1705052852630615
-- 2.198547124862671
-- 2.2270774841308594
-- 2.2372336387634277
-- 2.27500319480896
-- 2.310849905014038
-- 2.3448240756988525
-- 2.3904716968536377
-- 2.4256515502929688
-- 2.464634895324707
-- 2.507925271987915
-- 2.5443480014801025
-- 2.6075639724731445
-- 2.654263734817505
-- 2.703371524810791
-- 2.755458116531372
-- 2.8228135108947754
-- 2.8502612113952637
-- 2.913576126098633
-- 3.012103319168091
-- 3.0847856998443604
-- 3.1322667598724365
-- 3.2337512969970703
-- 3.3502252101898193
-- 3.405400037765503
-- 3.5326075553894043
-- 3.6131343841552734
-- 3.7647321224212646
-- 3.8602354526519775
-- 3.9551198482513428
-- 4.17288875579834
-- 4.278106212615967
-- 4.521718502044678
-- 4.676752090454102
-- 4.839808940887451
-- 5.009904861450195
-- 5.394115924835205
-- 5.615950107574463
-- 5.863263130187988
-- 6.139345169067383
-- 6.7865142822265625
-- 7.164320468902588
-- 7.599633693695068
-- 8.091524124145508
-- 8.68257999420166
-- 10.109585762023926
-- 11.052751541137695
+- 2.00832200050354
+- 2.00837779045105
+- 2.0111169815063477
+- 2.0195419788360596
+- 2.010430335998535
+- 2.017774820327759
+- 2.018164873123169
+- 2.028531551361084
+- 2.0322189331054688
+- 2.0449376106262207
+- 2.029330253601074
+- 2.0357658863067627
+- 2.0534307956695557
+- 2.063624143600464
+- 2.0767722129821777
+- 2.0739667415618896
+- 2.0834412574768066
+- 2.099924325942993
+- 2.1020455360412598
+- 2.1288464069366455
+- 2.13566517829895
+- 2.1576027870178223
+- 2.1582252979278564
+- 2.1930344104766846
+- 2.192634344100952
+- 2.214308500289917
+- 2.2410240173339844
+- 2.250398874282837
+- 2.2831413745880127
+- 2.3006629943847656
+- 2.321157455444336
+- 2.34208607673645
+- 2.3786940574645996
+- 2.398998260498047
+- 2.4270918369293213
+- 2.4483940601348877
+- 2.4863462448120117
+- 2.5206637382507324
+- 2.5676584243774414
+- 2.598771333694458
+- 2.6155853271484375
+- 2.665170669555664
+- 2.6739258766174316
+- 2.625067949295044
+- 2.549795389175415
+- 2.527895927429199
+- 2.481645107269287
+- 2.441652536392212
+- 2.4106082916259766
+- 2.367077589035034
+- 2.330770969390869
+- 2.289238214492798
+- 2.257012367248535
+- 2.2296011447906494
+- 2.211167812347412
+- 2.1844911575317383
+- 2.1425936222076416
+- 2.1424593925476074
+- 2.1002368927001953
+- 2.084132432937622
+- 2.061366081237793
+- 2.050360918045044
+- 2.0213422775268555
+- 1.9987154006958008
+- 1.985609769821167
+- 1.9728288650512695
+- 1.958804726600647
+- 1.9319661855697632
+- 1.920966625213623
+- 1.9217802286148071
+- 1.9076460599899292
+- 1.879940152168274
+- 1.8753771781921387
+- 1.8724565505981445
+- 1.8584333658218384
+- 1.847525954246521
+- 1.8364102840423584
+- 1.8316415548324585
+- 1.8243709802627563
+- 1.8184329271316528
+- 1.8153023719787598
+- 1.8093396425247192
+- 1.8085010051727295
+- 1.802647352218628
+- 1.7927206754684448
+- 1.7924433946609497
+- 1.7950283288955688
+- 1.7927603721618652
+- 1.7943865060806274
+- 1.784780502319336
+- 1.787106990814209
+- 1.789789080619812
+- 1.785443663597107
+- 1.7870527505874634
+- 1.7937054634094238
+- 1.7903413772583008
+- 1.8051320314407349
+- 1.8106740713119507
+- 1.8110474348068237
+- 1.8178240060806274
+- 1.8062469959259033
+- 1.8121285438537598
+- 1.8314306735992432
+- 1.8346495628356934
+- 1.8417432308197021
+- 1.8525208234786987
+- 1.8589861392974854
+- 1.8708711862564087
+- 1.8818230628967285
+- 1.8961063623428345
+- 1.9073032140731812
+- 1.9163055419921875
+- 1.9434642791748047
+- 1.9473066329956055
+- 1.959252119064331
+- 1.9736113548278809
+- 2.0003480911254883
+- 2.027003765106201
+- 2.036393642425537
+- 2.05016827583313
+- 2.070915699005127
+- 2.089919328689575
+- 2.115168333053589
+- 2.143453598022461
+- 2.1609089374542236
+- 2.198429584503174
+- 2.2281551361083984
+- 2.2487335205078125
+- 2.2722725868225098
+- 2.310851573944092
+- 2.3440966606140137
+- 2.3917837142944336
+- 2.428619146347046
+- 2.459585666656494
+- 2.504438877105713
+- 2.537623167037964
+- 2.6009135246276855
+- 2.6560797691345215
+- 2.7067646980285645
+- 2.762728452682495
+- 2.825249433517456
+- 2.851637601852417
+- 2.9298510551452637
+- 3.0064940452575684
+- 3.092097043991089
+- 3.1289803981781006
+- 3.2340052127838135
+- 3.3477320671081543
+- 3.4170048236846924
+- 3.5497190952301025
+- 3.6126232147216797
+- 3.776618003845215
+- 3.855827808380127
+- 3.948643684387207
+- 4.1512370109558105
+- 4.274163722991943
+- 4.535147666931152
+- 4.674103260040283
+- 4.835648059844971
+- 4.999453067779541
+- 5.394539833068848
+- 5.612789154052734
+- 5.857685089111328
+- 6.128433704376221
+- 6.779633045196533
+- 7.157930374145508
+- 7.608311176300049
+- 8.099594116210938
+- 8.667671203613281
+- 10.11864185333252
+- 11.056574821472168
 - .inf
 - .inf
 - .inf
@@ -330,85 +331,10 @@ ranges:
 - .inf
 - .inf
 - .inf
-- 5.47323751449585
-- 5.472731590270996
-- 5.470666885375977
-- 5.459596633911133
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- 10.007518768310547
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- 10.424610137939453
-- .inf
-- 9.347602844238281
-- .inf
-- .inf
-- 6.665938854217529
-- 6.477833271026611
-- 6.164910316467285
-- 6.1669111251831055
-- 6.2027716636657715
-- 6.295764923095703
-- 6.333650588989258
-- .inf
-- .inf
-- .inf
-- .inf
-- 3.458810329437256
-- 3.4765961170196533
-- .inf
-- 11.185482025146484
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- 8.217020034790039
-- 8.090898513793945
-- 7.965303421020508
-- 8.111286163330078
-- 8.261140823364258
-- 2.6314918994903564
-- 2.663652181625366
-- 4.503609657287598
-- .inf
-- .inf
-- .inf
-- 10.609038352966309
-- 10.522661209106445
-- 10.382253646850586
-- 10.584970474243164
-- .inf
-- .inf
-- .inf
-- .inf
-- 3.847531318664551
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- .inf
-- 5.206800937652588
-- 8.918133735656738
-- .inf
-- 10.318317413330078
-- .inf
-- .inf
-- 7.211089134216309
+- 5.470113754272461
+- 5.463242053985596
+- 5.460056304931641
+- 5.4729180335998535
 - .inf
 - .inf
 - .inf
@@ -418,100 +344,175 @@ ranges:
 - .inf
 - .inf
 - .inf
+- 10.007746696472168
 - .inf
 - .inf
-- 2.7853565216064453
-- 2.78312087059021
-- 2.790867805480957
-- 2.7930798530578613
-- 2.784029006958008
-- 2.799948215484619
-- 2.801248073577881
-- 2.8039348125457764
-- 2.8098251819610596
-- 2.8160269260406494
-- 2.8179006576538086
-- 2.828472137451172
-- 10.477733612060547
-- 9.728421211242676
-- 9.09473705291748
-- 8.53097152709961
-- 8.05904483795166
-- 7.235559463500977
-- 6.884398937225342
-- 6.5841522216796875
-- 6.316275596618652
-- 5.840535640716553
-- 5.6159987449646
-- 5.4220499992370605
-- 5.256531238555908
-- 4.93377161026001
-- 4.794402122497559
-- 4.669088840484619
-- 4.439867973327637
-- 4.3354105949401855
-- 4.147752285003662
-- 4.056319236755371
-- 3.8961029052734375
-- 3.826052188873291
-- 3.691199779510498
-- 3.6321372985839844
-- 3.5147266387939453
-- 3.417799711227417
-- 3.3695566654205322
-- 3.2827248573303223
-- 3.2007923126220703
-- 3.13778018951416
-- 3.0727083683013916
-- 3.0055453777313232
-- 2.9441797733306885
-- 2.897552728652954
-- 2.8513407707214355
-- 2.8044700622558594
-- 2.7450664043426514
-- 2.7063169479370117
-- 2.6665239334106445
-- 2.6193864345550537
-- 2.5989322662353516
-- 2.55914306640625
-- 2.5257182121276855
-- 2.4815399646759033
-- 2.448518991470337
-- 2.4309394359588623
-- 2.4084231853485107
-- 2.375626802444458
-- 2.3435866832733154
-- 2.3228750228881836
-- 2.3051276206970215
-- 2.287245512008667
-- 2.252307891845703
-- 2.2336432933807373
-- 2.2109408378601074
-- 2.1969358921051025
-- 2.180288314819336
-- 2.1666738986968994
-- 2.150951862335205
-- 2.1360580921173096
-- 2.1248037815093994
-- 2.1087193489074707
-- 2.1014530658721924
-- 2.097776412963867
-- 2.08022141456604
-- 2.072770833969116
-- 2.06691575050354
-- 2.0582807064056396
-- 2.044210910797119
-- 2.0490024089813232
-- 2.03987979888916
-- 2.0436580181121826
-- 2.0237529277801514
-- 2.013584613800049
-- 2.0196707248687744
-- 2.016023874282837
-- 2.0062923431396484
-- 2.007996082305908
-- 2.0099549293518066
-- 2.0151419639587402
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- 10.430500030517578
+- .inf
+- 9.355618476867676
+- .inf
+- .inf
+- 6.652897357940674
+- 6.479363918304443
+- 6.1659746170043945
+- 6.165431499481201
+- 6.217955112457275
+- 6.29213809967041
+- 6.3391547203063965
+- .inf
+- .inf
+- .inf
+- .inf
+- 3.471766233444214
+- 3.4849209785461426
+- .inf
+- 11.19466495513916
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- 8.214154243469238
+- 8.09599781036377
+- 7.966224193572998
+- 8.109031677246094
+- 8.261479377746582
+- 2.6402387619018555
+- 2.665689706802368
+- 4.511449813842773
+- .inf
+- .inf
+- .inf
+- 10.607234001159668
+- 10.541953086853027
+- 10.38048267364502
+- 10.58534049987793
+- .inf
+- .inf
+- .inf
+- .inf
+- 3.855335235595703
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- 5.205821990966797
+- 8.92353343963623
+- .inf
+- 10.3120698928833
+- .inf
+- .inf
+- 7.212515354156494
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- .inf
+- 2.7895188331604004
+- 2.791503429412842
+- 2.7879114151000977
+- 2.7925047874450684
+- 2.7924065589904785
+- 2.793156623840332
+- 2.8065178394317627
+- 2.795626640319824
+- 2.806966543197632
+- 2.811631441116333
+- 2.811474323272705
+- 2.8335440158843994
+- 10.481668472290039
+- 9.728819847106934
+- 9.098384857177734
+- 8.538168907165527
+- 8.045865058898926
+- 7.232238292694092
+- 6.886078357696533
+- 6.585265636444092
+- 6.310153484344482
+- 5.8220672607421875
+- 5.624013423919678
+- 5.437396049499512
+- 5.2480573654174805
+- 4.937836647033691
+- 4.7953901290893555
+- 4.658467769622803
+- 4.435026168823242
+- 4.325016021728516
+- 4.140366554260254
+- 4.056913375854492
+- 3.8943607807159424
+- 3.8210692405700684
+- 3.693207263946533
+- 3.636460542678833
+- 3.5204036235809326
+- 3.422182559967041
+- 3.370532989501953
+- 3.2863292694091797
+- 3.1994612216949463
+- 3.1330337524414062
+- 3.0669214725494385
+- 3.0016393661499023
+- 2.956169605255127
+- 2.901888132095337
+- 2.840414047241211
+- 2.8082895278930664
+- 2.7387993335723877
+- 2.6967389583587646
+- 2.654587507247925
+- 2.6195476055145264
+- 2.603769063949585
+- 2.560051918029785
+- 2.5161499977111816
+- 2.479757070541382
+- 2.447700262069702
+- 2.429335355758667
+- 2.3896121978759766
+- 2.381303071975708
+- 2.3492093086242676
+- 2.3321533203125
+- 2.2945539951324463
+- 2.2814695835113525
+- 2.2563319206237793
+- 2.232170820236206
+- 2.2111988067626953
+- 2.1963326930999756
+- 2.1956095695495605
+- 2.1636300086975098
+- 2.146312952041626
+- 2.14056658744812
+- 2.1310317516326904
+- 2.11448335647583
+- 2.096578359603882
+- 2.105971574783325
+- 2.084292411804199
+- 2.072141647338867
+- 2.059987783432007
+- 2.053736925125122
+- 2.0464279651641846
+- 2.0450756549835205
+- 2.036363363265991
+- 2.0273666381835938
+- 2.0197765827178955
+- 2.0137689113616943
+- 2.0223472118377686
+- 2.0053958892822266
+- 2.013007402420044
+- 2.0108165740966797
+- 2.0189008712768555
+- 2.0138936042785645
 intensities:
 - 0.0
 - 0.0
@@ -876,28 +877,28 @@ intensities:
 ---
 
 === PARSED LIDAR TELEMETRY /amr_0/scan ===
-{'frame_id': 'amr_0/laser_frame', 'angle_min': -3.1415927410125732, 'angle_max': 3.1415927410125732, 'range_min': 0.15000000596046448, 'range_max': 12.0, 'expected_samples': 359, 'total_samples': 297, 'valid_returns': 297, 'sample_ranges': [2.004, 2.013, 2.002, 2.024, 2.009]}
+{'frame_id': 'amr_0/laser_frame', 'angle_min': -3.1415927410125732, 'angle_max': 3.1415927410125732, 'range_min': 0.15000000596046448, 'range_max': 12.0, 'expected_samples': 359, 'total_samples': 297, 'valid_returns': 297, 'sample_ranges': [2.008, 2.008, 2.011, 2.02, 2.01]}
 
 === ROBUST LIDAR HZ MEASUREMENT /amr_0/scan ===
-{'status': 'ACTIVE', 'rate_hz': 9.989, 'min_s': 0.097, 'max_s': 0.103, 'window': 10, 'raw_stdout': 'WARNING: topic [/amr_0/scan] does not appear to be published yet\naverage rate: 9.989\n\tmin: 0.097s max: 0.103s std dev: 0.00195s window: 10\naverage rate: 10.025\n\tmin: 0.097s max: 0.102s std dev: 0.00132s window: 10', 'raw_stderr': ''}
+{'status': 'ACTIVE', 'rate_hz': 10.013, 'min_s': 0.099, 'max_s': 0.101, 'window': 10, 'raw_stdout': 'average rate: 10.013\n\tmin: 0.099s max: 0.101s std dev: 0.00100s window: 10\naverage rate: 9.986\n\tmin: 0.099s max: 0.101s std dev: 0.00074s window: 10', 'raw_stderr': ''}
 
 === INITIAL ODOMETRY /amr_0/odom ===
 header:
   stamp:
-    sec: 14
-    nanosec: 665000000
+    sec: 15
+    nanosec: 470000000
   frame_id: amr_0/odom
 child_frame_id: amr_0/base_footprint
 pose:
   pose:
     position:
-      x: -1.0705201145031795e-14
-      y: -1.5018093358288776e-32
+      x: -1.0705030070523721e-14
+      y: -1.5015060200053557e-32
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: 8.56851202768331e-18
+      z: 8.899385204058236e-18
       w: 1.0
   covariance:
   - 0.0
@@ -939,13 +940,13 @@ pose:
 twist:
   twist:
     linear:
-      x: -5.42665353036671e-19
+      x: 1.0412031525267032e-18
       y: 0.0
       z: 0.0
     angular:
       x: 0.0
       y: 0.0
-      z: 9.939556121605632e-19
+      z: 2.7718097708475226e-18
   covariance:
   - 0.0
   - 0.0
@@ -988,20 +989,20 @@ twist:
 === INITIAL ODOMETRY /amr_1/odom ===
 header:
   stamp:
-    sec: 16
-    nanosec: 100000000
+    sec: 18
+    nanosec: 410000000
   frame_id: amr_1/odom
 child_frame_id: amr_1/base_footprint
 pose:
   pose:
     position:
-      x: -1.0704299128260541e-14
-      y: -1.1849999503441416e-32
+      x: -1.0702141500771221e-14
+      y: -1.1809457030331409e-32
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: 8.665154067860413e-18
+      z: 9.688594039903334e-18
       w: 1.0
   covariance:
   - 0.0
@@ -1043,13 +1044,13 @@ pose:
 twist:
   twist:
     linear:
-      x: 2.0986907290076754e-18
+      x: 1.6925598513925746e-18
       y: 0.0
       z: 0.0
     angular:
       x: 0.0
       y: 0.0
-      z: 3.210013658811595e-18
+      z: 1.3436914388133945e-18
   covariance:
   - 0.0
   - 0.0
@@ -1092,20 +1093,20 @@ twist:
 === POST-PHASE-A ODOMETRY /amr_0/odom ===
 header:
   stamp:
-    sec: 23
-    nanosec: 135000000
+    sec: 26
+    nanosec: 425000000
   frame_id: amr_0/odom
 child_frame_id: amr_0/base_footprint
 pose:
   pose:
     position:
-      x: 1.734999999857108
-      y: 6.8349128826344705e-18
+      x: 1.2899999998931795
+      y: 9.806951539083153e-19
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: -3.6098870683278126e-21
+      z: 9.191158799411679e-21
       w: 1.0
   covariance:
   - 0.0
@@ -1196,20 +1197,20 @@ twist:
 === POST-PHASE-A ODOMETRY /amr_1/odom ===
 header:
   stamp:
-    sec: 24
-    nanosec: 535000000
+    sec: 28
+    nanosec: 0
   frame_id: amr_1/odom
 child_frame_id: amr_1/base_footprint
 pose:
   pose:
     position:
-      x: -1.069698390703209e-14
-      y: -1.1693866694227943e-32
+      x: -1.0694372683180578e-14
+      y: -1.1618656341829261e-32
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: 1.3116334951648013e-17
+      z: 1.5596386362816395e-17
       w: 1.0
   covariance:
   - 0.0
@@ -1251,13 +1252,13 @@ pose:
 twist:
   twist:
     linear:
-      x: -6.95400994139307e-19
+      x: 1.6004616038952118e-18
       y: 0.0
       z: 0.0
     angular:
       x: 0.0
       y: 0.0
-      z: 1.6239825773814466e-18
+      z: 8.273448994629714e-19
   covariance:
   - 0.0
   - 0.0
@@ -1300,20 +1301,20 @@ twist:
 === POST-PHASE-B ODOMETRY /amr_0/odom ===
 header:
   stamp:
-    sec: 32
-    nanosec: 130000000
+    sec: 35
+    nanosec: 175000000
   frame_id: amr_0/odom
 child_frame_id: amr_0/base_footprint
 pose:
   pose:
     position:
-      x: 1.734999999857108
-      y: 6.8349128826344705e-18
+      x: 1.2899999998931795
+      y: 9.806951539083153e-19
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: -3.6098870683278126e-21
+      z: 9.191158799411679e-21
       w: 1.0
   covariance:
   - 0.0
@@ -1404,20 +1405,20 @@ twist:
 === POST-PHASE-B ODOMETRY /amr_1/odom ===
 header:
   stamp:
-    sec: 33
-    nanosec: 530000000
+    sec: 36
+    nanosec: 610000000
   frame_id: amr_1/odom
 child_frame_id: amr_1/base_footprint
 pose:
   pose:
     position:
-      x: 1.6849999975373966
-      y: 1.073456607390782e-16
+      x: 1.4674999998787908
+      y: 1.0713009594453046e-16
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: -4.7796786389249426e-21
+      z: 5.217020421648972e-21
       w: 1.0
   covariance:
   - 0.0
@@ -1459,7 +1460,7 @@ pose:
 twist:
   twist:
     linear:
-      x: -3.3448355196696866e-10
+      x: 0.0
       y: 0.0
       z: 0.0
     angular:
@@ -1509,19 +1510,19 @@ twist:
 transforms:
 - header:
     stamp:
-      sec: 34
-      nanosec: 930000000
-    frame_id: amr_4/odom
-  child_frame_id: amr_4/base_footprint
+      sec: 38
+      nanosec: 80000000
+    frame_id: amr_3/odom
+  child_frame_id: amr_3/base_footprint
   transform:
     translation:
-      x: -1.0690549336865532e-14
-      y: -1.665212223970409e-32
+      x: -1.0690053604600198e-14
+      y: -1.3293026778571902e-32
       z: 0.0
     rotation:
       x: 0.0
       y: 0.0
-      z: 2.007630633191318e-17
+      z: 2.000497817280146e-17
       w: 1.0
 ---
 
@@ -1531,8 +1532,8 @@ transforms:
     stamp:
       sec: 0
       nanosec: 0
-    frame_id: amr_2/base_footprint
-  child_frame_id: amr_2/base_link
+    frame_id: amr_4/base_footprint
+  child_frame_id: amr_4/base_link
   transform:
     translation:
       x: 0.0
@@ -1547,8 +1548,8 @@ transforms:
     stamp:
       sec: 0
       nanosec: 0
-    frame_id: amr_2/base_link
-  child_frame_id: amr_2/front_caster
+    frame_id: amr_4/base_link
+  child_frame_id: amr_4/front_caster
   transform:
     translation:
       x: 0.245
@@ -1563,8 +1564,8 @@ transforms:
     stamp:
       sec: 0
       nanosec: 0
-    frame_id: amr_2/base_link
-  child_frame_id: amr_2/laser_frame
+    frame_id: amr_4/base_link
+  child_frame_id: amr_4/laser_frame
   transform:
     translation:
       x: 0.22
@@ -1579,8 +1580,8 @@ transforms:
     stamp:
       sec: 0
       nanosec: 0
-    frame_id: amr_2/base_link
-  child_frame_id: amr_2/rear_caster
+    frame_id: amr_4/base_link
+  child_frame_id: amr_4/rear_caster
   transform:
     translation:
       x: -0.245

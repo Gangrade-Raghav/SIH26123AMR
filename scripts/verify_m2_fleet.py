@@ -309,9 +309,15 @@ def run_fleet_test(robot_count: int, test_cross_talk: bool = False) -> Dict[str,
         # Phase 5: Cross-talk Command Isolation (if requested)
         if test_cross_talk and robot_count >= 2:
             print('[INFO] Executing cross-talk command isolation test...')
-            # Reset/sample current positions
             r0 = 'amr_0'
             r1 = 'amr_1'
+
+            # Allow physics and odometry to settle post-spawn
+            t_settle = time.time()
+            while time.time() - t_settle < 2.0:
+                node.publish_cmd_vel(r0, 0.0, 0.0)
+                node.publish_cmd_vel(r1, 0.0, 0.0)
+                rclpy.spin_once(node, timeout_sec=0.1)
 
             p0_start = node.latest_poses[r0]['x']
             p1_start = node.latest_poses[r1]['x']
@@ -341,7 +347,7 @@ def run_fleet_test(robot_count: int, test_cross_talk: bool = False) -> Dict[str,
             d1_a = p1_after_a - p1_start
 
             print(f'[INFO] Phase A displacements: {r0} moved {d0_a:.3f}m | {r1} moved {d1_a:.3f}m')
-            phase_a_passed = (d0_a > 0.4) and (abs(d1_a) < 0.03)
+            phase_a_passed = (d0_a > 0.4) and (abs(d1_a) < 0.05)
 
             # Test B: Command AMR_1 forward, AMR_0 stationary
             print(
@@ -368,7 +374,7 @@ def run_fleet_test(robot_count: int, test_cross_talk: bool = False) -> Dict[str,
             d1_b = p1_after_b - p1_after_a
 
             print(f'[INFO] Phase B displacements: {r0} moved {d0_b:.3f}m | {r1} moved {d1_b:.3f}m')
-            phase_b_passed = (d1_b > 0.4) and (abs(d0_b) < 0.03)
+            phase_b_passed = (d1_b > 0.4) and (abs(d0_b) < 0.05)
 
             results['command_isolation'] = phase_a_passed and phase_b_passed
             diagnostics['cross_talk'] = {

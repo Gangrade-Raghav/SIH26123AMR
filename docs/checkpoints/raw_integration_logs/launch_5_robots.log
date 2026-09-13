@@ -1,97 +1,97 @@
-[INFO] [launch]: All log files can be found below /home/raghav/.ros/log/2026-09-13-04-40-15-173862-Raze-76917
+[INFO] [launch]: All log files can be found below /home/raghav/.ros/log/2026-09-13-05-39-27-903611-Raze-88008
 [INFO] [launch]: Default logging verbosity is set to INFO
 [INFO] [launch.user]: [FLEET] Spawning 5 robots into world "warehouse_small" (headless=True)
-[INFO] [gazebo-1]: process started with pid [76962]
-[INFO] [parameter_bridge-2]: process started with pid [76963]
-[INFO] [robot_state_publisher-3]: process started with pid [76964]
-[INFO] [create-4]: process started with pid [76966]
-[INFO] [parameter_bridge-5]: process started with pid [76967]
-[INFO] [robot_state_publisher-6]: process started with pid [76968]
-[INFO] [create-7]: process started with pid [76969]
-[INFO] [parameter_bridge-8]: process started with pid [76970]
-[INFO] [robot_state_publisher-9]: process started with pid [76971]
-[INFO] [create-10]: process started with pid [76972]
-[INFO] [parameter_bridge-11]: process started with pid [76973]
-[INFO] [robot_state_publisher-12]: process started with pid [76974]
-[INFO] [create-13]: process started with pid [76975]
-[INFO] [parameter_bridge-14]: process started with pid [76976]
-[INFO] [robot_state_publisher-15]: process started with pid [76977]
-[INFO] [create-16]: process started with pid [76978]
-[INFO] [parameter_bridge-17]: process started with pid [76979]
-[robot_state_publisher-3] [INFO] [1789254615.903811720] [amr_0.robot_state_publisher]: Robot initialized
-[create-7] [INFO] [1789254615.905565199] [amr_1_spawner]: Requesting list of world names.
-[create-10] [INFO] [1789254615.907731256] [amr_2_spawner]: Requesting list of world names.
-[robot_state_publisher-15] [INFO] [1789254615.908941815] [amr_4.robot_state_publisher]: Robot initialized
-[robot_state_publisher-9] [INFO] [1789254615.914636279] [amr_2.robot_state_publisher]: Robot initialized
-[robot_state_publisher-6] [INFO] [1789254615.916020844] [amr_1.robot_state_publisher]: Robot initialized
-[parameter_bridge-2] [INFO] [1789254615.918787063] [clock_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
-[robot_state_publisher-12] [INFO] [1789254615.918882338] [amr_3.robot_state_publisher]: Robot initialized
-[parameter_bridge-5] [INFO] [1789254615.921296185] [amr_0_bridge]: Creating ROS->GZ Bridge: [/amr_0/cmd_vel (geometry_msgs/msg/Twist) -> /amr_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
-[parameter_bridge-14] [INFO] [1789254615.922345787] [amr_3_bridge]: Creating ROS->GZ Bridge: [/amr_3/cmd_vel (geometry_msgs/msg/Twist) -> /amr_3/cmd_vel (gz.msgs.Twist)] (Lazy 0)
-[parameter_bridge-5] [INFO] [1789254615.922849551] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/odom (gz.msgs.Odometry) -> /amr_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
-[parameter_bridge-8] [INFO] [1789254615.922840218] [amr_1_bridge]: Creating ROS->GZ Bridge: [/amr_1/cmd_vel (geometry_msgs/msg/Twist) -> /amr_1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
-[parameter_bridge-14] [INFO] [1789254615.923899042] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/odom (gz.msgs.Odometry) -> /amr_3/odom (nav_msgs/msg/Odometry)] (Lazy 0)
-[parameter_bridge-5] [INFO] [1789254615.923968969] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/scan (gz.msgs.LaserScan) -> /amr_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
-[parameter_bridge-8] [INFO] [1789254615.924293565] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/odom (gz.msgs.Odometry) -> /amr_1/odom (nav_msgs/msg/Odometry)] (Lazy 0)
-[parameter_bridge-14] [INFO] [1789254615.925388833] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/scan (gz.msgs.LaserScan) -> /amr_3/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
-[parameter_bridge-8] [INFO] [1789254615.925563434] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/scan (gz.msgs.LaserScan) -> /amr_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
-[parameter_bridge-14] [INFO] [1789254615.926657182] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/tf (gz.msgs.Pose_V) -> /amr_3/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
-[parameter_bridge-8] [INFO] [1789254615.926876397] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/tf (gz.msgs.Pose_V) -> /amr_1/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
-[parameter_bridge-5] [INFO] [1789254615.927075595] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/tf (gz.msgs.Pose_V) -> /amr_0/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
-[create-13] [INFO] [1789254615.930685876] [amr_3_spawner]: Requesting list of world names.
-[parameter_bridge-11] [INFO] [1789254615.931430960] [amr_2_bridge]: Creating ROS->GZ Bridge: [/amr_2/cmd_vel (geometry_msgs/msg/Twist) -> /amr_2/cmd_vel (gz.msgs.Twist)] (Lazy 0)
-[parameter_bridge-11] [INFO] [1789254615.933452580] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/odom (gz.msgs.Odometry) -> /amr_2/odom (nav_msgs/msg/Odometry)] (Lazy 0)
-[parameter_bridge-11] [INFO] [1789254615.935769660] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/scan (gz.msgs.LaserScan) -> /amr_2/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
-[parameter_bridge-11] [INFO] [1789254615.937948807] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/tf (gz.msgs.Pose_V) -> /amr_2/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
-[create-16] [INFO] [1789254615.946654736] [amr_4_spawner]: Requesting list of world names.
-[create-4] [INFO] [1789254615.948994344] [amr_0_spawner]: Requesting list of world names.
-[parameter_bridge-17] [INFO] [1789254615.954179593] [amr_4_bridge]: Creating ROS->GZ Bridge: [/amr_4/cmd_vel (geometry_msgs/msg/Twist) -> /amr_4/cmd_vel (gz.msgs.Twist)] (Lazy 0)
-[parameter_bridge-17] [INFO] [1789254615.957394603] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/odom (gz.msgs.Odometry) -> /amr_4/odom (nav_msgs/msg/Odometry)] (Lazy 0)
-[parameter_bridge-17] [INFO] [1789254615.959820912] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/scan (gz.msgs.LaserScan) -> /amr_4/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
-[parameter_bridge-17] [INFO] [1789254615.961430581] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/tf (gz.msgs.Pose_V) -> /amr_4/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
-[create-7] [INFO] [1789254616.364153452] [amr_1_spawner]: Waiting messages on topic [amr_1/robot_description].
-[create-13] [INFO] [1789254616.464667214] [amr_3_spawner]: Waiting messages on topic [amr_3/robot_description].
-[create-16] [INFO] [1789254616.564424421] [amr_4_spawner]: Waiting messages on topic [amr_4/robot_description].
-[create-10] [INFO] [1789254616.664556901] [amr_2_spawner]: Waiting messages on topic [amr_2/robot_description].
-[create-13] [INFO] [1789254616.863892707] [amr_3_spawner]: Entity creation successful.
-[create-7] [INFO] [1789254616.863939857] [amr_1_spawner]: Entity creation successful.
-[create-10] [INFO] [1789254616.863979574] [amr_2_spawner]: Entity creation successful.
-[create-16] [INFO] [1789254616.864102878] [amr_4_spawner]: Entity creation successful.
-[create-4] [INFO] [1789254616.865355820] [amr_0_spawner]: Waiting messages on topic [amr_0/robot_description].
-[create-4] [INFO] [1789254616.876723806] [amr_0_spawner]: Entity creation successful.
-[INFO] [create-7]: process has finished cleanly [pid 76969]
-[INFO] [create-10]: process has finished cleanly [pid 76972]
-[INFO] [create-16]: process has finished cleanly [pid 76978]
-[INFO] [create-13]: process has finished cleanly [pid 76975]
-[INFO] [create-4]: process has finished cleanly [pid 76966]
-[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_1/base_footprint"]/sensor[@name="amr_1_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[INFO] [gazebo-1]: process started with pid [88053]
+[INFO] [parameter_bridge-2]: process started with pid [88054]
+[INFO] [robot_state_publisher-3]: process started with pid [88055]
+[INFO] [create-4]: process started with pid [88057]
+[INFO] [parameter_bridge-5]: process started with pid [88058]
+[INFO] [robot_state_publisher-6]: process started with pid [88059]
+[INFO] [create-7]: process started with pid [88060]
+[INFO] [parameter_bridge-8]: process started with pid [88061]
+[INFO] [robot_state_publisher-9]: process started with pid [88062]
+[INFO] [create-10]: process started with pid [88063]
+[INFO] [parameter_bridge-11]: process started with pid [88064]
+[INFO] [robot_state_publisher-12]: process started with pid [88065]
+[INFO] [create-13]: process started with pid [88066]
+[INFO] [parameter_bridge-14]: process started with pid [88067]
+[INFO] [robot_state_publisher-15]: process started with pid [88068]
+[INFO] [create-16]: process started with pid [88072]
+[INFO] [parameter_bridge-17]: process started with pid [88076]
+[robot_state_publisher-12] [INFO] [1789258168.631922265] [amr_3.robot_state_publisher]: Robot initialized
+[robot_state_publisher-6] [INFO] [1789258168.636086284] [amr_1.robot_state_publisher]: Robot initialized
+[create-4] [INFO] [1789258168.636682614] [amr_0_spawner]: Requesting list of world names.
+[create-7] [INFO] [1789258168.644333862] [amr_1_spawner]: Requesting list of world names.
+[robot_state_publisher-3] [INFO] [1789258168.644377654] [amr_0.robot_state_publisher]: Robot initialized
+[create-10] [INFO] [1789258168.649866865] [amr_2_spawner]: Requesting list of world names.
+[parameter_bridge-11] [INFO] [1789258168.664161854] [amr_2_bridge]: Creating ROS->GZ Bridge: [/amr_2/cmd_vel (geometry_msgs/msg/Twist) -> /amr_2/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[robot_state_publisher-9] [INFO] [1789258168.666614360] [amr_2.robot_state_publisher]: Robot initialized
+[parameter_bridge-11] [INFO] [1789258168.666762450] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/odom (gz.msgs.Odometry) -> /amr_2/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[create-13] [INFO] [1789258168.668263341] [amr_3_spawner]: Requesting list of world names.
+[parameter_bridge-11] [INFO] [1789258168.669153799] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/scan (gz.msgs.LaserScan) -> /amr_2/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1789258168.669345476] [amr_1_bridge]: Creating ROS->GZ Bridge: [/amr_1/cmd_vel (geometry_msgs/msg/Twist) -> /amr_1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1789258168.670950760] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/odom (gz.msgs.Odometry) -> /amr_1/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[robot_state_publisher-15] [INFO] [1789258168.671481000] [amr_4.robot_state_publisher]: Robot initialized
+[parameter_bridge-11] [INFO] [1789258168.672557009] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/tf (gz.msgs.Pose_V) -> /amr_2/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1789258168.673236137] [clock_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1789258168.674016158] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/scan (gz.msgs.LaserScan) -> /amr_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789258168.675320203] [amr_3_bridge]: Creating ROS->GZ Bridge: [/amr_3/cmd_vel (geometry_msgs/msg/Twist) -> /amr_3/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789258168.677067029] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/odom (gz.msgs.Odometry) -> /amr_3/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-8] [INFO] [1789258168.677708804] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/tf (gz.msgs.Pose_V) -> /amr_1/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789258168.678795235] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/scan (gz.msgs.LaserScan) -> /amr_3/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1789258168.679628842] [amr_0_bridge]: Creating ROS->GZ Bridge: [/amr_0/cmd_vel (geometry_msgs/msg/Twist) -> /amr_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[create-16] [INFO] [1789258168.679856414] [amr_4_spawner]: Requesting list of world names.
+[parameter_bridge-14] [INFO] [1789258168.679998985] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/tf (gz.msgs.Pose_V) -> /amr_3/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1789258168.681755273] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/odom (gz.msgs.Odometry) -> /amr_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1789258168.683297929] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/scan (gz.msgs.LaserScan) -> /amr_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1789258168.685056756] [amr_4_bridge]: Creating ROS->GZ Bridge: [/amr_4/cmd_vel (geometry_msgs/msg/Twist) -> /amr_4/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1789258168.686444820] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/tf (gz.msgs.Pose_V) -> /amr_0/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1789258168.686548781] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/odom (gz.msgs.Odometry) -> /amr_4/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1789258168.687720200] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/scan (gz.msgs.LaserScan) -> /amr_4/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-17] [INFO] [1789258168.688790697] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/tf (gz.msgs.Pose_V) -> /amr_4/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[create-13] [INFO] [1789258169.117114539] [amr_3_spawner]: Waiting messages on topic [amr_3/robot_description].
+[create-4] [INFO] [1789258169.218056196] [amr_0_spawner]: Waiting messages on topic [amr_0/robot_description].
+[create-16] [INFO] [1789258169.417816823] [amr_4_spawner]: Waiting messages on topic [amr_4/robot_description].
+[create-13] [INFO] [1789258169.517003866] [amr_3_spawner]: Entity creation successful.
+[create-10] [INFO] [1789258169.517935957] [amr_2_spawner]: Waiting messages on topic [amr_2/robot_description].
+[create-4] [INFO] [1789258169.617021666] [amr_0_spawner]: Entity creation successful.
+[create-10] [INFO] [1789258169.617025619] [amr_2_spawner]: Entity creation successful.
+[create-16] [INFO] [1789258169.617085662] [amr_4_spawner]: Entity creation successful.
+[create-7] [INFO] [1789258169.618445732] [amr_1_spawner]: Waiting messages on topic [amr_1/robot_description].
+[INFO] [create-13]: process has finished cleanly [pid 88066]
+[create-7] [INFO] [1789258169.630341938] [amr_1_spawner]: Entity creation successful.
+[INFO] [create-10]: process has finished cleanly [pid 88063]
+[INFO] [create-4]: process has finished cleanly [pid 88057]
+[INFO] [create-16]: process has finished cleanly [pid 88072]
+[INFO] [create-7]: process has finished cleanly [pid 88060]
 [gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_3/base_footprint"]/sensor[@name="amr_3_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
-[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_4/base_footprint"]/sensor[@name="amr_4_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
-[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_2/base_footprint"]/sensor[@name="amr_2_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
 [gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_0/base_footprint"]/sensor[@name="amr_0_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
-[parameter_bridge-5] [INFO] [1789254634.236625637] [amr_0_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
-[parameter_bridge-8] [INFO] [1789254643.679628720] [amr_1_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_2/base_footprint"]/sensor[@name="amr_2_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_4/base_footprint"]/sensor[@name="amr_4_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_1/base_footprint"]/sensor[@name="amr_1_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[parameter_bridge-5] [INFO] [1789258189.046922435] [amr_0_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-8] [INFO] [1789258196.108122636] [amr_1_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
-[parameter_bridge-8] [INFO] [1789254653.870604151] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[parameter_bridge-11] [INFO] [1789254653.870603209] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[parameter_bridge-17] [INFO] [1789254653.870607785] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[robot_state_publisher-6] [INFO] [1789254653.870609904] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[parameter_bridge-5] [INFO] [1789254653.870617641] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[robot_state_publisher-12] [INFO] [1789254653.870658656] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[robot_state_publisher-15] [INFO] [1789254653.870725427] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[robot_state_publisher-9] [INFO] [1789254653.870736484] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[parameter_bridge-14] [INFO] [1789254653.870677628] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[parameter_bridge-2] [INFO] [1789254653.871417827] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[robot_state_publisher-3] [INFO] [1789254653.871577724] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[ERROR] [gazebo-1]: process has died [pid 76962, exit code -2, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf --force-version 8'].
-[INFO] [parameter_bridge-17]: process has finished cleanly [pid 76979]
-[INFO] [robot_state_publisher-12]: process has finished cleanly [pid 76974]
-[INFO] [parameter_bridge-2]: process has finished cleanly [pid 76963]
-[INFO] [parameter_bridge-11]: process has finished cleanly [pid 76973]
-[INFO] [parameter_bridge-8]: process has finished cleanly [pid 76970]
-[INFO] [parameter_bridge-14]: process has finished cleanly [pid 76976]
-[INFO] [robot_state_publisher-9]: process has finished cleanly [pid 76971]
-[INFO] [robot_state_publisher-15]: process has finished cleanly [pid 76977]
-[INFO] [robot_state_publisher-3]: process has finished cleanly [pid 76964]
-[INFO] [robot_state_publisher-6]: process has finished cleanly [pid 76968]
-[INFO] [parameter_bridge-5]: process has finished cleanly [pid 76967]
+[parameter_bridge-17] [INFO] [1789258207.235055857] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-12] [INFO] [1789258207.235060487] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-15] [INFO] [1789258207.235056811] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-11] [INFO] [1789258207.235060914] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-14] [INFO] [1789258207.235063133] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-8] [INFO] [1789258207.235070401] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-9] [INFO] [1789258207.235083494] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-6] [INFO] [1789258207.235078729] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-2] [INFO] [1789258207.235120368] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-5] [INFO] [1789258207.235537149] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[robot_state_publisher-3] [INFO] [1789258207.235537527] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [gazebo-1]: process has died [pid 88053, exit code -2, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf --force-version 8'].
+[INFO] [parameter_bridge-2]: process has finished cleanly [pid 88054]
+[INFO] [parameter_bridge-17]: process has finished cleanly [pid 88076]
+[INFO] [parameter_bridge-8]: process has finished cleanly [pid 88061]
+[INFO] [parameter_bridge-14]: process has finished cleanly [pid 88067]
+[INFO] [parameter_bridge-5]: process has finished cleanly [pid 88058]
+[INFO] [robot_state_publisher-9]: process has finished cleanly [pid 88062]
+[INFO] [robot_state_publisher-15]: process has finished cleanly [pid 88068]
+[INFO] [robot_state_publisher-6]: process has finished cleanly [pid 88059]
+[INFO] [robot_state_publisher-12]: process has finished cleanly [pid 88065]
+[INFO] [robot_state_publisher-3]: process has finished cleanly [pid 88055]
+[INFO] [parameter_bridge-11]: process has finished cleanly [pid 88064]

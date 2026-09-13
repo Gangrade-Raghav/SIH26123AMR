@@ -13,6 +13,15 @@ from .state_machine import (
     RobotLifecycleState,
     RobotStateMachine,
 )
+from .task_generator import TaskGenerator, TaskGeneratorConfig
+from .task_model import (
+    InvalidTaskTransitionError,
+    Task,
+    TaskEvent,
+    TaskLifecycleState,
+    TaskPriority,
+)
+from .workload import WorkloadManager
 
 __all__ = [
     'TaskAllocator',
@@ -25,4 +34,12 @@ __all__ = [
     'InvalidStateTransitionError',
     'FleetState',
     'RobotInfo',
+    'Task',
+    'TaskPriority',
+    'TaskLifecycleState',
+    'TaskEvent',
+    'InvalidTaskTransitionError',
+    'TaskGenerator',
+    'TaskGeneratorConfig',
+    'WorkloadManager',
 ]

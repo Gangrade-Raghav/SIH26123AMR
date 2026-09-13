@@ -14,6 +14,7 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchD
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -46,6 +47,16 @@ def generate_launch_description():
             default_value='true',
             description='Continuously loop demo trajectory missions',
         ),
+        DeclareLaunchArgument(
+            'launch_tasks',
+            default_value='true',
+            description='Launch M3 task manager with workload (default: true)',
+        ),
+        DeclareLaunchArgument(
+            'workload_file',
+            default_value='',
+            description='Path to custom workload YAML file (optional)',
+        ),
     ]
 
     # Include core fleet launch
@@ -58,6 +69,18 @@ def generate_launch_description():
             'world': 'warehouse_small',
             'use_sim_time': 'true',
         }.items(),
+    )
+
+    # Optional task manager node
+    task_manager_node = Node(
+        package='amr_fleet_core',
+        executable='task_manager',
+        name='amr_task_manager',
+        output='screen',
+        parameters=[{
+            'workload_file': LaunchConfiguration('workload_file'),
+        }],
+        condition=IfCondition(LaunchConfiguration('launch_tasks')),
     )
 
     # Optional auto-start trajectory coordinator
@@ -77,4 +100,4 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('auto_start_demo')),
     )
 
-    return LaunchDescription(declared_arguments + [fleet_launch, demo_process])
+    return LaunchDescription(declared_arguments + [fleet_launch, task_manager_node, demo_process])
