@@ -107,13 +107,17 @@ def launch_setup(context, *args, **kwargs):
 
     # 2. Task Manager Node
     if not workload_file:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
-        candidate = os.path.join(
-            workspace_root, 'config', 'workloads', 'workload_medium_priority.yaml'
-        )
-        if os.path.isfile(candidate):
-            workload_file = candidate
+        candidate_paths = [
+            os.path.join(os.getcwd(), 'config', 'workloads', 'workload_medium_priority.yaml'),
+            os.path.expanduser(
+                '~/Downloads/NRDAS_Antigravity_Project_Starter/'
+                'antigravity_amr_project/config/workloads/workload_medium_priority.yaml'
+            ),
+        ]
+        for candidate in candidate_paths:
+            if os.path.isfile(candidate):
+                workload_file = candidate
+                break
 
     task_mgr_node = Node(
         package='amr_fleet_core',
@@ -234,8 +238,8 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'headless',
-            default_value='true',
-            description='Run Gazebo in headless mode (default: true)',
+            default_value='false',
+            description='Run Gazebo in headless mode (default: false)',
         ),
         DeclareLaunchArgument(
             'rviz',
