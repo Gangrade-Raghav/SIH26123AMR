@@ -20,7 +20,8 @@ import socketserver
 import sys
 import threading
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
+import yaml
 
 import rclpy
 from rclpy.node import Node
@@ -89,10 +90,12 @@ class SystemMetricsReader:
 class RobotTelemetryTracker:
     """Tracks live state, kinematics, and sensor health for a single AMR."""
 
-    def __init__(self, robot_id: str) -> None:
+    def __init__(self, robot_id: str, spawn_x: float = 0.0, spawn_y: float = 0.0) -> None:
         self.robot_id = robot_id
-        self.x = 0.0
-        self.y = 0.0
+        self.spawn_x = spawn_x
+        self.spawn_y = spawn_y
+        self.x = spawn_x
+        self.y = spawn_y
         self.yaw = 0.0
         self.linear_speed = 0.0
         self.angular_speed = 0.0
@@ -127,8 +130,8 @@ class RobotTelemetryTracker:
         self._prev_x = px
         self._prev_y = py
 
-        self.x = px
-        self.y = py
+        self.x = round(self.spawn_x + px, 2)
+        self.y = round(self.spawn_y + py, 2)
         self.linear_speed = math.hypot(msg.twist.twist.linear.x, msg.twist.twist.linear.y)
         self.angular_speed = msg.twist.twist.angular.z
 
@@ -183,6 +186,28 @@ class FleetMonitorNode(Node):
         self._last_sim_time = 0.0
         self._last_wall_time = time.time()
         self.real_time_factor = 1.0
+
+        # Load spawn configurations
+        self.spawn_poses: Dict[str, Tuple[float, float]] = {}
+        ws_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        cfg_paths = [
+            os.path.join(ws_root, 'config', 'robots', f'fleet_{self.target_robot_count}_robots.yaml'),
+            os.path.join(ws_root, 'config', 'robots', 'fleet_5_robots.yaml'),
+            os.path.join(ws_root, 'config', 'robots', 'fleet_default.yaml'),
+        ]
+        for cp in cfg_paths:
+            if os.path.isfile(cp):
+                try:
+                    with open(cp, 'r', encoding='utf-8') as f:
+                        cfg_data = yaml.safe_load(f)
+                    for r_cfg in cfg_data.get('fleet', {}).get('robots', []):
+                        r_id = r_cfg.get('id')
+                        if r_id:
+                            self.spawn_poses[r_id] = (float(r_cfg.get('x', 0.0)), float(r_cfg.get('y', 0.0)))
+                    if self.spawn_poses:
+                        break
+                except Exception:
+                    pass
 
         qos = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -328,7 +353,8 @@ class FleetMonitorNode(Node):
             bundle_topic = f'/{r_id}/bundle'
 
             if odom_topic in existing_topics and r_id not in self.robots:
-                tracker = RobotTelemetryTracker(r_id)
+                spawn_x, spawn_y = self.spawn_poses.get(r_id, (2.0, 2.0 + i * 3.0))
+                tracker = RobotTelemetryTracker(r_id, spawn_x, spawn_y)
                 self.robots[r_id] = tracker
 
                 # Subscribe to odom
@@ -673,7 +699,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     const canvas = document.getElementById('warehouse-canvas');
     const ctx = canvas.getContext('2d');
 
-    function drawWarehouseMap(robots) {
+    function drawWarehouseMap(robots, tasks, cbba) {
       const W = canvas.width;
       const H = canvas.height;
       ctx.clearRect(0, 0, W, H);
