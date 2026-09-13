@@ -31,7 +31,13 @@ from sensor_msgs.msg import LaserScan
 from rosgraph_msgs.msg import Clock
 
 try:
-    from amr_fleet_msgs.msg import TaskDefinition, TaskEvent as TaskEventMsg, TaskList
+    from amr_fleet_msgs.msg import (
+        CBBABid,
+        RobotBundle,
+        TaskDefinition,
+        TaskEvent as TaskEventMsg,
+        TaskList,
+    )
     HAVE_TASK_MSGS = True
 except ImportError:
     HAVE_TASK_MSGS = False
@@ -201,9 +207,22 @@ class FleetMonitorNode(Node):
             'recent_events': [],
         }
 
+        # CBBA State Tracking
+        self.cbba_data: Dict[str, Any] = {
+            'status': 'IDLE — Awaiting CBBA Auction',
+            'is_converged': False,
+            'bids_count': 0,
+            'winning_allocations': {},
+            'bundles': {},
+            'makespan_sec': 0.0,
+            'last_bid_time': 0.0,
+        }
+        self._bundle_subs: set = set()
+
         if HAVE_TASK_MSGS:
             self.create_subscription(TaskList, '/tasks/all', self._tasks_cb, 10)
             self.create_subscription(TaskEventMsg, '/tasks/events', self._task_event_cb, 20)
+            self.create_subscription(CBBABid, '/fleet/cbba_bids', self._cbba_bid_cb, 50)
 
         # Dynamic topic discovery timer
         self.create_timer(1.0, self._discover_fleet_topics)
@@ -267,6 +286,25 @@ class FleetMonitorNode(Node):
         recent.insert(0, ev)
         self.tasks_data['recent_events'] = recent[:5]
 
+    def _cbba_bid_cb(self, msg: 'CBBABid') -> None:
+        self.cbba_data['bids_count'] += 1
+        self.cbba_data['last_bid_time'] = time.time()
+        for idx, t_id in enumerate(msg.task_ids):
+            bid = msg.winning_bids[idx] if idx < len(msg.winning_bids) else 0.0
+            winner = msg.winning_robots[idx] if idx < len(msg.winning_robots) else ''
+            self.cbba_data['winning_allocations'][t_id] = {
+                'winner': winner,
+                'bid': round(bid, 2),
+            }
+
+    def _bundle_cb(self, r_id: str, msg: 'RobotBundle') -> None:
+        self.cbba_data['bundles'][r_id] = list(msg.task_ids)
+        if msg.is_converged:
+            self.cbba_data['is_converged'] = True
+            self.cbba_data['status'] = 'CONVERGED (Consensus Reached)'
+        else:
+            self.cbba_data['status'] = 'NEGOTIATING (Bids Exchanging)'
+
     def _clock_cb(self, msg: Clock) -> None:
         now_sim = msg.clock.sec + msg.clock.nanosec * 1e-9
         self.sim_time_sec = now_sim
@@ -287,6 +325,7 @@ class FleetMonitorNode(Node):
             r_id = f'amr_{i}'
             odom_topic = f'/{r_id}/odom'
             scan_topic = f'/{r_id}/scan'
+            bundle_topic = f'/{r_id}/bundle'
 
             if odom_topic in existing_topics and r_id not in self.robots:
                 tracker = RobotTelemetryTracker(r_id)
@@ -301,6 +340,12 @@ class FleetMonitorNode(Node):
                 def make_scan_cb(t):
                     return lambda msg: t.update_scan(msg)
                 self.create_subscription(LaserScan, scan_topic, make_scan_cb(tracker), 10)
+
+            if bundle_topic in existing_topics and r_id not in self._bundle_subs:
+                def make_bundle_cb(rid):
+                    return lambda msg: self._bundle_cb(rid, msg)
+                self.create_subscription(RobotBundle, bundle_topic, make_bundle_cb(r_id), 10)
+                self._bundle_subs.add(r_id)
 
     def get_fleet_summary(self) -> Dict[str, Any]:
         node_names = self.get_node_names()
@@ -321,6 +366,24 @@ class FleetMonitorNode(Node):
 
         ram = self.metrics_reader.read_ram_usage_mb()
         cpu = self.metrics_reader.read_cpu_percent()
+
+        # Makespan calculation from CBBA bundles
+        max_dist = 0.0
+        task_dict = {t['id']: t for t in self.tasks_data.get('tasks', [])}
+        for r_id, b_tasks in self.cbba_data['bundles'].items():
+            r_tracker = self.robots.get(r_id)
+            cur_pos = (r_tracker.x, r_tracker.y) if r_tracker else (0.0, 0.0)
+            d = 0.0
+            for tid in b_tasks:
+                if tid in task_dict:
+                    pk = task_dict[tid]['pickup']
+                    dp = task_dict[tid]['dropoff']
+                    d += math.hypot(pk[0] - cur_pos[0], pk[1] - cur_pos[1])
+                    d += math.hypot(dp[0] - pk[0], dp[1] - pk[1])
+                    cur_pos = (dp[0], dp[1])
+            if d > max_dist:
+                max_dist = d
+        self.cbba_data['makespan_sec'] = round(max_dist / 0.5, 1) if max_dist > 0 else 0.0
 
         return {
             'timestamp': datetime.now().isoformat(),
@@ -347,6 +410,7 @@ class FleetMonitorNode(Node):
                 'tasks': self.tasks_data.get('tasks', []),
                 'recent_events': self.tasks_data.get('recent_events', []),
             },
+            'cbba': self.cbba_data,
             'network': {
                 'ros2_nodes_count': len(node_names),
                 'ros2_topics_count': len(topics),
@@ -574,6 +638,13 @@ DASHBOARD_HTML = """<!DOCTYPE html>
       </div>
 
       <div class="card">
+        <div class="card-title">CBBA Decentralized Allocation (M4)</div>
+        <div class="metric-row"><span class="metric-key">Consensus State:</span><span class="metric-val" id="cbba-status" style="color: var(--accent-cyan);">Awaiting Bids</span></div>
+        <div class="metric-row"><span class="metric-key">Bids Exchanged:</span><span class="metric-val" id="cbba-bids">0</span></div>
+        <div class="metric-row"><span class="metric-key">Allocated Bundles:</span><span class="metric-val" id="cbba-bundles" style="font-size: 11px; word-break: break-all;">None</span></div>
+      </div>
+
+      <div class="card">
         <div class="card-title">Network & Transport Health</div>
         <div class="metric-row"><span class="metric-key">Middleware Layer:</span><span class="metric-val" id="net-mid">ROS 2 Jazzy</span></div>
         <div class="metric-row"><span class="metric-key">Transport State:</span><span class="metric-val" id="net-state" style="color: var(--accent-green);">HEALTHY</span></div>
@@ -584,7 +655,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
       <div class="card">
         <div class="card-title">Performance & Optimization</div>
         <div class="metric-row"><span class="metric-key">MAPF Latency:</span><span class="metric-pending">Pending M6 (PIBT/RHCR)</span></div>
-        <div class="metric-row"><span class="metric-key">Makespan Estimation:</span><span class="metric-pending">Pending M4 Allocation</span></div>
+        <div class="metric-row"><span class="metric-key">Makespan Estimation:</span><span class="metric-val" id="perf-makespan" style="color: var(--accent-green);">0.0s</span></div>
         <div class="metric-row"><span class="metric-key">Host CPU Load:</span><span class="metric-val" id="perf-cpu">0.0%</span></div>
         <div class="metric-row"><span class="metric-key">Host RAM Usage:</span><span class="metric-val" id="perf-ram">0 MB</span></div>
       </div>
@@ -672,6 +743,68 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         ctx.strokeRect(toX(r[0]) - rw/2, toY(r[1]) - rh/2, rw, rh);
       });
 
+      // Draw Tasks on Map
+      if (tasks && tasks.tasks && tasks.tasks.length > 0) {
+        tasks.tasks.forEach(t => {
+          const px = toX(t.pickup[0]);
+          const py = toY(t.pickup[1]);
+          const dx = toX(t.dropoff[0]);
+          const dy = toY(t.dropoff[1]);
+
+          // Pickup marker (cyan dot)
+          ctx.beginPath();
+          ctx.arc(px, py, 4.5, 0, 2 * Math.PI);
+          ctx.fillStyle = '#00e5ff';
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Dropoff marker (green square)
+          ctx.fillStyle = '#00e676';
+          ctx.fillRect(dx - 4, dy - 4, 8, 8);
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(dx - 4, dy - 4, 8, 8);
+        });
+      }
+
+      // Draw CBBA Allocation Route Lines (dashed lines)
+      if (cbba && cbba.bundles && robots) {
+        const botMap = {};
+        robots.forEach(b => { botMap[b.robot_id] = b; });
+        const taskMap = {};
+        if (tasks && tasks.tasks) {
+          tasks.tasks.forEach(t => { taskMap[t.id] = t; });
+        }
+
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+
+        Object.entries(cbba.bundles).forEach(([rId, bundle]) => {
+          const bot = botMap[rId];
+          if (bot && bundle.length > 0) {
+            let startX = toX(bot.x);
+            let startY = toY(bot.y);
+            bundle.forEach(tId => {
+              const t = taskMap[tId];
+              if (t) {
+                const targetX = toX(t.pickup[0]);
+                const targetY = toY(t.pickup[1]);
+                ctx.strokeStyle = cbba.is_converged ? 'rgba(0, 230, 118, 0.7)' : 'rgba(255, 152, 0, 0.7)';
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(targetX, targetY);
+                ctx.stroke();
+                startX = toX(t.dropoff[0]);
+                startY = toY(t.dropoff[1]);
+              }
+            });
+          }
+        });
+        ctx.setLineDash([]);
+      }
+
       // Draw Robots
       if (robots && robots.length > 0) {
         robots.forEach(bot => {
@@ -740,7 +873,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         }
 
         // Map
-        drawWarehouseMap(robots);
+        drawWarehouseMap(robots, data.tasks, data.cbba);
 
         // Tasks (M3)
         if (data.tasks) {
@@ -757,6 +890,20 @@ DASHBOARD_HTML = """<!DOCTYPE html>
           document.getElementById('task-active').textContent = ts.active || 0;
           document.getElementById('task-completed').textContent = ts.completed || 0;
           document.getElementById('task-throughput').textContent = data.performance.fleet_throughput || '0 tasks/hr';
+        }
+
+        // CBBA (M4)
+        if (data.cbba) {
+          const cb = data.cbba;
+          const stEl = document.getElementById('cbba-status');
+          stEl.textContent = cb.status || 'Awaiting Bids';
+          stEl.style.color = cb.is_converged ? 'var(--accent-green)' : (cb.bids_count > 0 ? 'var(--accent-orange)' : 'var(--text-muted)');
+          document.getElementById('cbba-bids').textContent = cb.bids_count || 0;
+          document.getElementById('perf-makespan').textContent = (cb.makespan_sec || 0.0) + 's';
+          const bundlesStr = Object.entries(cb.bundles || {})
+            .map(([r, b]) => `${r}: [${b.join(', ')}]`)
+            .join(' | ') || 'None';
+          document.getElementById('cbba-bundles').textContent = bundlesStr;
         }
 
         // Network

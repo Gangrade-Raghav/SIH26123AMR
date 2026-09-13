@@ -20,6 +20,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/TaskDefinition.msg"
   "msg/TaskEvent.msg"
   "msg/TaskList.msg"
+  "msg/CBBABid.msg"
+  "msg/RobotBundle.msg"
   DEPENDENCIES
     std_msgs
     geometry_msgs
