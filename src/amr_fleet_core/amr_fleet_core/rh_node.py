@@ -17,6 +17,8 @@ from geometry_msgs.msg import Point, Twist
 from nav_msgs.msg import Odometry
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
+from sensor_msgs.msg import LaserScan
 
 
 def float_to_builtin_time(secs: float) -> BuiltinTime:
@@ -126,6 +128,14 @@ class RollingHorizonPlannerNode(Node):
             10,
         )
 
+        self.obstacle_ahead: bool = False
+        self.sub_scan = self.create_subscription(
+            LaserScan,
+            f'/{self.robot_id}/scan',
+            self._handle_scan,
+            qos_profile_sensor_data,
+        )
+
         # Timer
         period = 1.0 / max(0.1, replan_rate)
         self.timer = self.create_timer(period, self._planning_cycle)
@@ -175,6 +185,21 @@ class RollingHorizonPlannerNode(Node):
         self.cached_tasks = tasks_map
         if self.cached_bundle:
             self.planner.update_assigned_bundle(self.cached_bundle, self.cached_tasks)
+
+    def _handle_scan(self, msg: LaserScan) -> None:
+        """Process LiDAR to detect obstacles in forward arc."""
+        num_rays = len(msg.ranges)
+        if num_rays == 0:
+            return
+
+        arc_rays = max(1, int(num_rays * (25.0 / 360.0)))
+        forward_ranges = []
+        for idx in range(-arc_rays, arc_rays + 1):
+            r = msg.ranges[idx]
+            if msg.range_min < r < msg.range_max and not math.isinf(r) and not math.isnan(r):
+                forward_ranges.append(r)
+
+        self.obstacle_ahead = bool(forward_ranges and min(forward_ranges) < 0.65)
 
     def _publish_task_transition(
         self,
@@ -344,6 +369,13 @@ class RollingHorizonPlannerNode(Node):
 
         rx, ry = self.planner.current_position
         tx, ty = waypoint
+
+        if self.obstacle_ahead:
+            cmd = Twist()
+            cmd.linear.x = 0.0
+            cmd.angular.z = 0.0
+            self.pub_cmd_vel.publish(cmd)
+            return
 
         dx = tx - rx
         dy = ty - ry

@@ -120,6 +120,24 @@ def launch_setup(context, *args, **kwargs):
                 }.items(),
             )
         )
+        spawn_actions.append(
+            Node(
+                package='tf2_ros',
+                executable='static_transform_publisher',
+                name=f'{r["id"]}_map_to_odom',
+                arguments=[
+                    '--x', str(r['x']),
+                    '--y', str(r['y']),
+                    '--z', '0.0',
+                    '--yaw', str(r.get('yaw', 0.0)),
+                    '--pitch', '0.0',
+                    '--roll', '0.0',
+                    '--frame-id', 'map',
+                    '--child-frame-id', f'{r["id"]}/odom',
+                ],
+                parameters=[{'use_sim_time': use_sim_time}],
+            )
+        )
 
     # Optional RViz
     rviz_config = os.path.join(pkg_amr_bringup, 'rviz', 'fleet_default.rviz')
