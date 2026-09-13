@@ -470,227 +470,474 @@ DASHBOARD_HTML = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NRDAS — AMR Fleet Operations Dashboard</title>
+  <title>NRDAS // INDUSTRIAL FLEET OPERATIONS</title>
   <style>
     :root {
-      --bg-base: #0f1218;
-      --bg-surface: #181d26;
-      --bg-card: #202633;
-      --border: #2d3648;
-      --text-main: #f0f3f8;
-      --text-muted: #8c9bb0;
-      --accent-orange: #f36c21;
-      --accent-cyan: #00bcd4;
-      --accent-green: #00e676;
-      --accent-amber: #ffb300;
-      --accent-red: #ff5252;
+      --c-black: #000000;
+      --c-bg: #0a0a0a;
+      --c-surface: #141414;
+      --c-card: #1c1c1c;
+      --c-card-header: #000000;
+      --c-border: #333333;
+      --c-border-strong: #000000;
+      --c-border-focus: #ff5500;
+      --c-orange: #ff5500;
+      --c-orange-dim: #cc4400;
+      --c-orange-bg: rgba(255, 85, 0, 0.12);
+      --c-grey-muted: #888888;
+      --c-grey-light: #cccccc;
+      --c-white: #ffffff;
+      --shadow-brutal: 4px 4px 0px #000000;
+      --shadow-brutal-sm: 2px 2px 0px #000000;
+      --shadow-orange: 4px 4px 0px #ff5500;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0px !important;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-base);
-      color: var(--text-main);
-      padding: 18px;
+      font-family: 'JetBrains Mono', 'Space Mono', 'Consolas', 'Courier New', monospace;
+      background-color: var(--c-bg);
+      color: var(--c-white);
+      padding: 16px;
+      line-height: 1.4;
     }
+
+    /* Hazard Warning Top Stripe */
+    .hazard-stripe {
+      height: 8px;
+      background: repeating-linear-gradient(45deg, var(--c-orange), var(--c-orange) 14px, var(--c-black) 14px, var(--c-black) 28px);
+      border: 1px solid var(--c-black);
+      margin-bottom: 14px;
+    }
+
+    /* Header Bar */
     header {
+      background: var(--c-surface);
+      border: 2px solid var(--c-black);
+      box-shadow: var(--shadow-brutal);
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      border-left: 6px solid var(--c-orange);
     }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: 0.5px; }
-    .badge-sub {
-      background: rgba(243, 108, 33, 0.18);
-      color: var(--accent-orange);
-      border: 1px solid var(--accent-orange);
-      font-size: 0.72rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    .header-stats { display: flex; gap: 16px; font-size: 0.82rem; }
-    .stat-pill {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      padding: 5px 12px;
-      border-radius: 6px;
+    .brand {
       display: flex;
-      gap: 6px;
+      align-items: center;
+      gap: 14px;
     }
-    .stat-label { color: var(--text-muted); }
-    .stat-value { font-weight: 600; color: var(--accent-cyan); }
-
-    /* Layout Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--c-white);
     }
-    .card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 18px;
-    }
-    .card-title {
-      font-size: 0.92rem;
-      font-weight: 700;
+    .badge-sub {
+      background: var(--c-orange);
+      color: var(--c-black);
+      font-weight: 900;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border: 1px solid var(--c-black);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
+    }
+    .header-stats {
       display: flex;
-      justify-content: space-between;
+      gap: 10px;
+    }
+    .stat-pill {
+      background: var(--c-card);
+      border: 2px solid var(--c-black);
+      box-shadow: var(--shadow-brutal-sm);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      display: flex;
+      gap: 8px;
       align-items: center;
     }
-
-    /* Robot Cards Grid */
-    .robot-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-    }
-    .robot-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px;
-      position: relative;
-    }
-    .robot-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 6px;
-    }
-    .robot-name { font-weight: 700; font-size: 0.95rem; color: var(--accent-orange); }
-    .status-badge {
-      font-size: 0.68rem;
-      padding: 2px 6px;
-      border-radius: 3px;
+    .stat-label {
+      color: var(--c-grey-muted);
       font-weight: 700;
       text-transform: uppercase;
+      font-size: 0.72rem;
     }
-    .status-ACTIVE { background: rgba(0, 230, 118, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green); }
-    .status-IDLE { background: rgba(255, 179, 0, 0.18); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
-    .status-OFFLINE { background: rgba(255, 82, 82, 0.18); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .stat-value {
+      color: var(--c-orange);
+      font-weight: 900;
+    }
 
-    .robot-kv { display: flex; justify-content: space-between; font-size: 0.78rem; margin: 3px 0; }
-    .robot-kv .k { color: var(--text-muted); }
-    .robot-kv .v { font-family: monospace; }
+    /* Main Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 16px;
+    }
+
+    /* Brutalist Cards */
+    .card {
+      background: var(--c-surface);
+      border: 2px solid var(--c-black);
+      box-shadow: var(--shadow-brutal);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--c-white);
+      border-bottom: 2px solid var(--c-border);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-title .tag {
+      color: var(--c-orange);
+      font-size: 0.75rem;
+    }
+
+    /* Robot Grid */
+    .robot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .robot-card {
+      background: var(--c-card);
+      border: 2px solid var(--c-black);
+      box-shadow: var(--shadow-brutal-sm);
+      padding: 10px;
+    }
+    .robot-header {
+      background: var(--c-card-header);
+      padding: 6px 8px;
+      margin: -10px -10px 10px -10px;
+      border-bottom: 2px solid var(--c-orange);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .robot-name {
+      color: var(--c-orange);
+      font-weight: 900;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+    .status-badge {
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 2px 6px;
+      text-transform: uppercase;
+      border: 1px solid var(--c-black);
+    }
+    .status-IDLE {
+      background: var(--c-surface);
+      color: var(--c-grey-light);
+      border-color: var(--c-border);
+    }
+    .status-ACTIVE {
+      background: var(--c-orange);
+      color: var(--c-black);
+    }
+    .status-OFFLINE {
+      background: #444444;
+      color: var(--c-grey-muted);
+    }
+    .robot-kv {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      margin: 3px 0;
+    }
+    .robot-kv .k {
+      color: var(--c-grey-muted);
+      font-weight: 700;
+    }
+    .robot-kv .v {
+      color: var(--c-white);
+      font-weight: 700;
+    }
 
     /* Map Canvas */
     .map-container {
-      background: #12151c;
-      border: 1px solid var(--border);
-      border-radius: 6px;
+      background: #0d0d0d;
+      border: 2px solid var(--c-black);
+      box-shadow: var(--shadow-brutal);
       width: 100%;
-      height: 380px;
+      height: 420px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      margin-bottom: 8px;
     }
-    canvas { width: 100%; height: 100%; }
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.72rem;
+      padding: 8px 12px;
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      color: var(--c-grey-light);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+    .leg-amr { color: var(--c-orange); }
+    .leg-pickup { color: var(--c-orange); }
+    .leg-dropoff { color: var(--c-white); }
+    .leg-route { color: var(--c-orange); }
 
-    /* Metrics Table */
+    /* Metric Table Rows */
     .metric-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.82rem;
+      border-bottom: 1px solid var(--c-border);
+      font-size: 0.8rem;
     }
-    .metric-row:last-child { border-bottom: none; }
-    .metric-key { color: var(--text-muted); }
-    .metric-val { font-family: monospace; font-weight: 600; }
-    .metric-pending { color: var(--text-muted); font-style: italic; font-size: 0.76rem; }
+    .metric-row:last-child {
+      border-bottom: none;
+    }
+    .metric-key {
+      color: var(--c-grey-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+    }
+    .metric-val {
+      color: var(--c-white);
+      font-weight: 900;
+    }
+
+    /* Big Callout Box */
+    .callout-box {
+      border: 2px solid var(--c-black);
+      box-shadow: var(--shadow-brutal-sm);
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .callout-converged {
+      background: var(--c-orange);
+      color: var(--c-black);
+    }
+    .callout-converged .title {
+      font-weight: 900;
+      font-size: 0.92rem;
+      letter-spacing: 0.5px;
+    }
+    .callout-converged .meta {
+      font-weight: 800;
+      font-size: 0.75rem;
+      background: var(--c-black);
+      color: var(--c-orange);
+      padding: 2px 8px;
+    }
+
+    /* Task Table */
+    .task-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.74rem;
+      margin-top: 10px;
+    }
+    .task-table th {
+      background: var(--c-black);
+      color: var(--c-grey-muted);
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid var(--c-border);
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .task-table td {
+      padding: 6px 8px;
+      border: 1px solid var(--c-border);
+      background: var(--c-card);
+      font-weight: 700;
+    }
+    .task-table tr:hover td {
+      background: #252525;
+    }
+    .task-id {
+      color: var(--c-white);
+    }
+    .task-winner {
+      color: var(--c-orange);
+      font-weight: 900;
+    }
+    .priority-CRITICAL { color: var(--c-orange); font-weight: 900; }
+    .priority-HIGH { color: var(--c-white); font-weight: 800; }
+    .priority-NORMAL { color: var(--c-grey-light); }
+    .priority-LOW { color: var(--c-grey-muted); }
   </style>
 </head>
 <body>
 
+  <!-- Hazard Header Stripe -->
+  <div class="hazard-stripe"></div>
+
   <header>
     <div class="brand">
-      <h1>NRDAS Fleet Operations Dashboard</h1>
-      <span class="badge-sub">M2.5 Executive Layer</span>
+      <h1>NRDAS // AMR FLEET OPERATIONS</h1>
+      <span class="badge-sub">BRUTALIST CONSOLE</span>
     </div>
     <div class="header-stats">
-      <div class="stat-pill"><span class="stat-label">Sim Time:</span><span id="sim-time" class="stat-value">0.0s</span></div>
+      <div class="stat-pill"><span class="stat-label">SIM:</span><span id="sim-time" class="stat-value">0.0s</span></div>
       <div class="stat-pill"><span class="stat-label">RTF:</span><span id="rtf-val" class="stat-value">1.00x</span></div>
-      <div class="stat-pill"><span class="stat-label">Host CPU:</span><span id="cpu-val" class="stat-value">0.0%</span></div>
-      <div class="stat-pill"><span class="stat-label">Host RAM:</span><span id="ram-val" class="stat-value">0 MB</span></div>
+      <div class="stat-pill"><span class="stat-label">CPU:</span><span id="cpu-val" class="stat-value">0.0%</span></div>
+      <div class="stat-pill"><span class="stat-label">RAM:</span><span id="ram-val" class="stat-value">0 MB</span></div>
     </div>
   </header>
 
   <div class="grid">
-    <!-- Left Column: Fleet & Live Map -->
+    <!-- Left Column: Spatial Radar & Fleet Telemetry -->
     <div>
       <div class="card">
         <div class="card-title">
-          <span>Active AMR Fleet</span>
-          <span id="fleet-count-badge" class="badge-sub">0 Discovered</span>
+          <span>// 01. WAREHOUSE 2D RADAR (16M x 16M)</span>
+          <span class="tag">TOPOLOGY ACTIVE</span>
         </div>
-        <div id="robot-container" class="robot-grid">
-          <div style="color: var(--text-muted); padding: 12px;">Awaiting fleet telemetry from ROS 2...</div>
+        <div class="map-container">
+          <canvas id="warehouse-canvas" width="640" height="640"></canvas>
+        </div>
+        <div class="map-legend">
+          <div class="legend-item"><span class="leg-amr">● [R0..R4]</span> AMR Robot</div>
+          <div class="legend-item"><span class="leg-pickup">■ [P]</span> Pickup Bay</div>
+          <div class="legend-item"><span class="leg-dropoff">□ [D]</span> Dropoff Hub</div>
+          <div class="legend-item"><span class="leg-route">- - -</span> CBBA Assigned Route</div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">Warehouse 2D Operational Map (16m x 16m)</div>
-        <div class="map-container">
-          <canvas id="warehouse-canvas" width="600" height="600"></canvas>
+        <div class="card-title">
+          <span>// 02. ACTIVE AMR TELEMETRY MATRIX</span>
+          <span id="fleet-count-badge" class="badge-sub">0 AMRs</span>
+        </div>
+        <div id="robot-container" class="robot-grid">
+          <div style="color: var(--c-grey-muted); padding: 12px;">Awaiting fleet odometry...</div>
         </div>
       </div>
     </div>
 
-    <!-- Right Column: System Observability -->
+    <!-- Right Column: CBBA Consensus, Tasks, Diagnostics -->
     <div>
+      <!-- CBBA Decentralized Consensus (M4) -->
       <div class="card">
-        <div class="card-title">Task Engine & Dispatch (M3)</div>
-        <div class="metric-row"><span class="metric-key">Engine Status:</span><span class="metric-val" id="task-status">Awaiting /tasks/all</span></div>
-        <div class="metric-row"><span class="metric-key">Total Pool:</span><span class="metric-val" id="task-total">0</span></div>
-        <div class="metric-row"><span class="metric-key">Pending Tasks:</span><span class="metric-val" id="task-pending" style="color: var(--accent-cyan);">0</span></div>
-        <div class="metric-row"><span class="metric-key">Active Tasks:</span><span class="metric-val" id="task-active" style="color: var(--accent-orange);">0</span></div>
-        <div class="metric-row"><span class="metric-key">Completed Tasks:</span><span class="metric-val" id="task-completed" style="color: var(--accent-green);">0</span></div>
-        <div class="metric-row"><span class="metric-key">Throughput:</span><span class="metric-val" id="task-throughput">0 tasks/hr</span></div>
+        <div class="card-title">
+          <span>// 03. CBBA CONSENSUS ALLOCATOR (M4)</span>
+          <span class="tag">DECENTRALIZED</span>
+        </div>
+
+        <div id="cbba-callout" class="callout-box callout-converged">
+          <span class="title" id="cbba-status">CONVERGED // CONSENSUS REACHED</span>
+          <span class="meta" id="cbba-bids-badge">0 BIDS</span>
+        </div>
+
+        <div class="metric-row">
+          <span class="metric-key">Total Bids Exchanged:</span>
+          <span class="metric-val" id="cbba-bids">0</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Estimated Makespan:</span>
+          <span class="metric-val" id="perf-makespan" style="color: var(--c-orange);">0.0s</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Convergence Mode:</span>
+          <span class="metric-val" style="color: var(--c-white);">18-RULE GOSSIP CBBA</span>
+        </div>
+        <div class="metric-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+          <span class="metric-key">Allocated Bundles:</span>
+          <span class="metric-val" id="cbba-bundles" style="font-size: 0.74rem; color: var(--c-grey-light); word-break: break-all;">None</span>
+        </div>
       </div>
 
+      <!-- Task Lifecycle (M3) -->
       <div class="card">
-        <div class="card-title">CBBA Decentralized Allocation (M4)</div>
-        <div class="metric-row"><span class="metric-key">Consensus State:</span><span class="metric-val" id="cbba-status" style="color: var(--accent-cyan);">Awaiting Bids</span></div>
-        <div class="metric-row"><span class="metric-key">Bids Exchanged:</span><span class="metric-val" id="cbba-bids">0</span></div>
-        <div class="metric-row"><span class="metric-key">Allocated Bundles:</span><span class="metric-val" id="cbba-bundles" style="font-size: 11px; word-break: break-all;">None</span></div>
+        <div class="card-title">
+          <span>// 04. TASK LIFECYCLE & DISPATCH (M3)</span>
+          <span id="task-status-badge" class="tag">ONLINE</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Pool Status:</span>
+          <span class="metric-val" id="task-status" style="color: var(--c-orange);">M3 Lifecycle Active</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Allocation Progress:</span>
+          <span class="metric-val"><span id="task-active" style="color: var(--c-orange);">0</span> / <span id="task-total">0</span> Assigned</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Pending Tasks:</span>
+          <span class="metric-val" id="task-pending" style="color: var(--c-white);">0</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Completed Tasks:</span>
+          <span class="metric-val" id="task-completed" style="color: var(--c-grey-muted);">0</span>
+        </div>
+
+        <!-- Task Table -->
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>TASK ID</th>
+              <th>PRIORITY</th>
+              <th>PICKUP</th>
+              <th>DROPOFF</th>
+              <th>WINNER</th>
+            </tr>
+          </thead>
+          <tbody id="task-table-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--c-grey-muted);">Loading task registry...</td></tr>
+          </tbody>
+        </table>
       </div>
 
+      <!-- Diagnostics & Safety Interlocks -->
       <div class="card">
-        <div class="card-title">Network & Transport Health</div>
-        <div class="metric-row"><span class="metric-key">Middleware Layer:</span><span class="metric-val" id="net-mid">ROS 2 Jazzy</span></div>
-        <div class="metric-row"><span class="metric-key">Transport State:</span><span class="metric-val" id="net-state" style="color: var(--accent-green);">HEALTHY</span></div>
-        <div class="metric-row"><span class="metric-key">Discovered Nodes:</span><span class="metric-val" id="net-nodes">0</span></div>
-        <div class="metric-row"><span class="metric-key">Discovered Topics:</span><span class="metric-val" id="net-topics">0</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Performance & Optimization</div>
-        <div class="metric-row"><span class="metric-key">MAPF Latency:</span><span class="metric-pending">Pending M6 (PIBT/RHCR)</span></div>
-        <div class="metric-row"><span class="metric-key">Makespan Estimation:</span><span class="metric-val" id="perf-makespan" style="color: var(--accent-green);">0.0s</span></div>
-        <div class="metric-row"><span class="metric-key">Host CPU Load:</span><span class="metric-val" id="perf-cpu">0.0%</span></div>
-        <div class="metric-row"><span class="metric-key">Host RAM Usage:</span><span class="metric-val" id="perf-ram">0 MB</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Safety & Interlocks</div>
-        <div class="metric-row"><span class="metric-key">E-Stop Status:</span><span class="metric-val" id="safe-estop" style="color: var(--accent-green);">NORMAL</span></div>
-        <div class="metric-row"><span class="metric-key">Active Proximity Zone:</span><span class="metric-val" id="safe-zone" style="color: var(--accent-green);">CLEAR</span></div>
-        <div class="metric-row"><span class="metric-key">Deadlock Detection:</span><span class="metric-pending">Pending M8 Wait-For-Graph</span></div>
+        <div class="card-title">
+          <span>// 05. SAFETY & TRANSPORT TELEMETRY</span>
+          <span class="tag">INTERLOCKS</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Emergency Stop:</span>
+          <span class="metric-val" id="safe-estop" style="color: var(--c-white);">[ NORMAL // DISENGAGED ]</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Safety Proximity Zone:</span>
+          <span class="metric-val" id="safe-zone" style="color: var(--c-orange);">[ CLEAR // NO BREACH ]</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Transport State:</span>
+          <span class="metric-val" id="net-state" style="color: var(--c-white);">ROS 2 Jazzy (HEALTHY)</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-key">Discovered Nodes / Topics:</span>
+          <span class="metric-val"><span id="net-nodes">0</span> Nodes / <span id="net-topics">0</span> Topics</span>
+        </div>
       </div>
     </div>
   </div>
@@ -705,20 +952,21 @@ DASHBOARD_HTML = """<!DOCTYPE html>
       ctx.clearRect(0, 0, W, H);
 
       // Transform: Warehouse is 0..16m x 0..16m.
-      // Margin = 30px
-      const pad = 35;
+      const pad = 36;
       const mapW = W - 2 * pad;
       const mapH = H - 2 * pad;
       function toX(x) { return pad + (x / 16.0) * mapW; }
       function toY(y) { return H - pad - (y / 16.0) * mapH; }
 
-      // Outer Perimeter Wall
-      ctx.strokeStyle = '#4a5568';
-      ctx.lineWidth = 4;
+      // Outer Perimeter Wall (Heavy Brutalist White/Grey Outline)
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(pad, pad, mapW, mapH);
+      ctx.strokeStyle = '#333333';
+      ctx.lineWidth = 3;
       ctx.strokeRect(pad, pad, mapW, mapH);
 
-      // Floor grid lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      // Floor Grid Lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
       ctx.lineWidth = 1;
       for (let i = 1; i < 16; i++) {
         ctx.beginPath();
@@ -731,43 +979,67 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         ctx.stroke();
       }
 
-      // Warehouse Aisle Lanes (Yellow)
-      ctx.strokeStyle = 'rgba(241, 196, 15, 0.4)';
-      ctx.lineWidth = 2;
+      // Warehouse Aisle Lanes (Industrial Orange Dashed Lines)
+      ctx.strokeStyle = 'rgba(255, 85, 0, 0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 6]);
       [1.0, 3.0, 6.8, 9.2, 13.0, 15.0].forEach(lx => {
         ctx.beginPath();
         ctx.moveTo(toX(lx), toY(1.0));
         ctx.lineTo(toX(lx), toY(15.0));
         ctx.stroke();
       });
+      ctx.setLineDash([]);
 
-      // Operational Zones: Pickups (Cyan)
-      ctx.fillStyle = 'rgba(41, 128, 185, 0.35)';
-      ctx.strokeStyle = '#3498db';
+      // Storage Racks (Deep Charcoal with stark borders)
+      ctx.fillStyle = '#1c1c1c';
+      ctx.strokeStyle = '#444444';
       ctx.lineWidth = 1.5;
-      [[2, 2], [2, 13], [13, 2], [13, 13]].forEach(p => {
-        const sz = (1.6 / 16.0) * mapW;
-        ctx.fillRect(toX(p[0]) - sz/2, toY(p[1]) - sz/2, sz, sz);
-        ctx.strokeRect(toX(p[0]) - sz/2, toY(p[1]) - sz/2, sz, sz);
-      });
-
-      // Dropoff Hub (Green)
-      ctx.fillStyle = 'rgba(39, 174, 96, 0.35)';
-      ctx.strokeStyle = '#2ecc71';
-      const hubSz = (2.6 / 16.0) * mapW;
-      ctx.fillRect(toX(8) - hubSz/2, toY(8) - hubSz/2, hubSz, hubSz);
-      ctx.strokeRect(toX(8) - hubSz/2, toY(8) - hubSz/2, hubSz, hubSz);
-
-      // Storage Racks (Deep Blue)
-      ctx.fillStyle = '#2c3e50';
-      ctx.strokeStyle = '#e67e22';
-      ctx.lineWidth = 2;
       [[4.5, 5.5], [4.5, 10.5], [11.5, 5.5], [11.5, 10.5]].forEach(r => {
         const rw = (1.2 / 16.0) * mapW;
         const rh = (3.0 / 16.0) * mapH;
         ctx.fillRect(toX(r[0]) - rw/2, toY(r[1]) - rh/2, rw, rh);
         ctx.strokeRect(toX(r[0]) - rw/2, toY(r[1]) - rh/2, rw, rh);
+
+        // Rack cross hatching
+        ctx.strokeStyle = '#2d2d2d';
+        ctx.beginPath();
+        ctx.moveTo(toX(r[0]) - rw/2, toY(r[1]) - rh/2);
+        ctx.lineTo(toX(r[0]) + rw/2, toY(r[1]) + rh/2);
+        ctx.moveTo(toX(r[0]) + rw/2, toY(r[1]) - rh/2);
+        ctx.lineTo(toX(r[0]) - rw/2, toY(r[1]) + rh/2);
+        ctx.stroke();
+        ctx.strokeStyle = '#444444';
       });
+
+      // Operational Zones: Pickups (Industrial Orange Boxes)
+      ctx.fillStyle = 'rgba(255, 85, 0, 0.15)';
+      ctx.strokeStyle = '#ff5500';
+      ctx.lineWidth = 2;
+      [[2, 2], [2, 13], [13, 2], [13, 13]].forEach(p => {
+        const sz = (1.6 / 16.0) * mapW;
+        ctx.fillRect(toX(p[0]) - sz/2, toY(p[1]) - sz/2, sz, sz);
+        ctx.strokeRect(toX(p[0]) - sz/2, toY(p[1]) - sz/2, sz, sz);
+
+        ctx.fillStyle = '#ff5500';
+        ctx.font = 'bold 9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('P', toX(p[0]), toY(p[1]) + 3);
+        ctx.fillStyle = 'rgba(255, 85, 0, 0.15)';
+      });
+
+      // Dropoff Hub (Solid White/Grey Hub)
+      ctx.fillStyle = '#1c1c1c';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      const hubSz = (2.6 / 16.0) * mapW;
+      ctx.fillRect(toX(8) - hubSz/2, toY(8) - hubSz/2, hubSz, hubSz);
+      ctx.strokeRect(toX(8) - hubSz/2, toY(8) - hubSz/2, hubSz, hubSz);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('DROPOFF', toX(8), toY(8) + 4);
 
       // Draw Tasks on Map
       if (tasks && tasks.tasks && tasks.tasks.length > 0) {
@@ -777,25 +1049,25 @@ DASHBOARD_HTML = """<!DOCTYPE html>
           const dx = toX(t.dropoff[0]);
           const dy = toY(t.dropoff[1]);
 
-          // Pickup marker (cyan dot)
+          // Pickup marker (Orange dot)
           ctx.beginPath();
-          ctx.arc(px, py, 4.5, 0, 2 * Math.PI);
-          ctx.fillStyle = '#00e5ff';
+          ctx.arc(px, py, 4, 0, 2 * Math.PI);
+          ctx.fillStyle = '#ff5500';
           ctx.fill();
-          ctx.strokeStyle = '#ffffff';
+          ctx.strokeStyle = '#000000';
           ctx.lineWidth = 1;
           ctx.stroke();
 
-          // Dropoff marker (green square)
-          ctx.fillStyle = '#00e676';
-          ctx.fillRect(dx - 4, dy - 4, 8, 8);
-          ctx.strokeStyle = '#ffffff';
+          // Dropoff marker (White square)
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(dx - 3.5, dy - 3.5, 7, 7);
+          ctx.strokeStyle = '#000000';
           ctx.lineWidth = 1;
-          ctx.strokeRect(dx - 4, dy - 4, 8, 8);
+          ctx.strokeRect(dx - 3.5, dy - 3.5, 7, 7);
         });
       }
 
-      // Draw CBBA Allocation Route Lines (dashed lines)
+      // Draw CBBA Allocation Route Lines (Bold Dashed Orange Lines)
       if (cbba && cbba.bundles && robots) {
         const botMap = {};
         robots.forEach(b => { botMap[b.robot_id] = b; });
@@ -804,8 +1076,8 @@ DASHBOARD_HTML = """<!DOCTYPE html>
           tasks.tasks.forEach(t => { taskMap[t.id] = t; });
         }
 
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 4]);
 
         Object.entries(cbba.bundles).forEach(([rId, bundle]) => {
           const bot = botMap[rId];
@@ -817,7 +1089,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
               if (t) {
                 const targetX = toX(t.pickup[0]);
                 const targetY = toY(t.pickup[1]);
-                ctx.strokeStyle = cbba.is_converged ? 'rgba(0, 230, 118, 0.7)' : 'rgba(255, 152, 0, 0.7)';
+                ctx.strokeStyle = '#ff5500';
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
                 ctx.lineTo(targetX, targetY);
@@ -831,32 +1103,38 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         ctx.setLineDash([]);
       }
 
-      // Draw Robots
+      // Draw Robots (Heavy Brutalist Industrial Tokens)
       if (robots && robots.length > 0) {
         robots.forEach(bot => {
           const rx = toX(bot.x);
           const ry = toY(bot.y);
-          const rRadius = 11;
+          const rRadius = 12;
 
-          // Body
+          // Shadow
+          ctx.beginPath();
+          ctx.arc(rx + 2, ry + 2, rRadius, 0, 2 * Math.PI);
+          ctx.fillStyle = '#000000';
+          ctx.fill();
+
+          // Body (Solid Industrial Orange)
           ctx.beginPath();
           ctx.arc(rx, ry, rRadius, 0, 2 * Math.PI);
-          ctx.fillStyle = bot.status === 'ACTIVE' ? '#e65c00' : '#4a5568';
+          ctx.fillStyle = '#ff5500';
           ctx.fill();
-          ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-
-          // Orientation Heading Line
-          const yaw = (bot.yaw_deg * Math.PI) / 180.0;
-          ctx.beginPath();
-          ctx.moveTo(rx, ry);
-          ctx.lineTo(rx + Math.cos(yaw) * 16, ry - Math.sin(yaw) * 16);
-          ctx.strokeStyle = '#00e676';
+          ctx.strokeStyle = '#000000';
           ctx.lineWidth = 2.5;
           ctx.stroke();
 
-          // Label
+          // Orientation Heading Needle (Bright White line)
+          const yaw = (bot.yaw_deg * Math.PI) / 180.0;
+          ctx.beginPath();
+          ctx.moveTo(rx, ry);
+          ctx.lineTo(rx + Math.cos(yaw) * 17, ry - Math.sin(yaw) * 17);
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // Center Label (R0..R4 in bold white)
           ctx.fillStyle = '#ffffff';
           ctx.font = 'bold 9px monospace';
           ctx.textAlign = 'center';
@@ -871,65 +1149,88 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         if (!res.ok) return;
         const data = await res.json();
 
-        // Header
+        // Header Metrics
         document.getElementById('sim-time').textContent = data.simulation.sim_time_sec + 's';
         document.getElementById('rtf-val').textContent = data.simulation.real_time_factor + 'x';
         document.getElementById('cpu-val').textContent = data.performance.host_cpu_percent + '%';
         document.getElementById('ram-val').textContent = data.performance.host_ram_used_mb + ' MB';
 
-        // Fleet
+        // Fleet Telemetry Matrix
         const robots = data.fleet.robots || [];
-        document.getElementById('fleet-count-badge').textContent = robots.length + ' Discovered';
+        document.getElementById('fleet-count-badge').textContent = robots.length + ' AMRs ONLINE';
 
         if (robots.length > 0) {
           const container = document.getElementById('robot-container');
           container.innerHTML = robots.map(r => `
             <div class="robot-card">
               <div class="robot-header">
-                <span class="robot-name">${r.robot_id}</span>
-                <span class="status-badge status-${r.status}">${r.status}</span>
+                <span class="robot-name">${r.robot_id.toUpperCase()}</span>
+                <span class="status-badge status-${r.status}">[ ${r.status} ]</span>
               </div>
-              <div class="robot-kv"><span class="k">Pose:</span><span class="v">(${r.x}, ${r.y})</span></div>
-              <div class="robot-kv"><span class="k">Heading:</span><span class="v">${r.yaw_deg}&deg;</span></div>
-              <div class="robot-kv"><span class="k">Speed:</span><span class="v">${r.linear_speed} m/s</span></div>
-              <div class="robot-kv"><span class="k">Dist Odom:</span><span class="v">${r.distance_m} m</span></div>
-              <div class="robot-kv"><span class="k">LiDAR:</span><span class="v">${r.lidar_hz} Hz</span></div>
+              <div class="robot-kv"><span class="k">POSE:</span><span class="v">(${r.x}, ${r.y})</span></div>
+              <div class="robot-kv"><span class="k">HEADING:</span><span class="v">${r.yaw_deg}&deg;</span></div>
+              <div class="robot-kv"><span class="k">SPEED:</span><span class="v">${r.linear_speed} m/s</span></div>
+              <div class="robot-kv"><span class="k">ODOM:</span><span class="v">${r.distance_m} m</span></div>
+              <div class="robot-kv"><span class="k">LIDAR:</span><span class="v">${r.lidar_hz} Hz</span></div>
             </div>
           `).join('');
         }
 
-        // Map
+        // 2D Warehouse Map
         drawWarehouseMap(robots, data.tasks, data.cbba);
 
-        // Tasks (M3)
+        // CBBA Consensus (M4)
+        if (data.cbba) {
+          const cb = data.cbba;
+          const statusEl = document.getElementById('cbba-status');
+          const calloutEl = document.getElementById('cbba-callout');
+          const bidsBadge = document.getElementById('cbba-bids-badge');
+
+          if (cb.is_converged) {
+            statusEl.textContent = 'CONVERGED // CONSENSUS REACHED';
+            calloutEl.className = 'callout-box callout-converged';
+          } else {
+            statusEl.textContent = 'NEGOTIATING // BIDS EXCHANGING';
+            calloutEl.className = 'callout-box';
+            calloutEl.style.background = '#333333';
+            calloutEl.style.color = '#ffffff';
+          }
+
+          bidsBadge.textContent = (cb.bids_count || 0) + ' BIDS';
+          document.getElementById('cbba-bids').textContent = cb.bids_count || 0;
+          document.getElementById('perf-makespan').textContent = (cb.makespan_sec || 0.0) + 's';
+
+          const bundlesStr = Object.entries(cb.bundles || {})
+            .map(([r, b]) => `[${r.toUpperCase()}: ${b.join(', ')}]`)
+            .join(' ') || 'None';
+          document.getElementById('cbba-bundles').textContent = bundlesStr;
+        }
+
+        // Task Lifecycle (M3)
         if (data.tasks) {
           const ts = data.tasks;
-          const statusEl = document.getElementById('task-status');
-          statusEl.textContent = ts.status;
-          if (ts.status.includes('ONLINE')) {
-            statusEl.style.color = 'var(--accent-green)';
-          } else {
-            statusEl.style.color = 'var(--text-muted)';
-          }
+          document.getElementById('task-status').textContent = ts.status;
           document.getElementById('task-total').textContent = ts.total || 0;
           document.getElementById('task-pending').textContent = ts.pending || 0;
           document.getElementById('task-active').textContent = ts.active || 0;
           document.getElementById('task-completed').textContent = ts.completed || 0;
-          document.getElementById('task-throughput').textContent = data.performance.fleet_throughput || '0 tasks/hr';
-        }
 
-        // CBBA (M4)
-        if (data.cbba) {
-          const cb = data.cbba;
-          const stEl = document.getElementById('cbba-status');
-          stEl.textContent = cb.status || 'Awaiting Bids';
-          stEl.style.color = cb.is_converged ? 'var(--accent-green)' : (cb.bids_count > 0 ? 'var(--accent-orange)' : 'var(--text-muted)');
-          document.getElementById('cbba-bids').textContent = cb.bids_count || 0;
-          document.getElementById('perf-makespan').textContent = (cb.makespan_sec || 0.0) + 's';
-          const bundlesStr = Object.entries(cb.bundles || {})
-            .map(([r, b]) => `${r}: [${b.join(', ')}]`)
-            .join(' | ') || 'None';
-          document.getElementById('cbba-bundles').textContent = bundlesStr;
+          // Populate Task Table
+          const tbody = document.getElementById('task-table-body');
+          if (ts.tasks && ts.tasks.length > 0) {
+            tbody.innerHTML = ts.tasks.map(t => {
+              const pStr = t.priority === 3 ? 'CRITICAL' : (t.priority === 2 ? 'NORMAL' : 'LOW');
+              return `
+                <tr>
+                  <td class="task-id">${t.id}</td>
+                  <td class="priority-${pStr}">${pStr}</td>
+                  <td>(${t.pickup[0]}, ${t.pickup[1]})</td>
+                  <td>(${t.dropoff[0]}, ${t.dropoff[1]})</td>
+                  <td class="task-winner">${(t.robot || 'UNASSIGNED').toUpperCase()}</td>
+                </tr>
+              `;
+            }).join('');
+          }
         }
 
         // Network
@@ -937,17 +1238,8 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         document.getElementById('net-topics').textContent = data.network.ros2_topics_count;
         document.getElementById('net-state').textContent = data.network.transport_state;
 
-        // Performance
-        document.getElementById('perf-cpu').textContent = data.performance.host_cpu_percent + '%';
-        document.getElementById('perf-ram').textContent = data.performance.host_ram_used_mb + ' MB (' + data.performance.host_ram_percent + '%)';
-
         // Safety
-        document.getElementById('safe-zone').textContent = data.safety.active_safety_zone;
-        if (data.safety.active_safety_zone !== 'CLEAR') {
-          document.getElementById('safe-zone').style.color = 'var(--accent-red)';
-        } else {
-          document.getElementById('safe-zone').style.color = 'var(--accent-green)';
-        }
+        document.getElementById('safe-zone').textContent = '[ ' + data.safety.active_safety_zone + ' ]';
       } catch (err) {
         console.error('Telemetry fetch error:', err);
       }
@@ -957,8 +1249,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     pollState();
   </script>
 </body>
-</html>
-"""
+</html>"""
 
 
 class DashboardHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
