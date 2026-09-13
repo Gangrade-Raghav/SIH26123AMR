@@ -1,0 +1,527 @@
+{
+  "run_1": {
+    "run_id": "RUN_GAZEBO_LIVE_01",
+    "success": true,
+    "gazebo_process_verified": true,
+    "decentralized_nodes_verified": true,
+    "initial_positions": {
+      "amr_1": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_2": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_3": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_0": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_4": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    "task_set": {
+      "task_med_0001": {
+        "task_id": "task_med_0001",
+        "priority": 2,
+        "pickup": [
+          2.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0002": {
+        "task_id": "task_med_0002",
+        "priority": 2,
+        "pickup": [
+          2.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0003": {
+        "task_id": "task_med_0003",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0004": {
+        "task_id": "task_med_0004",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          2.0
+        ],
+        "dropoff": [
+          7.0,
+          8.0
+        ]
+      },
+      "task_med_0005": {
+        "task_id": "task_med_0005",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          8.0
+        ]
+      },
+      "task_med_0006": {
+        "task_id": "task_med_0006",
+        "priority": 3,
+        "pickup": [
+          2.0,
+          2.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0007": {
+        "task_id": "task_med_0007",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          8.0
+        ]
+      },
+      "task_med_0008": {
+        "task_id": "task_med_0008",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0009": {
+        "task_id": "task_med_0009",
+        "priority": 3,
+        "pickup": [
+          2.0,
+          2.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0010": {
+        "task_id": "task_med_0010",
+        "priority": 2,
+        "pickup": [
+          2.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0011": {
+        "task_id": "task_med_0011",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0012": {
+        "task_id": "task_med_0012",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          2.0
+        ],
+        "dropoff": [
+          7.0,
+          8.0
+        ]
+      },
+      "task_med_0013": {
+        "task_id": "task_med_0013",
+        "priority": 1,
+        "pickup": [
+          2.0,
+          2.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0014": {
+        "task_id": "task_med_0014",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0015": {
+        "task_id": "task_med_0015",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          8.0
+        ]
+      }
+    },
+    "final_bundles": {
+      "amr_0": [
+        "task_med_0006",
+        "task_med_0004",
+        "task_med_0010"
+      ],
+      "amr_3": [
+        "task_med_0002",
+        "task_med_0008",
+        "task_med_0013"
+      ],
+      "amr_1": [
+        "task_med_0015",
+        "task_med_0005",
+        "task_med_0011"
+      ],
+      "amr_2": [
+        "task_med_0001",
+        "task_med_0007",
+        "task_med_0012"
+      ],
+      "amr_4": [
+        "task_med_0003",
+        "task_med_0009",
+        "task_med_0014"
+      ]
+    },
+    "task_winners": {
+      "task_med_0006": "amr_0",
+      "task_med_0004": "amr_0",
+      "task_med_0010": "amr_0",
+      "task_med_0002": "amr_3",
+      "task_med_0008": "amr_3",
+      "task_med_0013": "amr_3",
+      "task_med_0015": "amr_1",
+      "task_med_0005": "amr_1",
+      "task_med_0011": "amr_1",
+      "task_med_0001": "amr_2",
+      "task_med_0007": "amr_2",
+      "task_med_0012": "amr_2",
+      "task_med_0003": "amr_4",
+      "task_med_0009": "amr_4",
+      "task_med_0014": "amr_4"
+    },
+    "total_tasks": 15,
+    "total_allocated": 15,
+    "duplicate_winners": [],
+    "unassigned_tasks": [],
+    "bids_exchanged": 85,
+    "consensus_time_sec": 5.14,
+    "total_allocation_time_sec": 5.2
+  },
+  "run_2": {
+    "run_id": "RUN_GAZEBO_LIVE_02",
+    "success": true,
+    "gazebo_process_verified": true,
+    "decentralized_nodes_verified": true,
+    "initial_positions": {
+      "amr_0": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_1": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_4": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_2": {
+        "x": -0.0,
+        "y": -0.0
+      },
+      "amr_3": {
+        "x": -0.0,
+        "y": -0.0
+      }
+    },
+    "task_set": {
+      "task_med_0001": {
+        "task_id": "task_med_0001",
+        "priority": 2,
+        "pickup": [
+          2.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0002": {
+        "task_id": "task_med_0002",
+        "priority": 2,
+        "pickup": [
+          2.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0003": {
+        "task_id": "task_med_0003",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0004": {
+        "task_id": "task_med_0004",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          2.0
+        ],
+        "dropoff": [
+          7.0,
+          8.0
+        ]
+      },
+      "task_med_0005": {
+        "task_id": "task_med_0005",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          8.0
+        ]
+      },
+      "task_med_0006": {
+        "task_id": "task_med_0006",
+        "priority": 3,
+        "pickup": [
+          2.0,
+          2.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0007": {
+        "task_id": "task_med_0007",
+        "priority": 2,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          8.0
+        ]
+      },
+      "task_med_0008": {
+        "task_id": "task_med_0008",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0009": {
+        "task_id": "task_med_0009",
+        "priority": 3,
+        "pickup": [
+          2.0,
+          2.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0010": {
+        "task_id": "task_med_0010",
+        "priority": 2,
+        "pickup": [
+          2.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0011": {
+        "task_id": "task_med_0011",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          8.0,
+          7.0
+        ]
+      },
+      "task_med_0012": {
+        "task_id": "task_med_0012",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          2.0
+        ],
+        "dropoff": [
+          7.0,
+          8.0
+        ]
+      },
+      "task_med_0013": {
+        "task_id": "task_med_0013",
+        "priority": 1,
+        "pickup": [
+          2.0,
+          2.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0014": {
+        "task_id": "task_med_0014",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          7.0
+        ]
+      },
+      "task_med_0015": {
+        "task_id": "task_med_0015",
+        "priority": 3,
+        "pickup": [
+          13.0,
+          13.0
+        ],
+        "dropoff": [
+          7.0,
+          8.0
+        ]
+      }
+    },
+    "final_bundles": {
+      "amr_1": [
+        "task_med_0015",
+        "task_med_0005",
+        "task_med_0011"
+      ],
+      "amr_2": [
+        "task_med_0001",
+        "task_med_0007",
+        "task_med_0012"
+      ],
+      "amr_4": [
+        "task_med_0003",
+        "task_med_0009",
+        "task_med_0014"
+      ],
+      "amr_3": [
+        "task_med_0002",
+        "task_med_0008",
+        "task_med_0013"
+      ],
+      "amr_0": [
+        "task_med_0006",
+        "task_med_0004",
+        "task_med_0010"
+      ]
+    },
+    "task_winners": {
+      "task_med_0015": "amr_1",
+      "task_med_0005": "amr_1",
+      "task_med_0011": "amr_1",
+      "task_med_0001": "amr_2",
+      "task_med_0007": "amr_2",
+      "task_med_0012": "amr_2",
+      "task_med_0003": "amr_4",
+      "task_med_0009": "amr_4",
+      "task_med_0014": "amr_4",
+      "task_med_0002": "amr_3",
+      "task_med_0008": "amr_3",
+      "task_med_0013": "amr_3",
+      "task_med_0006": "amr_0",
+      "task_med_0004": "amr_0",
+      "task_med_0010": "amr_0"
+    },
+    "total_tasks": 15,
+    "total_allocated": 15,
+    "duplicate_winners": [],
+    "unassigned_tasks": [],
+    "bids_exchanged": 96,
+    "consensus_time_sec": 5.51,
+    "total_allocation_time_sec": 5.68
+  },
+  "is_identical_bundles": true,
+  "is_identical_winners": true,
+  "dashboard_verified": true
+}
