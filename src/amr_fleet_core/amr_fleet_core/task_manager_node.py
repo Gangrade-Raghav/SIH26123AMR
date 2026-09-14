@@ -77,12 +77,27 @@ class TaskManagerNode(Node):
             self._handle_status_update,
             10,
         )
+        self.sub_mission_start = self.create_subscription(
+            TaskEventMsg,
+            '/tasks/start_mission',
+            self._handle_mission_start,
+            10,
+        )
+
+        self.mission_start_time: Optional[float] = None
+        self.current_sim_time: float = 0.0
 
         # Periodic publication timer
         timer_period = 1.0 / max(0.1, pub_rate)
         self.timer = self.create_timer(timer_period, self._publish_task_lists)
 
         self.get_logger().info('Task Manager Node initialized.')
+
+    def _handle_mission_start(self, msg: Optional[TaskEventMsg] = None) -> None:
+        """Anchor mission start time to synchronize dynamic task release with benchmark clock."""
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        self.mission_start_time = now_sec
+        self.get_logger().info(f'Mission clock anchored at t={now_sec:.2f}s')
 
     def task_to_msg(self, task: Task) -> TaskDefinition:
         """Convert a domain Task object to a ROS 2 TaskDefinition msg."""
@@ -122,6 +137,34 @@ class TaskManagerNode(Node):
 
     def _publish_task_lists(self) -> None:
         now_msg = self.get_clock().now().to_msg()
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+
+        if self.mission_start_time is None:
+            self.mission_start_time = now_sec
+
+        elapsed_sec = max(0.0, now_sec - self.mission_start_time)
+        self.current_sim_time = elapsed_sec
+
+        # Check and release staged tasks whose release time has arrived
+        newly_released = []
+        for task in self.tasks.values():
+            if task.state == TaskLifecycleState.STAGED and elapsed_sec >= task.release_time_sec:
+                task.transition_to(
+                    TaskLifecycleState.PENDING,
+                    timestamp=now_sec,
+                    details=(
+                        f'Deterministic dynamic release at t={elapsed_sec:.1f}s '
+                        f'(scheduled: {task.release_time_sec:.1f}s)'
+                    ),
+                )
+                self.pub_events.publish(self.event_to_msg(task.events[-1], task.task_id))
+                newly_released.append(task.task_id)
+
+        if newly_released:
+            self.get_logger().info(
+                f'Dynamically released {len(newly_released)} tasks at t={elapsed_sec:.1f}s: '
+                f'{newly_released}'
+            )
 
         # All tasks
         all_msg = TaskList()
@@ -140,6 +183,10 @@ class TaskManagerNode(Node):
 
     def _handle_status_update(self, msg: TaskEventMsg) -> None:
         """Handle incoming status update transition request."""
+        if msg.event_type == 'MISSION_START' or msg.new_state == 'MISSION_START':
+            self._handle_mission_start()
+            return
+
         task_id = msg.task_id
         if task_id not in self.tasks:
             self.get_logger().warn(f"Received status update for unknown task '{task_id}'")
@@ -149,6 +196,41 @@ class TaskManagerNode(Node):
         try:
             target_state = TaskLifecycleState.from_str(msg.new_state)
             now_sec = self.get_clock().now().nanoseconds * 1e-9
+
+            if task.state == target_state:
+                self.get_logger().debug(
+                    f"Task '{task_id}' already in state {target_state.value}, ignoring."
+                )
+                return
+
+            # Robust handling of asynchronous startup races:
+            # 1. If AMR reaches pickup before CBBA commit, transition:
+            #    PENDING -> ASSIGNED -> IN_PROGRESS
+            if (
+                task.state == TaskLifecycleState.PENDING
+                and target_state == TaskLifecycleState.IN_PROGRESS
+            ):
+                task.transition_to(
+                    TaskLifecycleState.ASSIGNED,
+                    timestamp=now_sec,
+                    robot_id=msg.robot_id or None,
+                    details='Auto-assigned upon start',
+                )
+                self.pub_events.publish(self.event_to_msg(task.events[-1], task_id))
+
+            # 2. If AMR arrives at dropoff, ensure transition ASSIGNED -> IN_PROGRESS -> COMPLETED
+            elif (
+                task.state == TaskLifecycleState.ASSIGNED
+                and target_state == TaskLifecycleState.COMPLETED
+            ):
+                task.transition_to(
+                    TaskLifecycleState.IN_PROGRESS,
+                    timestamp=now_sec,
+                    robot_id=msg.robot_id or None,
+                    details='Auto-progressed before dropoff completion',
+                )
+                self.pub_events.publish(self.event_to_msg(task.events[-1], task_id))
+
             task.transition_to(
                 target_state,
                 timestamp=now_sec,

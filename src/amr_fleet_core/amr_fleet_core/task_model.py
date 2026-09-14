@@ -29,6 +29,7 @@ class TaskPriority(IntEnum):
 class TaskLifecycleState(Enum):
     """Discrete lifecycle states for AMR fleet tasks."""
 
+    STAGED = 'STAGED'
     PENDING = 'PENDING'
     ASSIGNED = 'ASSIGNED'
     IN_PROGRESS = 'IN_PROGRESS'
@@ -90,6 +91,10 @@ class Task:
     """Formal domain model for a single pickup-and-delivery logistics task."""
 
     VALID_TRANSITIONS: Dict[TaskLifecycleState, Set[TaskLifecycleState]] = {
+        TaskLifecycleState.STAGED: {
+            TaskLifecycleState.PENDING,
+            TaskLifecycleState.CANCELLED,
+        },
         TaskLifecycleState.PENDING: {
             TaskLifecycleState.ASSIGNED,
             TaskLifecycleState.CANCELLED,
@@ -119,6 +124,7 @@ class Task:
         created_at: Optional[float] = None,
         deadline: Optional[float] = None,
         metadata: Optional[Dict[str, Any]] = None,
+        release_time_sec: float = 0.0,
     ) -> None:
         self.task_id = task_id
         self.pickup = (float(pickup[0]), float(pickup[1]))
@@ -128,10 +134,21 @@ class Task:
         else:
             self.priority = TaskPriority.from_str(str(priority))
         self.created_at = created_at if created_at is not None else time.time()
+        self.release_time_sec = float(release_time_sec)
         self.deadline = float(deadline) if deadline is not None else None
         self.metadata = metadata if metadata is not None else {}
 
-        self._state: TaskLifecycleState = TaskLifecycleState.PENDING
+        if self.release_time_sec > 0.0:
+            self._state: TaskLifecycleState = TaskLifecycleState.STAGED
+            init_event = 'STAGED'
+            init_state = TaskLifecycleState.STAGED
+            init_details = f'Task staged until release at t={self.release_time_sec:.1f}s'
+        else:
+            self._state = TaskLifecycleState.PENDING
+            init_event = 'CREATED'
+            init_state = TaskLifecycleState.PENDING
+            init_details = 'Task initialized'
+
         self.assigned_robot_id: Optional[str] = None
         self.assigned_at: Optional[float] = None
         self.started_at: Optional[float] = None
@@ -142,10 +159,10 @@ class Task:
         self._events: List[TaskEvent] = [
             TaskEvent(
                 timestamp=self.created_at,
-                event_type='CREATED',
+                event_type=init_event,
                 from_state=None,
-                to_state=TaskLifecycleState.PENDING,
-                details='Task initialized',
+                to_state=init_state,
+                details=init_details,
             )
         ]
 
@@ -199,6 +216,8 @@ class Task:
             # Unassigned / preempted
             self.assigned_robot_id = None
             event_type = 'UNASSIGNED'
+        elif new_state == TaskLifecycleState.PENDING and old_state == TaskLifecycleState.STAGED:
+            event_type = 'RELEASED'
         elif new_state == TaskLifecycleState.IN_PROGRESS:
             self.started_at = now
             if robot_id:
@@ -273,6 +292,7 @@ class Task:
             'priority_val': int(self.priority),
             'status': self._state.value,
             'created_at': self.created_at,
+            'release_time_sec': self.release_time_sec,
             'deadline': self.deadline,
             'assigned_robot_id': self.assigned_robot_id,
             'assigned_at': self.assigned_at,
@@ -299,6 +319,7 @@ class Task:
             created_at=data.get('created_at'),
             deadline=data.get('deadline'),
             metadata=data.get('metadata', {}),
+            release_time_sec=float(data.get('release_time_sec', 0.0)),
         )
         status_str = data.get('status')
         if status_str and status_str != TaskLifecycleState.PENDING.value:

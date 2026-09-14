@@ -1,0 +1,76 @@
+{
+  "fleet_size": 5,
+  "scenarios_evaluated": 5,
+  "scenarios_passed": 5,
+  "global_min_observed_distance_m": 1.708,
+  "collision_contact_events": 0,
+  "safety_brake_interventions": 1016,
+  "total_conflicts_resolved": 4,
+  "deadlocks_recovered": 1,
+  "scenarios": {
+    "Scenario_A": {
+      "name": "No-Conflict Parallel Motion",
+      "participants": [
+        "amr_0",
+        "amr_1"
+      ],
+      "conflicts_detected": 0,
+      "min_distance_m": 2.455,
+      "outcome": "PASS - Parallel movement maintained without conflict"
+    },
+    "Scenario_B": {
+      "name": "Vertex Conflict Resolution",
+      "participants": [
+        "amr_0",
+        "amr_2"
+      ],
+      "conflict_type": "VERTEX",
+      "intersection_cell": [
+        5,
+        5
+      ],
+      "priority_winner": "amr_0",
+      "yielding_robot": "amr_2",
+      "min_distance_m": 3.148,
+      "outcome": "PASS - Priority arbitration allowed amr_0 to pass while amr_2 yielded"
+    },
+    "Scenario_C": {
+      "name": "Edge-Swap Prevention",
+      "participants": [
+        "amr_1",
+        "amr_3"
+      ],
+      "conflict_type": "EDGE_SWAP",
+      "swap_rejected": true,
+      "min_distance_m": 5.916,
+      "outcome": "PASS - Edge swap rejected; head-on collision completely prevented"
+    },
+    "Scenario_D": {
+      "name": "Temporary Wait Without Deadlock",
+      "participants": [
+        "amr_3",
+        "amr_4"
+      ],
+      "wait_duration_sec": 0.8,
+      "false_positive_deadlocks": 0,
+      "min_distance_m": 6.283,
+      "outcome": "PASS - Transient wait cleared within threshold without false-positive deadlock"
+    },
+    "Scenario_E": {
+      "name": "Deadlock Cycle & Deterministic Recovery",
+      "participants": [
+        "amr_0",
+        "amr_1"
+      ],
+      "cycle": [
+        "amr_0",
+        "amr_1"
+      ],
+      "recovery_victim": "amr_1",
+      "recovery_action": "LATERAL_SIDESTEP",
+      "recovery_success": true,
+      "min_distance_m": 1.708,
+      "outcome": "PASS - Deadlock detected by WFG; lateral sidestep successfully recovered corridor"
+    }
+  }
+}

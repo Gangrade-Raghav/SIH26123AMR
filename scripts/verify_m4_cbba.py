@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""M4 Decentralized CBBA Task Allocation Verification Script.
+"""
+M4 Decentralized CBBA Task Allocation Verification Script.
 
 Empirically validates:
 1. Algorithmic correctness: marginal utility, priority/distance weighting,

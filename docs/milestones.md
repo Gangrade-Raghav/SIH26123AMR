@@ -36,54 +36,49 @@
 - communication health metrics
 - reconnection test
 
-## M6 — PIBT
-- graph representation
-- planner
-- deterministic tests
-- large-scale simulator
+## M6 — Multi-Agent Coordination & Deadlock Recovery [APPROVED]
+- Rolling-Horizon Conflict Resolution (RHCR)
+- Space-Time Reservation Tables
+- Priority Inheritance Backtracking (PIBT) local coordination
+- Wait-For-Graph (WFG) cycle detection & deterministic recovery
+- Decoupled 10 Hz reactive LiDAR safety controller
 
-## M7 — RHCR
-- rolling horizon
-- integration with task lifecycle
-- RHCR vs PIBT benchmark
+## M7 — Communication Resilience & Fault Injection [APPROVED]
+- Communication impairment model (packet loss, latency, jitter, partitions)
+- Stale-state management & timeout-based eviction
+- Path authority protocol under network partitions
+- Degradation sweeps in Gazebo Harmonic
 
-## M8 — WFG
-- dependency graph
-- cycle detection
-- victim/recovery policy
-- deliberate deadlock tests
+## M8A — Experimental Benchmark & Workload Scaling [APPROVED]
+- Deterministic workload generation (15, 30, 50, 100 tasks)
+- Bounded-horizon benchmark protocol (60s, 120s, 200s, 360s)
+- Host resource instrumentation (CPU, RAM) & publication-grade plotting
+- Task accounting invariants and safety verification
 
-## M9 — Fault injection
-- loss
-- jitter
-- outage
-- reproducible sweeps
+## M8B — Adaptive Compute & Degradation-Aware Coordination [APPROVED - FROZEN BASELINE]
+- Discrete compute modes: LOW, NORMAL, HIGH
+- Deterministic priority-ordered state machine (Comm > CPU > Contention > Recovery)
+- Asymmetric hysteresis, minimum dwell time (3.0s), and sample confirmation (K=3)
+- Dynamic runtime timer adjustment in ROS 2 Jazzy
+- 12 real Gazebo Harmonic trials evaluating compute reallocation under stress
 
-## M10 — Compute-aware adaptation
-- pressure metrics
-- RHCR/GD-RHCR → PIBT switching
-- recovery policy
-- benchmark
+## M9 — Large-Scale Warehouse & Scenario Expansion [IN DESIGN - PHASE 1 COMPLETE]
+- Progressive environment tiers: M9-V1 (Expanded), M9-V2 (Congested), M9-V3 (Hard/Chokepoints), M9-V4 (Research Stress)
+- Progressive fleet scaling: 5, 10, 15, 20+ AMRs
+- Scenario matrix covering Scenarios A through J (corridors, intersections, chokepoints, hotspots, asymmetric demand)
+- Physical feasibility validation (passing bays, corridor widths)
+- M8B frozen baseline evaluation and limitation discovery
 
-## M11 — GD-RHCR
-- research implementation
-- comparison with RHCR
+## M10 — Advanced Coordination & Optimization [FUTURE]
+- GD-RHCR guidance graphs & topological flow control
+- MAPF-LNS2 large neighborhood search optimization
+- Multi-lane highway routing rules
 
-## M12 — NH-ORCA
-- local controller benchmark
+## M11 — Local Controller Benchmarking [FUTURE]
+- Non-holonomic ORCA (NH-ORCA) integration
+- Continuous local velocity obstacle benchmarking
 
-## M13 — MAPF-LNS2
-- optional optimization layer
-- safe plan handoff
+## M12 — Final Research Packaging & Multi-Seed Benchmarks [FUTURE]
+- Automated multi-seed experiment campaigns (n >= 5)
+- Cross-milestone synthesis & publication report
 
-## M14 — Large benchmark suite
-- automated experiment matrix
-- result database
-- plots
-- reproducibility report
-
-## M15 — Research packaging
-- architecture report
-- experiment report
-- limitations
-- final claims

@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 import math
 import random
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from amr_fleet_core.task_model import Task, TaskPriority
 
@@ -70,6 +70,9 @@ class TaskGeneratorConfig:
     map_bounds: Tuple[float, float, float, float] = (0.5, 15.5, 0.5, 15.5)
     min_travel_distance: float = 1.5
 
+    # Staged release configuration
+    staged_releases: Optional[List[Dict[str, Any]]] = None
+
 
 class TaskGenerator:
     """Generates reproducible, deterministic task sets using an isolated PRNG."""
@@ -112,7 +115,7 @@ class TaskGenerator:
         offset = self._rng.uniform(min_dt, max_dt)
         return round(created_at + offset, 2)
 
-    def generate_task(self, index: int) -> Task:
+    def generate_task(self, index: int, release_time_sec: float = 0.0) -> Task:
         """Generate a single deterministic task."""
         task_id = f'{self.config.id_prefix}_{index:04d}'
         created_at = self.config.base_time
@@ -157,6 +160,7 @@ class TaskGenerator:
             created_at=created_at,
             deadline=deadline,
             metadata={'generator_seed': self.config.seed, 'mode': self.config.mode},
+            release_time_sec=release_time_sec,
         )
 
     def generate_workload(self, count: Optional[int] = None) -> List[Task]:
@@ -170,7 +174,18 @@ class TaskGenerator:
         # Reset PRNG state to ensure repeatability of workload generation
         self._rng = random.Random(self.config.seed)
 
+        release_times = [0.0] * num_tasks
+        if self.config.staged_releases:
+            curr_idx = 0
+            for stage in self.config.staged_releases:
+                r_time = float(stage.get('release_time_sec', 0.0))
+                r_count = int(stage.get('count', 0))
+                for _ in range(r_count):
+                    if curr_idx < num_tasks:
+                        release_times[curr_idx] = r_time
+                        curr_idx += 1
+
         tasks: List[Task] = []
         for i in range(1, num_tasks + 1):
-            tasks.append(self.generate_task(i))
+            tasks.append(self.generate_task(i, release_time_sec=release_times[i - 1]))
         return tasks

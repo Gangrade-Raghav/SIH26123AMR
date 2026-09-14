@@ -22,6 +22,11 @@ def generate_launch_description():
         default_value='0.0',
         description='Initial Yaw orientation',
     )
+    world_arg = DeclareLaunchArgument(
+        'world',
+        default_value='warehouse_m9_v2',
+        description='Gazebo simulation world name',
+    )
     use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
@@ -33,6 +38,7 @@ def generate_launch_description():
     y = LaunchConfiguration('y')
     z = LaunchConfiguration('z')
     yaw = LaunchConfiguration('yaw')
+    world = LaunchConfiguration('world')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Process URDF/Xacro
@@ -73,6 +79,7 @@ def generate_launch_description():
         name=[robot_name, '_spawner'],
         output='screen',
         arguments=[
+            '-world', world,
             '-name', robot_name,
             '-topic', [robot_name, '/robot_description'],
             '-x', x,
@@ -98,6 +105,8 @@ def generate_launch_description():
             ['/', robot_name, '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan'],
             # TF (GZ -> ROS)
             ['/', robot_name, '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V'],
+            # Joint states (GZ -> ROS)
+            ['/', robot_name, '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model'],
         ],
         remappings=[
             (['/', robot_name, '/tf'], '/tf'),
@@ -109,6 +118,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_name_arg,
+        world_arg,
         x_arg,
         y_arg,
         z_arg,

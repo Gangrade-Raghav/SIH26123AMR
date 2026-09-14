@@ -1,14 +1,36 @@
 """Decentralized ROS 2 Node executing CBBA for a single AMR."""
 
-from typing import Any, Dict, Set
+from typing import Any, Dict, Set, Tuple
 
 from amr_fleet_core.cbba_agent import CBBAAgent, CBBAConfig
+from amr_fleet_core.communication_model import (
+    CommunicationAction,
+    CommunicationImpairmentModel,
+    CommunicationProfileConfig,
+    DelayedMessageQueue,
+    PRESET_PROFILES,
+)
+from amr_fleet_core.compute_modes import ComputeMode, get_compute_mode_config
+from amr_fleet_core.stale_state_manager import (
+    InformationState,
+    StaleStateManager,
+)
 from amr_fleet_msgs.msg import (
     CBBABid,
     RobotBundle,
     TaskEvent as TaskEventMsg,
     TaskList,
 )
+try:
+    from amr_fleet_msgs.msg import CommunicationProfile
+    HAVE_M7_MSGS = True
+except ImportError:
+    HAVE_M7_MSGS = False
+try:
+    from amr_fleet_msgs.msg import ComputeModeEvent
+    HAVE_M8B_MSGS = True
+except ImportError:
+    HAVE_M8B_MSGS = False
 from builtin_interfaces.msg import Time as BuiltinTime
 from nav_msgs.msg import Odometry
 import rclpy
@@ -43,6 +65,22 @@ class CBBANode(Node):
         self.declare_parameter('discount_factor', 0.95)
         self.declare_parameter('consensus_rate', 5.0)
         self.declare_parameter('stable_rounds_for_convergence', 5)
+        self.declare_parameter('enable_comm_degradation', False)
+        self.declare_parameter('comm_profile', 'NORMAL')
+        self.declare_parameter('comm_latency_ms', 0.0)
+        self.declare_parameter('comm_jitter_ms', 0.0)
+        self.declare_parameter('comm_loss_probability', 0.0)
+        self.declare_parameter('comm_burst_loss_probability', 0.0)
+        self.declare_parameter('comm_burst_length_mean', 4.0)
+        self.declare_parameter('comm_outage_start_s', 0.0)
+        self.declare_parameter('comm_outage_duration_s', 0.0)
+        self.declare_parameter('comm_seed', 42)
+        self.declare_parameter('comm_isolated_robots', [''])
+        self.declare_parameter('stale_threshold_sec', 1.5)
+        self.declare_parameter('expiry_threshold_sec', 4.0)
+
+        # M8B Adaptive Compute Parameters
+        self.declare_parameter('compute_mode', 'NORMAL')
 
         robot_id_param = self.get_parameter('robot_id').get_parameter_value().string_value
         if not robot_id_param:
@@ -51,12 +89,23 @@ class CBBANode(Node):
             robot_id_param = ns if ns else 'amr_0'
         self.robot_id = robot_id_param
 
+        raw_mode = str(self.get_parameter('compute_mode').value)
+        if raw_mode.upper() in ('ADAPTIVE', 'COMPUTE_MODE_ADAPTIVE'):
+            self.compute_mode = 'ADAPTIVE'
+        else:
+            self.compute_mode = ComputeMode.from_string(raw_mode)
+
         max_bundle = self.get_parameter('max_bundle_size').get_parameter_value().integer_value
         w_prio = self.get_parameter('weight_priority').get_parameter_value().double_value
         w_dist = self.get_parameter('weight_distance').get_parameter_value().double_value
         w_late = self.get_parameter('weight_late').get_parameter_value().double_value
         discount = self.get_parameter('discount_factor').get_parameter_value().double_value
         rate = self.get_parameter('consensus_rate').get_parameter_value().double_value
+
+        if self.compute_mode != 'ADAPTIVE' and self.compute_mode != ComputeMode.NORMAL:
+            mode_cfg = get_compute_mode_config(self.compute_mode)
+            rate = mode_cfg.consensus_rate
+
         self.stable_thresh = self.get_parameter(
             'stable_rounds_for_convergence'
         ).get_parameter_value().integer_value
@@ -70,8 +119,50 @@ class CBBANode(Node):
         )
         self.agent = CBBAAgent(robot_id=self.robot_id, config=config)
 
+        # M7 Communication Impairment & Stale Tracking
+        enable_deg = bool(self.get_parameter('enable_comm_degradation').value)
+        profile_name = str(self.get_parameter('comm_profile').value)
+        raw_isolated = self.get_parameter('comm_isolated_robots').value
+        isolated_list = [r for r in raw_isolated if r] if isinstance(raw_isolated, list) else []
+
+        comm_cfg = CommunicationProfileConfig(
+            profile_name=profile_name,
+            enabled=enable_deg,
+            latency_ms=float(self.get_parameter('comm_latency_ms').value),
+            jitter_ms=float(self.get_parameter('comm_jitter_ms').value),
+            loss_probability=float(self.get_parameter('comm_loss_probability').value),
+            burst_loss_probability=float(self.get_parameter('comm_burst_loss_probability').value),
+            burst_length_mean=float(self.get_parameter('comm_burst_length_mean').value),
+            outage_start_s=float(self.get_parameter('comm_outage_start_s').value),
+            outage_duration_s=float(self.get_parameter('comm_outage_duration_s').value),
+            seed=int(self.get_parameter('comm_seed').value),
+            isolated_robots=isolated_list,
+        )
+        if profile_name.upper() in PRESET_PROFILES and profile_name.upper() != 'NORMAL':
+            preset = PRESET_PROFILES[profile_name.upper()]
+            comm_cfg.latency_ms = preset.latency_ms
+            comm_cfg.jitter_ms = preset.jitter_ms
+            comm_cfg.loss_probability = preset.loss_probability
+            comm_cfg.burst_loss_probability = preset.burst_loss_probability
+            comm_cfg.burst_length_mean = preset.burst_length_mean
+            comm_cfg.outage_start_s = preset.outage_start_s
+            comm_cfg.outage_duration_s = preset.outage_duration_s
+            comm_cfg.isolated_robots = list(preset.isolated_robots)
+            if enable_deg:
+                comm_cfg.enabled = True
+
+        self.comm_model = CommunicationImpairmentModel(config=comm_cfg)
+        self.stale_manager = StaleStateManager(
+            local_robot_id=self.robot_id,
+            stale_threshold_s=float(self.get_parameter('stale_threshold_sec').value),
+            expiry_threshold_s=float(self.get_parameter('expiry_threshold_sec').value),
+        )
+        self.delayed_queue = DelayedMessageQueue()
+
         # Internal state
         self.task_pool: Dict[str, Any] = {}
+        self.task_all_states: Dict[str, str] = {}
+        self.task_metadata_cache: Dict[str, Any] = {}
         self.iteration: int = 0
         self.consecutive_stable_rounds: int = 0
         self.is_converged: bool = False
@@ -99,12 +190,32 @@ class CBBANode(Node):
             self._handle_available_tasks,
             10,
         )
+        self.sub_tasks_all = self.create_subscription(
+            TaskList,
+            '/tasks/all',
+            self._handle_all_tasks,
+            10,
+        )
         self.sub_bids = self.create_subscription(
             CBBABid,
             '/fleet/cbba_bids',
             self._handle_peer_bid,
             50,
         )
+        if HAVE_M7_MSGS:
+            self.sub_comm_profile = self.create_subscription(
+                CommunicationProfile,
+                '/fleet/comm_profile',
+                self._handle_comm_profile,
+                10,
+            )
+        if HAVE_M8B_MSGS and self.compute_mode == 'ADAPTIVE':
+            self.sub_compute_mode = self.create_subscription(
+                ComputeModeEvent,
+                f'/{self.robot_id}/compute_mode',
+                self._handle_compute_mode_event,
+                10,
+            )
 
         # Periodic timer
         timer_period = 1.0 / max(0.1, rate)
@@ -136,9 +247,103 @@ class CBBANode(Node):
             }
         self.task_pool = current_map
 
+    def _handle_all_tasks(self, msg: TaskList) -> None:
+        """Cache fleet-wide task definitions and lifecycle states."""
+        for td in msg.tasks:
+            t_id = td.task_id
+            self.task_all_states[t_id] = td.status
+            self.task_metadata_cache[t_id] = {
+                'task_id': t_id,
+                'pickup': (td.pickup_pose.x, td.pickup_pose.y),
+                'dropoff': (td.dropoff_pose.x, td.dropoff_pose.y),
+                'priority': td.priority,
+                'status': td.status,
+                'deadline': (
+                    td.deadline.sec + td.deadline.nanosec * 1e-9
+                    if td.deadline.sec > 0 else None
+                ),
+            }
+
+    def _handle_comm_profile(self, msg: Any) -> None:
+        """Dynamically update communication degradation profile across the fleet."""
+        self.get_logger().info(
+            f'[{self.robot_id}] Received comm profile update in CBBA: '
+            f'{msg.profile_name} (enabled={msg.enabled})'
+        )
+        cfg = CommunicationProfileConfig(
+            profile_name=msg.profile_name,
+            enabled=msg.enabled,
+            latency_ms=msg.latency_ms,
+            jitter_ms=msg.jitter_ms,
+            loss_probability=msg.loss_probability,
+            burst_loss_probability=msg.burst_loss_probability,
+            burst_length_mean=4.0,
+            outage_duration_s=msg.outage_duration_s,
+            seed=msg.seed if msg.seed > 0 else 42,
+            isolated_robots=list(msg.isolated_robots),
+        )
+        self.comm_model.set_config(cfg)
+
+    def _broadcast_bids(self) -> None:
+        """Broadcast current bid vector immediately."""
+        bid_msg = CBBABid()
+        bid_msg.header.stamp = self.get_clock().now().to_msg()
+        bid_msg.robot_id = self.robot_id
+        bid_msg.iteration = self.iteration
+
+        all_task_ids = sorted(self.agent.state.winning_bids.keys())
+        bid_msg.task_ids = all_task_ids
+        bid_msg.winning_bids = [
+            float(self.agent.state.winning_bids[t]) for t in all_task_ids
+        ]
+        bid_msg.winning_robots = [
+            str(self.agent.state.winning_robots.get(t, '')) for t in all_task_ids
+        ]
+        bid_msg.timestamps = [
+            float(self.agent.state.timestamps.get(t, 0.0)) for t in all_task_ids
+        ]
+        self.pub_bids.publish(bid_msg)
+
     def _handle_peer_bid(self, msg: CBBABid) -> None:
-        """Process peer bid vector and resolve bidding conflicts."""
+        """Process peer bid vector through communication degradation boundary."""
         if msg.robot_id == self.robot_id:
+            return
+
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        sent_ts = (
+            msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
+            if msg.header.stamp.sec > 0 else now_sec
+        )
+
+        action, delay_ms, _ = self.comm_model.process_message(
+            sender_id=msg.robot_id,
+            receiver_id=self.robot_id,
+            current_time=now_sec,
+        )
+        if action == CommunicationAction.DROP:
+            return
+        if action == CommunicationAction.DELAY:
+            deliver_at = now_sec + (delay_ms / 1000.0)
+            self.delayed_queue.schedule(
+                deliver_at,
+                self._apply_peer_bid,
+                (msg, sent_ts),
+            )
+            return
+
+        self._apply_peer_bid((msg, sent_ts))
+
+    def _apply_peer_bid(self, data: Tuple[CBBABid, float]) -> None:
+        """Apply delivered peer bid vector after network transit."""
+        msg, sent_ts = data
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        state, is_reconn = self.stale_manager.record_incoming(
+            'cbba_bids', msg.robot_id, sent_ts, now_sec, msg
+        )
+        if is_reconn:
+            self._broadcast_bids()
+
+        if state == InformationState.EXPIRED:
             return
 
         peer_bids: Dict[str, float] = {}
@@ -153,13 +358,22 @@ class CBBANode(Node):
             if idx < len(msg.timestamps):
                 peer_times[t_id] = float(msg.timestamps[idx])
 
+        full_map = {**self.task_metadata_cache, **self.task_pool}
+        locked_tasks = {
+            t for t in self.agent.state.bundle
+            if self.task_all_states.get(t) in ('IN_PROGRESS', 'ASSIGNED')
+            or t in self.assigned_tasks_committed
+        }
+
         changed = self.agent.resolve_conflicts(
             peer_id=msg.robot_id,
             peer_iteration=msg.iteration,
             peer_winning_bids=peer_bids,
             peer_winning_robots=peer_robots,
             peer_timestamps=peer_times,
-            task_map=self.task_pool,
+            task_map=full_map,
+            current_time=now_sec,
+            locked_tasks=locked_tasks,
         )
 
         if changed:
@@ -169,12 +383,44 @@ class CBBANode(Node):
     def _consensus_cycle(self) -> None:
         """Periodic CBBA bundle update and broadcast loop."""
         now_sec = self.get_clock().now().nanoseconds * 1e-9
+        self.delayed_queue.poll(now_sec)
         self.iteration += 1
 
-        # Phase 1: Build bundle if task pool is available
+        # Free completed tasks from bundle to release capacity
+        completed_in_bundle = [
+            t for t in self.agent.state.bundle
+            if self.task_all_states.get(t) == 'COMPLETED'
+        ]
+        if completed_in_bundle:
+            self.agent.state.bundle = [
+                t for t in self.agent.state.bundle
+                if t not in completed_in_bundle
+            ]
+            full_map = {**self.task_metadata_cache, **self.task_pool}
+            self.agent._rebuild_path(full_map)
+
+        # Locked tasks are those already in-progress or committed
+        locked_tasks = {
+            t for t in self.agent.state.bundle
+            if self.task_all_states.get(t) in ('IN_PROGRESS', 'ASSIGNED')
+            or t in self.assigned_tasks_committed
+        }
+
+        full_map = {**self.task_metadata_cache, **self.task_pool}
+        candidate_map = {
+            t_id: data for t_id, data in self.task_pool.items()
+            if self.task_all_states.get(t_id, 'PENDING') == 'PENDING'
+        }
+
+        # Phase 1: Build bundle if candidate tasks are available
         added = 0
-        if self.task_pool:
-            added = self.agent.build_bundle(self.task_pool, current_time=now_sec)
+        if candidate_map:
+            added = self.agent.build_bundle(
+                candidate_map,
+                current_time=now_sec,
+                locked_tasks=locked_tasks,
+                full_task_map=full_map,
+            )
 
         if added > 0:
             self.consecutive_stable_rounds = 0
@@ -236,6 +482,18 @@ class CBBANode(Node):
                     self.get_logger().info(
                         f'Committed task {t_id} assignment to {self.robot_id}'
                     )
+
+    def _handle_compute_mode_event(self, msg: Any) -> None:
+        """Dynamically adjust CBBA consensus rate based on adaptive compute transitions."""
+        new_mode = ComputeMode.from_string(msg.current_mode)
+        cfg = get_compute_mode_config(new_mode)
+        new_period = 1.0 / max(0.1, cfg.consensus_rate)
+        self.timer.timer_period_ns = int(new_period * 1e9)
+        self.timer.reset()
+        self.get_logger().info(
+            f'[{self.robot_id}] CBBA consensus rate updated to '
+            f'{cfg.consensus_rate:.1f} Hz ({new_mode.value})'
+        )
 
 
 def main(args=None) -> None:

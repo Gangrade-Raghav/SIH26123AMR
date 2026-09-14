@@ -90,3 +90,27 @@ Potential contribution areas to investigate experimentally:
 5. empirically supported integration of the above mechanisms.
 
 A stronger novelty claim should only be made after literature review and experimental evidence.
+
+---
+
+## M9 Large-Scale Environment Expansion Strategy
+
+Milestone M9 broadens the experimental scope of the project from the initial $16\,\text{m} \times 16\,\text{m}$ single-room benchmark into scalable, topologically complex warehouse and factory layouts:
+
+### 1. Controlled Baseline
+The complete M8B architecture (CBBA + RHCR + Reservations + PIBT + WFG + Comm Resilience + Adaptive Compute) serves as the frozen reference baseline. No algorithms are modified prior to testing on the expanded topologies:
+$$\text{Baseline} = \mathcal{A}_{\text{M8B}} + \text{Tier}(\text{M9-V1} \to \text{M9-V4})$$
+
+### 2. Experimental Independent Variables
+- **Environment Topology**: M9-V1 (Expanded $32\times 32$), M9-V2 (Congested $32\times 32$), M9-V3 (Hard/Chokepoints $48\times 32$), M9-V4 (Research Stress $60\times 40$ & Abstract $120\times 80$).
+- **Fleet Scale**: 5 AMRs (controlled baseline comparison), 10 AMRs (moderate congestion), 15 AMRs (high spatial/compute density), 20+ AMRs (abstract MAPF limits).
+- **Traffic Regimes**: Scenarios A through J (low/moderate/severe congestion, bidirectional corridors, chokepoint queuing, intersection clashes, charging pad contention, task hotspots, asymmetric demand, communication degradation during transit).
+
+### 3. Failure Classification Framework
+To maintain scientific integrity, failure events (deadlocks, safety aborts, timeouts) must be explicitly classified into five distinct categories:
+1. **Environment Difficulty**: Topological constraint requiring specific maneuver (e.g. narrow corridor requiring yield into passing bay).
+2. **System Scaling Limitation**: Degradation caused by network message count or ROS 2 discovery overhead across large fleets.
+3. **Algorithmic Limitation**: Inability of decentralized greedy/horizon planning to resolve complex multi-agent deadlock without global coordination.
+4. **Implementation Limitation**: Bug or race condition in message handling, state transitions, or coordinate transformations.
+5. **Simulator / Resource Limitation**: Host workstation CPU starvation or Gazebo physics real-time factor (RTF) collapse.
+

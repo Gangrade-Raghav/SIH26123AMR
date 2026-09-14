@@ -1,0 +1,96 @@
+{
+  "schema_version": "m8b.v1",
+  "experiment_id": "exp_m8b_w30_t0_s42_normal_1789368945",
+  "metadata": {
+    "experiment_id": "exp_m8b_w30_t0_s42_normal_1789368945",
+    "timestamp_utc": "2026-09-14T06:55:45.782791+00:00",
+    "timestamp_unix": 1789368945.7828043,
+    "git_commit": "9e33886",
+    "software_version": "m8b.v1",
+    "fleet_size": 5,
+    "workload_id": "workload_30_tasks",
+    "workload_size": 30,
+    "trial_id": 0,
+    "seed": 42,
+    "mission_horizon_sec": 120.0,
+    "actual_duration_sec": 34.65,
+    "communication_profile": "NORMAL",
+    "compute_mode": "NORMAL",
+    "map_id": "warehouse_grid_small",
+    "termination_reason": "SAFETY_ABORT"
+  },
+  "metrics": {
+    "generated_tasks": 30,
+    "assigned_tasks": 30,
+    "completed_tasks": 0,
+    "failed_tasks": 0,
+    "remaining_tasks": 30,
+    "completion_rate_pct": 0.0,
+    "throughput_tasks_per_min": 0.0,
+    "makespan_sec": 34.65,
+    "planning_cycles": 354,
+    "replan_count": 238,
+    "planning_latency_mean_ms": 0.08,
+    "planning_latency_p50_ms": 0.07,
+    "planning_latency_p95_ms": 0.17,
+    "planning_latency_p99_ms": 0.26,
+    "cbba_convergence_time_ms": 7889.4,
+    "allocation_changes": 0,
+    "unassigned_tasks": 0,
+    "conflicts_detected": 7,
+    "conflicts_resolved": 7,
+    "deadlocks_detected": 0,
+    "deadlocks_recovered": 0,
+    "minimum_inter_robot_distance_m": 0.347,
+    "collision_contact_events": 1,
+    "safety_brake_interventions": 77,
+    "cpu_utilization_mean_pct": 33.2,
+    "cpu_utilization_max_pct": 37.5,
+    "ram_utilization_mean_mb": 7269.9,
+    "ram_utilization_max_mb": 7361.9,
+    "mode_transitions": 0,
+    "failsafe_fallbacks": 0,
+    "mode_occupancy_low_pct": 0.0,
+    "mode_occupancy_normal_pct": 100.0,
+    "mode_occupancy_high_pct": 0.0
+  },
+  "completed_task_ids": [],
+  "collision_events": [
+    {
+      "r1": "amr_1",
+      "r2": "amr_2",
+      "p1": [
+        2.25,
+        12.132
+      ],
+      "p2": [
+        2.267,
+        12.479
+      ],
+      "dist": 0.347,
+      "time": 1789368988.1083522
+    }
+  ],
+  "compute_mode_events": [],
+  "replan_counts_initial": {
+    "amr_0": 1,
+    "amr_1": 4,
+    "amr_2": 2,
+    "amr_3": 4,
+    "amr_4": 5
+  },
+  "replan_counts_final": {
+    "amr_0": 39,
+    "amr_1": 41,
+    "amr_2": 41,
+    "amr_3": 41,
+    "amr_4": 92
+  },
+  "replan_counts_delta": {
+    "amr_0": 38,
+    "amr_1": 37,
+    "amr_2": 39,
+    "amr_3": 37,
+    "amr_4": 87
+  }
+}

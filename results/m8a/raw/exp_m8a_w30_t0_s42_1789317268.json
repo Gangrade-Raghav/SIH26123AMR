@@ -1,0 +1,77 @@
+{
+  "schema_version": "m8a.v1",
+  "experiment_id": "exp_m8a_w30_t0_s42_1789317268",
+  "metadata": {
+    "experiment_id": "exp_m8a_w30_t0_s42_1789317268",
+    "timestamp_utc": "2026-09-13T16:34:28.741035+00:00",
+    "timestamp_unix": 1789317268.7410483,
+    "git_commit": "9e33886",
+    "software_version": "m8a.v1",
+    "fleet_size": 5,
+    "workload_id": "workload_30_tasks",
+    "workload_size": 30,
+    "trial_id": 0,
+    "seed": 42,
+    "mission_horizon_sec": 120.0,
+    "actual_duration_sec": 120.01,
+    "communication_profile": "NORMAL",
+    "map_id": "warehouse_grid_small",
+    "termination_reason": "HORIZON_REACHED"
+  },
+  "metrics": {
+    "generated_tasks": 30,
+    "assigned_tasks": 30,
+    "completed_tasks": 2,
+    "failed_tasks": 0,
+    "remaining_tasks": 28,
+    "completion_rate_pct": 6.7,
+    "throughput_tasks_per_min": 1.0,
+    "makespan_sec": 67.85,
+    "planning_cycles": 1207,
+    "replan_count": 571,
+    "planning_latency_mean_ms": 0.08,
+    "planning_latency_p50_ms": 0.07,
+    "planning_latency_p95_ms": 0.2,
+    "planning_latency_p99_ms": 0.25,
+    "cbba_convergence_time_ms": 11136.4,
+    "allocation_changes": 0,
+    "unassigned_tasks": 0,
+    "conflicts_detected": 3,
+    "conflicts_resolved": 3,
+    "deadlocks_detected": 0,
+    "deadlocks_recovered": 0,
+    "minimum_inter_robot_distance_m": 0.394,
+    "collision_contact_events": 0,
+    "safety_brake_interventions": 564,
+    "cpu_utilization_mean_pct": 31.2,
+    "cpu_utilization_max_pct": 36.2,
+    "ram_utilization_mean_mb": 6960.5,
+    "ram_utilization_max_mb": 7141.4
+  },
+  "completed_task_ids": [
+    "task_w30_0003",
+    "task_w30_0026"
+  ],
+  "collision_events": [],
+  "replan_counts_initial": {
+    "amr_0": 5,
+    "amr_1": 0,
+    "amr_2": 5,
+    "amr_3": 6,
+    "amr_4": 0
+  },
+  "replan_counts_final": {
+    "amr_0": 53,
+    "amr_1": 73,
+    "amr_2": 122,
+    "amr_3": 79,
+    "amr_4": 260
+  },
+  "replan_counts_delta": {
+    "amr_0": 48,
+    "amr_1": 73,
+    "amr_2": 117,
+    "amr_3": 73,
+    "amr_4": 260
+  }
+}

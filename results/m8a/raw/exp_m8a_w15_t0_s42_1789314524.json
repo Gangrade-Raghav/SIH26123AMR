@@ -1,0 +1,73 @@
+{
+  "schema_version": "m8a.v1",
+  "experiment_id": "exp_m8a_w15_t0_s42_1789314524",
+  "metadata": {
+    "experiment_id": "exp_m8a_w15_t0_s42_1789314524",
+    "timestamp_utc": "2026-09-13T15:48:44.274759+00:00",
+    "timestamp_unix": 1789314524.2747722,
+    "git_commit": "9e33886",
+    "software_version": "m8a.v1",
+    "fleet_size": 5,
+    "workload_id": "workload_15_tasks",
+    "workload_size": 15,
+    "trial_id": 0,
+    "seed": 42,
+    "mission_horizon_sec": 60.0,
+    "actual_duration_sec": 9.55,
+    "communication_profile": "NORMAL",
+    "map_id": "warehouse_grid_small",
+    "termination_reason": "SAFETY_ABORT"
+  },
+  "metrics": {
+    "generated_tasks": 15,
+    "assigned_tasks": 15,
+    "completed_tasks": 0,
+    "failed_tasks": 0,
+    "remaining_tasks": 15,
+    "completion_rate_pct": 0.0,
+    "throughput_tasks_per_min": 0.0,
+    "makespan_sec": 9.55,
+    "planning_cycles": 100,
+    "replan_count": 64,
+    "planning_latency_mean_ms": 0.14,
+    "planning_latency_p50_ms": 0.12,
+    "planning_latency_p95_ms": 0.32,
+    "planning_latency_p99_ms": 0.32,
+    "cbba_convergence_time_ms": 2626.6,
+    "allocation_changes": 0,
+    "unassigned_tasks": 0,
+    "conflicts_detected": 5,
+    "conflicts_resolved": 5,
+    "deadlocks_detected": 0,
+    "deadlocks_recovered": 0,
+    "minimum_inter_robot_distance_m": 0.347,
+    "collision_contact_events": 1,
+    "safety_brake_interventions": 0,
+    "cpu_utilization_mean_pct": 24.5,
+    "cpu_utilization_max_pct": 30.1,
+    "ram_utilization_mean_mb": 6720.7,
+    "ram_utilization_max_mb": 6743.9
+  },
+  "completed_task_ids": [],
+  "replan_counts_initial": {
+    "amr_0": 1,
+    "amr_1": 1,
+    "amr_2": 2,
+    "amr_3": 2,
+    "amr_4": 2
+  },
+  "replan_counts_final": {
+    "amr_0": 12,
+    "amr_1": 12,
+    "amr_2": 13,
+    "amr_3": 12,
+    "amr_4": 23
+  },
+  "replan_counts_delta": {
+    "amr_0": 11,
+    "amr_1": 11,
+    "amr_2": 11,
+    "amr_3": 10,
+    "amr_4": 21
+  }
+}

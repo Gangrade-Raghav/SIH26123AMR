@@ -1,0 +1,83 @@
+{
+  "schema_version": "m8b.v1",
+  "experiment_id": "exp_m8b_w15_t0_s42_high_1789368480",
+  "metadata": {
+    "experiment_id": "exp_m8b_w15_t0_s42_high_1789368480",
+    "timestamp_utc": "2026-09-14T06:48:00.789500+00:00",
+    "timestamp_unix": 1789368480.7895126,
+    "git_commit": "9e33886",
+    "software_version": "m8b.v1",
+    "fleet_size": 5,
+    "workload_id": "workload_15_tasks",
+    "workload_size": 15,
+    "trial_id": 0,
+    "seed": 42,
+    "mission_horizon_sec": 60.0,
+    "actual_duration_sec": 60.02,
+    "communication_profile": "NORMAL",
+    "compute_mode": "HIGH",
+    "map_id": "warehouse_grid_small",
+    "termination_reason": "HORIZON_REACHED"
+  },
+  "metrics": {
+    "generated_tasks": 15,
+    "assigned_tasks": 15,
+    "completed_tasks": 1,
+    "failed_tasks": 0,
+    "remaining_tasks": 14,
+    "completion_rate_pct": 6.7,
+    "throughput_tasks_per_min": 1.0,
+    "makespan_sec": 39.74,
+    "planning_cycles": 1213,
+    "replan_count": 105,
+    "planning_latency_mean_ms": 0.13,
+    "planning_latency_p50_ms": 0.11,
+    "planning_latency_p95_ms": 0.26,
+    "planning_latency_p99_ms": 0.36,
+    "cbba_convergence_time_ms": 763.8,
+    "allocation_changes": 0,
+    "unassigned_tasks": 0,
+    "conflicts_detected": 0,
+    "conflicts_resolved": 0,
+    "deadlocks_detected": 0,
+    "deadlocks_recovered": 0,
+    "minimum_inter_robot_distance_m": 1.215,
+    "collision_contact_events": 0,
+    "safety_brake_interventions": 620,
+    "cpu_utilization_mean_pct": 36.6,
+    "cpu_utilization_max_pct": 39.9,
+    "ram_utilization_mean_mb": 7226.7,
+    "ram_utilization_max_mb": 7287.8,
+    "mode_transitions": 0,
+    "failsafe_fallbacks": 0,
+    "mode_occupancy_low_pct": 0.0,
+    "mode_occupancy_normal_pct": 0.0,
+    "mode_occupancy_high_pct": 100.0
+  },
+  "completed_task_ids": [
+    "task_w15_0001"
+  ],
+  "collision_events": [],
+  "compute_mode_events": [],
+  "replan_counts_initial": {
+    "amr_0": 3,
+    "amr_1": 9,
+    "amr_2": 7,
+    "amr_3": 9,
+    "amr_4": 2
+  },
+  "replan_counts_final": {
+    "amr_0": 18,
+    "amr_1": 24,
+    "amr_2": 41,
+    "amr_3": 23,
+    "amr_4": 29
+  },
+  "replan_counts_delta": {
+    "amr_0": 15,
+    "amr_1": 15,
+    "amr_2": 34,
+    "amr_3": 14,
+    "amr_4": 27
+  }
+}

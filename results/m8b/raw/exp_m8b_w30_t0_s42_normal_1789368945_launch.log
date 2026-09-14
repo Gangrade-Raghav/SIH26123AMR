@@ -1,0 +1,393 @@
+[INFO] [launch]: All log files can be found below /home/raghav/.ros/log/2026-09-14-12-25-49-193984-Raze-224406
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: [FLEET] Spawning 5 robots into world "warehouse_small" (headless=True)
+[INFO] [launch.user]: [M8B Fleet Bringup] Starting 5 CBBA nodes (bundle cap: 8, profile: NORMAL, compute_mode: NORMAL)
+[INFO] [launch.user]: [M8B Fleet Bringup] Starting 5 M8B RH nodes (compute_mode: NORMAL, adaptive: False, h=10, w=4, replan_rate=2.0Hz)
+[INFO] [gazebo-1]: process started with pid [224441]
+[INFO] [parameter_bridge-2]: process started with pid [224442]
+[INFO] [warehouse_visualizer-3]: process started with pid [224443]
+[INFO] [robot_state_publisher-4]: process started with pid [224445]
+[INFO] [create-5]: process started with pid [224446]
+[INFO] [parameter_bridge-6]: process started with pid [224447]
+[INFO] [static_transform_publisher-7]: process started with pid [224448]
+[INFO] [robot_state_publisher-8]: process started with pid [224449]
+[INFO] [create-9]: process started with pid [224450]
+[INFO] [parameter_bridge-10]: process started with pid [224451]
+[INFO] [static_transform_publisher-11]: process started with pid [224452]
+[INFO] [robot_state_publisher-12]: process started with pid [224453]
+[INFO] [create-13]: process started with pid [224454]
+[INFO] [parameter_bridge-14]: process started with pid [224455]
+[INFO] [static_transform_publisher-15]: process started with pid [224458]
+[INFO] [robot_state_publisher-16]: process started with pid [224459]
+[INFO] [create-17]: process started with pid [224460]
+[INFO] [parameter_bridge-18]: process started with pid [224461]
+[INFO] [static_transform_publisher-19]: process started with pid [224465]
+[INFO] [robot_state_publisher-20]: process started with pid [224468]
+[INFO] [create-21]: process started with pid [224471]
+[INFO] [parameter_bridge-22]: process started with pid [224474]
+[INFO] [static_transform_publisher-23]: process started with pid [224479]
+[INFO] [task_manager-24]: process started with pid [224482]
+[INFO] [cbba_node-25]: process started with pid [224535]
+[INFO] [cbba_node-26]: process started with pid [224540]
+[INFO] [cbba_node-27]: process started with pid [224544]
+[INFO] [cbba_node-28]: process started with pid [224546]
+[INFO] [cbba_node-29]: process started with pid [224564]
+[INFO] [rh_node-30]: process started with pid [224572]
+[INFO] [rh_node-31]: process started with pid [224581]
+[INFO] [rh_node-32]: process started with pid [224587]
+[INFO] [rh_node-33]: process started with pid [224602]
+[INFO] [rh_node-34]: process started with pid [224608]
+[static_transform_publisher-7] [INFO] [1789368950.471893656] [amr_0_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-7] translation: ('2.000000', '2.000000', '0.000000')
+[static_transform_publisher-7] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-7] from 'map' to 'amr_0/odom'
+[robot_state_publisher-12] [INFO] [1789368950.473441721] [amr_2.robot_state_publisher]: Robot initialized
+[robot_state_publisher-4] [INFO] [1789368950.547810354] [amr_0.robot_state_publisher]: Robot initialized
+[static_transform_publisher-15] [INFO] [1789368950.553929691] [amr_2_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-15] translation: ('2.000000', '8.000000', '0.000000')
+[static_transform_publisher-15] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-15] from 'map' to 'amr_2/odom'
+[robot_state_publisher-8] [INFO] [1789368950.598960410] [amr_1.robot_state_publisher]: Robot initialized
+[robot_state_publisher-16] [INFO] [1789368950.650331894] [amr_3.robot_state_publisher]: Robot initialized
+[create-9] [INFO] [1789368950.745474508] [amr_1_spawner]: Requesting list of world names.
+[robot_state_publisher-20] [INFO] [1789368950.770539905] [amr_4.robot_state_publisher]: Robot initialized
+[create-17] [INFO] [1789368950.864506300] [amr_3_spawner]: Requesting list of world names.
+[static_transform_publisher-23] [INFO] [1789368950.865846389] [amr_4_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-23] translation: ('2.000000', '14.000000', '0.000000')
+[static_transform_publisher-23] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-23] from 'map' to 'amr_4/odom'
+[parameter_bridge-6] [INFO] [1789368950.887288059] [amr_0_bridge]: Creating ROS->GZ Bridge: [/amr_0/cmd_vel (geometry_msgs/msg/Twist) -> /amr_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-6] [INFO] [1789368950.912510615] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/odom (gz.msgs.Odometry) -> /amr_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-6] [INFO] [1789368950.920585077] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/scan (gz.msgs.LaserScan) -> /amr_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-6] [INFO] [1789368950.928455959] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/tf (gz.msgs.Pose_V) -> /amr_0/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-6] [INFO] [1789368950.935089348] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/joint_states (gz.msgs.Model) -> /amr_0/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[static_transform_publisher-19] [INFO] [1789368950.946068487] [amr_3_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-19] translation: ('2.000000', '11.000000', '0.000000')
+[static_transform_publisher-19] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-19] from 'map' to 'amr_3/odom'
+[static_transform_publisher-11] [INFO] [1789368950.963138489] [amr_1_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-11] translation: ('2.000000', '5.000000', '0.000000')
+[static_transform_publisher-11] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-11] from 'map' to 'amr_1/odom'
+[parameter_bridge-2] [INFO] [1789368951.003816823] [clock_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[create-13] [INFO] [1789368951.007461145] [amr_2_spawner]: Requesting list of world names.
+[create-5] [INFO] [1789368951.038374416] [amr_0_spawner]: Requesting list of world names.
+[parameter_bridge-22] [INFO] [1789368951.101517608] [amr_4_bridge]: Creating ROS->GZ Bridge: [/amr_4/cmd_vel (geometry_msgs/msg/Twist) -> /amr_4/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-18] [INFO] [1789368951.106028019] [amr_3_bridge]: Creating ROS->GZ Bridge: [/amr_3/cmd_vel (geometry_msgs/msg/Twist) -> /amr_3/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[create-21] [INFO] [1789368951.113190685] [amr_4_spawner]: Requesting list of world names.
+[parameter_bridge-18] [INFO] [1789368951.114772737] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/odom (gz.msgs.Odometry) -> /amr_3/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-22] [INFO] [1789368951.115426169] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/odom (gz.msgs.Odometry) -> /amr_4/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-22] [INFO] [1789368951.120480154] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/scan (gz.msgs.LaserScan) -> /amr_4/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-22] [INFO] [1789368951.125099360] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/tf (gz.msgs.Pose_V) -> /amr_4/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-22] [INFO] [1789368951.128886288] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/joint_states (gz.msgs.Model) -> /amr_4/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-18] [INFO] [1789368951.137819390] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/scan (gz.msgs.LaserScan) -> /amr_3/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-10] [INFO] [1789368951.174867172] [amr_1_bridge]: Creating ROS->GZ Bridge: [/amr_1/cmd_vel (geometry_msgs/msg/Twist) -> /amr_1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789368951.214308323] [amr_2_bridge]: Creating ROS->GZ Bridge: [/amr_2/cmd_vel (geometry_msgs/msg/Twist) -> /amr_2/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-18] [INFO] [1789368951.253788066] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/tf (gz.msgs.Pose_V) -> /amr_3/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789368951.260466210] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/odom (gz.msgs.Odometry) -> /amr_2/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-10] [INFO] [1789368951.276753040] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/odom (gz.msgs.Odometry) -> /amr_1/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-18] [INFO] [1789368951.277954974] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/joint_states (gz.msgs.Model) -> /amr_3/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-10] [INFO] [1789368951.293697616] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/scan (gz.msgs.LaserScan) -> /amr_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-10] [INFO] [1789368951.315698952] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/tf (gz.msgs.Pose_V) -> /amr_1/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-10] [INFO] [1789368951.334520068] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/joint_states (gz.msgs.Model) -> /amr_1/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789368951.368850445] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/scan (gz.msgs.LaserScan) -> /amr_2/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-14] [INFO] [1789368951.383533801] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/tf (gz.msgs.Pose_V) -> /amr_2/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[create-5] [INFO] [1789368951.397809953] [amr_0_spawner]: Waiting messages on topic [amr_0/robot_description].
+[parameter_bridge-14] [INFO] [1789368951.398646040] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/joint_states (gz.msgs.Model) -> /amr_2/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[create-13] [INFO] [1789368951.507011664] [amr_2_spawner]: Waiting messages on topic [amr_2/robot_description].
+[warehouse_visualizer-3] [INFO] [1789368951.598143135] [warehouse_visualizer]: WarehouseVisualizerNode started. Publishing to /warehouse_markers.
+[create-17] [INFO] [1789368951.601718325] [amr_3_spawner]: Waiting messages on topic [amr_3/robot_description].
+[task_manager-24] [INFO] [1789368951.667640286] [amr_task_manager]: Loaded 30 tasks from workload: /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/workloads/workload_30_tasks.yaml
+[create-21] [INFO] [1789368951.701987816] [amr_4_spawner]: Waiting messages on topic [amr_4/robot_description].
+[rh_node-33] [INFO] [1789368951.751649330] [amr_3.rh_node]: Rolling-Horizon Planner initialized for amr_3 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[task_manager-24] [INFO] [1789368951.764323461] [amr_task_manager]: Task Manager Node initialized.
+[create-17] [INFO] [1789368951.801504377] [amr_3_spawner]: Entity creation successful.
+[create-13] [INFO] [1789368951.802652538] [amr_2_spawner]: Entity creation successful.
+[create-21] [INFO] [1789368951.803445145] [amr_4_spawner]: Entity creation successful.
+[create-9] [INFO] [1789368951.804232123] [amr_1_spawner]: Waiting messages on topic [amr_1/robot_description].
+[create-5] [INFO] [1789368951.805299379] [amr_0_spawner]: Entity creation successful.
+[create-9] [INFO] [1789368951.826746541] [amr_1_spawner]: Entity creation successful.
+[cbba_node-25] [INFO] [1789368951.834939187] [amr_0.cbba_node]: CBBA Node initialized for amr_0 (bundle cap: 8)
+[rh_node-31] [INFO] [1789368951.882592968] [amr_1.rh_node]: Rolling-Horizon Planner initialized for amr_1 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[INFO] [create-21]: process has finished cleanly [pid 224471]
+[INFO] [create-13]: process has finished cleanly [pid 224454]
+[INFO] [create-17]: process has finished cleanly [pid 224460]
+[cbba_node-28] [INFO] [1789368951.956628616] [amr_3.cbba_node]: CBBA Node initialized for amr_3 (bundle cap: 8)
+[INFO] [create-5]: process has finished cleanly [pid 224446]
+[INFO] [create-9]: process has finished cleanly [pid 224450]
+[cbba_node-29] [INFO] [1789368951.971131552] [amr_4.cbba_node]: CBBA Node initialized for amr_4 (bundle cap: 8)
+[rh_node-32] [INFO] [1789368951.988158162] [amr_2.rh_node]: Rolling-Horizon Planner initialized for amr_2 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[cbba_node-27] [INFO] [1789368952.191180821] [amr_2.cbba_node]: CBBA Node initialized for amr_2 (bundle cap: 8)
+[cbba_node-26] [INFO] [1789368952.192120036] [amr_1.cbba_node]: CBBA Node initialized for amr_1 (bundle cap: 8)
+[rh_node-34] [INFO] [1789368952.201377418] [amr_4.rh_node]: Rolling-Horizon Planner initialized for amr_4 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-30] [INFO] [1789368952.206205001] [amr_0.rh_node]: Rolling-Horizon Planner initialized for amr_0 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[parameter_bridge-10] [INFO] [1789368952.460110341] [amr_1_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-14] [INFO] [1789368952.470508598] [amr_2_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_0/base_footprint"]/sensor[@name="amr_0_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_2/base_footprint"]/sensor[@name="amr_2_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_3/base_footprint"]/sensor[@name="amr_3_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_4/base_footprint"]/sensor[@name="amr_4_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_1/base_footprint"]/sensor[@name="amr_1_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[parameter_bridge-6] [INFO] [1789368953.084477917] [amr_0_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-22] [INFO] [1789368953.177204154] [amr_4_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-18] [INFO] [1789368954.727325136] [amr_3_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[cbba_node-27] [INFO] [1789368961.167413090] [amr_2.cbba_node]: Committed task task_w30_0002 assignment to amr_2
+[cbba_node-27] [INFO] [1789368961.168279832] [amr_2.cbba_node]: Committed task task_w30_0005 assignment to amr_2
+[task_manager-24] [INFO] [1789368961.168431483] [amr_task_manager]: Task 'task_w30_0002' transitioned to ASSIGNED
+[cbba_node-26] [INFO] [1789368961.169207986] [amr_1.cbba_node]: Committed task task_w30_0001 assignment to amr_1
+[cbba_node-27] [INFO] [1789368961.169459277] [amr_2.cbba_node]: Committed task task_w30_0009 assignment to amr_2
+[task_manager-24] [INFO] [1789368961.170247183] [amr_task_manager]: Task 'task_w30_0005' transitioned to ASSIGNED
+[cbba_node-27] [INFO] [1789368961.170657556] [amr_2.cbba_node]: Committed task task_w30_0015 assignment to amr_2
+[cbba_node-26] [INFO] [1789368961.170686392] [amr_1.cbba_node]: Committed task task_w30_0014 assignment to amr_1
+[cbba_node-27] [INFO] [1789368961.171783254] [amr_2.cbba_node]: Committed task task_w30_0021 assignment to amr_2
+[task_manager-24] [INFO] [1789368961.171909007] [amr_task_manager]: Task 'task_w30_0001' transitioned to ASSIGNED
+[cbba_node-26] [INFO] [1789368961.172111559] [amr_1.cbba_node]: Committed task task_w30_0013 assignment to amr_1
+[cbba_node-27] [INFO] [1789368961.172974698] [amr_2.cbba_node]: Committed task task_w30_0028 assignment to amr_2
+[cbba_node-26] [INFO] [1789368961.173471162] [amr_1.cbba_node]: Committed task task_w30_0010 assignment to amr_1
+[task_manager-24] [INFO] [1789368961.173505684] [amr_task_manager]: Task 'task_w30_0009' transitioned to ASSIGNED
+[cbba_node-26] [INFO] [1789368961.174889405] [amr_1.cbba_node]: Committed task task_w30_0020 assignment to amr_1
+[task_manager-24] [INFO] [1789368961.175125498] [amr_task_manager]: Task 'task_w30_0014' transitioned to ASSIGNED
+[cbba_node-26] [INFO] [1789368961.176382379] [amr_1.cbba_node]: Committed task task_w30_0027 assignment to amr_1
+[task_manager-24] [INFO] [1789368961.176970956] [amr_task_manager]: Task 'task_w30_0015' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.178618406] [amr_task_manager]: Task 'task_w30_0021' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.180222808] [amr_task_manager]: Task 'task_w30_0013' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.181859051] [amr_task_manager]: Task 'task_w30_0028' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.183546995] [amr_task_manager]: Task 'task_w30_0010' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.184575932] [amr_task_manager]: Task 'task_w30_0020' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.185603631] [amr_task_manager]: Task 'task_w30_0027' transitioned to ASSIGNED
+[cbba_node-25] [INFO] [1789368961.190031429] [amr_0.cbba_node]: Committed task task_w30_0026 assignment to amr_0
+[task_manager-24] [INFO] [1789368961.190118757] [amr_task_manager]: Task 'task_w30_0026' transitioned to ASSIGNED
+[cbba_node-25] [INFO] [1789368961.191320626] [amr_0.cbba_node]: Committed task task_w30_0016 assignment to amr_0
+[task_manager-24] [INFO] [1789368961.191502749] [amr_task_manager]: Task 'task_w30_0016' transitioned to ASSIGNED
+[cbba_node-25] [INFO] [1789368961.192516106] [amr_0.cbba_node]: Committed task task_w30_0008 assignment to amr_0
+[task_manager-24] [INFO] [1789368961.192795656] [amr_task_manager]: Task 'task_w30_0008' transitioned to ASSIGNED
+[cbba_node-25] [INFO] [1789368961.193754144] [amr_0.cbba_node]: Committed task task_w30_0022 assignment to amr_0
+[task_manager-24] [INFO] [1789368961.194422491] [amr_task_manager]: Task 'task_w30_0022' transitioned to ASSIGNED
+[cbba_node-25] [INFO] [1789368961.194971146] [amr_0.cbba_node]: Committed task task_w30_0019 assignment to amr_0
+[cbba_node-25] [INFO] [1789368961.196160096] [amr_0.cbba_node]: Committed task task_w30_0025 assignment to amr_0
+[task_manager-24] [INFO] [1789368961.196346986] [amr_task_manager]: Task 'task_w30_0019' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.198048983] [amr_task_manager]: Task 'task_w30_0025' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.335565791] [amr_task_manager]: Task 'task_w30_0003' transitioned to ASSIGNED
+[cbba_node-28] [INFO] [1789368961.335714366] [amr_3.cbba_node]: Committed task task_w30_0003 assignment to amr_3
+[task_manager-24] [INFO] [1789368961.337292540] [amr_task_manager]: Task 'task_w30_0006' transitioned to ASSIGNED
+[cbba_node-28] [INFO] [1789368961.337357493] [amr_3.cbba_node]: Committed task task_w30_0006 assignment to amr_3
+[task_manager-24] [INFO] [1789368961.338372711] [amr_task_manager]: Task 'task_w30_0011' transitioned to ASSIGNED
+[cbba_node-28] [INFO] [1789368961.338694717] [amr_3.cbba_node]: Committed task task_w30_0011 assignment to amr_3
+[cbba_node-28] [INFO] [1789368961.339626073] [amr_3.cbba_node]: Committed task task_w30_0017 assignment to amr_3
+[task_manager-24] [INFO] [1789368961.339998844] [amr_task_manager]: Task 'task_w30_0017' transitioned to ASSIGNED
+[cbba_node-28] [INFO] [1789368961.340578186] [amr_3.cbba_node]: Committed task task_w30_0023 assignment to amr_3
+[task_manager-24] [INFO] [1789368961.341490882] [amr_task_manager]: Task 'task_w30_0023' transitioned to ASSIGNED
+[cbba_node-28] [INFO] [1789368961.342156785] [amr_3.cbba_node]: Committed task task_w30_0029 assignment to amr_3
+[task_manager-24] [INFO] [1789368961.342833777] [amr_task_manager]: Task 'task_w30_0029' transitioned to ASSIGNED
+[cbba_node-29] [INFO] [1789368961.349785461] [amr_4.cbba_node]: Committed task task_w30_0004 assignment to amr_4
+[task_manager-24] [INFO] [1789368961.350297605] [amr_task_manager]: Task 'task_w30_0004' transitioned to ASSIGNED
+[cbba_node-29] [INFO] [1789368961.351098061] [amr_4.cbba_node]: Committed task task_w30_0007 assignment to amr_4
+[task_manager-24] [INFO] [1789368961.351975071] [amr_task_manager]: Task 'task_w30_0007' transitioned to ASSIGNED
+[cbba_node-29] [INFO] [1789368961.352241235] [amr_4.cbba_node]: Committed task task_w30_0012 assignment to amr_4
+[cbba_node-29] [INFO] [1789368961.353065083] [amr_4.cbba_node]: Committed task task_w30_0018 assignment to amr_4
+[task_manager-24] [INFO] [1789368961.353109375] [amr_task_manager]: Task 'task_w30_0012' transitioned to ASSIGNED
+[cbba_node-29] [INFO] [1789368961.353789247] [amr_4.cbba_node]: Committed task task_w30_0024 assignment to amr_4
+[task_manager-24] [INFO] [1789368961.354029084] [amr_task_manager]: Task 'task_w30_0018' transitioned to ASSIGNED
+[cbba_node-29] [INFO] [1789368961.354471571] [amr_4.cbba_node]: Committed task task_w30_0030 assignment to amr_4
+[task_manager-24] [INFO] [1789368961.354926306] [amr_task_manager]: Task 'task_w30_0024' transitioned to ASSIGNED
+[task_manager-24] [INFO] [1789368961.356415340] [amr_task_manager]: Task 'task_w30_0030' transitioned to ASSIGNED
+[rh_node-30] [INFO] [1789368963.685008627] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368963.727392817] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368963.862764505] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368963.970760692] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368964.185695291] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368964.228280166] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368964.361411161] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368964.470080172] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368964.685015075] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368964.728755568] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368964.861385959] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368964.970160591] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368965.185071632] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368965.227702309] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368965.361594720] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368965.469499297] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368965.686342438] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368965.729355641] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368965.862698548] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368965.970767277] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368966.185668260] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368966.227356996] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368966.361849722] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368966.470161751] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368966.685278275] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368966.728012005] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368966.861413989] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368966.970835148] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368967.185069375] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368967.227442173] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368967.361434911] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368967.469561453] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368967.685051984] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368967.727521202] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368967.861431094] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368967.969557604] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368968.185428245] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368968.227804709] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368968.361957100] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368968.469991963] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368968.684052121] [amr_0.rh_node]: [amr_0] Reached pickup for task 'task_w30_0026'. Moving to dropoff.
+[task_manager-24] [INFO] [1789368968.685648388] [amr_task_manager]: Task 'task_w30_0026' transitioned to IN_PROGRESS
+[rh_node-30] [INFO] [1789368968.686521938] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368968.728393592] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368968.861628741] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368968.969935337] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368969.185377533] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368969.227879034] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368969.361491010] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368969.469699897] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368969.685310512] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368969.727479494] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368969.862593230] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368969.969241643] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368970.185300726] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368970.227390709] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368970.361474333] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368970.470732456] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368970.685172611] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368970.727850136] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368970.862624185] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368970.969293112] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368971.186716034] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368971.227332747] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368971.361873277] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368971.469401136] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368971.686174238] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368971.728672430] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368971.861836774] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368971.970600088] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368972.186159982] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368972.228631035] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368972.362439170] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368972.470646985] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368972.685163046] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368972.727906045] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368972.861574785] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368972.970332352] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368973.185882065] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368973.227359599] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368973.361731803] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368973.469355979] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368973.686115659] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368973.727412491] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368973.861139409] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368973.969593410] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368974.185414633] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368974.227708083] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368974.361823811] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368974.469570497] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368974.686660703] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368974.727909841] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368974.862006055] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368974.969444349] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368975.185307603] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368975.227941289] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368975.361996219] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368975.469446172] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368975.685522585] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368975.727736540] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368975.861834193] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368975.969233533] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368976.186688393] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368976.227429136] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368976.361705282] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368976.470739640] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368976.685313220] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368976.727947001] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368976.861277193] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368976.970334949] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368977.185613274] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368977.228441276] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368977.361721997] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368977.469898782] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368977.686182668] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368977.727338810] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368977.861837976] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368977.970265087] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368978.186601772] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368978.228097148] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368978.361940867] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368978.470341963] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368978.686469884] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368978.728651293] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368978.861640608] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368978.969103006] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368979.187408123] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368979.229587019] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368979.361075733] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368979.469821983] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368979.686334809] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368979.727384945] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368979.861729168] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368979.969345663] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368980.186468053] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368980.228527962] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368980.361906824] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368980.469351218] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368980.685138062] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368980.728450996] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368980.861194647] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368980.970042268] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368981.186741940] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368981.227096007] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368981.361651665] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368981.469295015] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368981.685150848] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368981.727309214] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368981.861769919] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368981.970508662] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368982.185152931] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368982.227760873] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368982.361684193] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368982.470050547] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368982.685288145] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368982.728767242] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368982.861337375] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368982.970608773] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368983.185183094] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368983.228606964] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368983.361769871] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368983.469800969] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368983.685059898] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368983.729235564] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368983.862112859] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368983.969765777] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368984.186733280] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368984.228234244] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368984.362264085] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368984.470777739] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368984.685292573] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368984.727148328] [amr_3.rh_node]: [amr_3] Reached pickup for task 'task_w30_0003'. Moving to dropoff.
+[rh_node-33] [INFO] [1789368984.729104272] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[task_manager-24] [INFO] [1789368984.729287148] [amr_task_manager]: Task 'task_w30_0003' transitioned to IN_PROGRESS
+[rh_node-31] [INFO] [1789368984.862197382] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368984.970917291] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368985.185138287] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368985.227428665] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368985.361837258] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368985.469410177] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368985.685145541] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368985.728059964] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368985.861517080] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368985.970486247] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368986.185016673] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368986.228001452] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368986.361150743] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368986.470565724] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368986.685368821] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368986.728858630] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368986.861871967] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368986.969193729] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368987.185277172] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368987.228177896] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368987.361078565] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368987.471325984] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']
+[rh_node-30] [INFO] [1789368987.686171191] [amr_0.rh_node]: [amr_0] Pruned expired reservations for peers: ['amr_4']
+[rh_node-33] [INFO] [1789368987.727930567] [amr_3.rh_node]: [amr_3] Pruned expired reservations for peers: ['amr_4']
+[rh_node-31] [INFO] [1789368987.862024775] [amr_1.rh_node]: [amr_1] Pruned expired reservations for peers: ['amr_4']
+[rh_node-32] [INFO] [1789368987.970822258] [amr_2.rh_node]: [amr_2] Pruned expired reservations for peers: ['amr_4']

@@ -19,14 +19,26 @@
         <wheel_radius>${wheel_radius}</wheel_radius>
         <odom_publish_frequency>30</odom_publish_frequency>
         <topic>/${robot_name}/cmd_vel</topic>
-        <odom_topic>/${robot_name}/odom</odom_topic>
-        <tf_topic>/${robot_name}/tf</tf_topic>
+        <odom_topic>/${robot_name}/odom_wheel</odom_topic>
+        <tf_topic>/${robot_name}/tf_wheel</tf_topic>
         <frame_id>${prefix}odom</frame_id>
         <child_frame_id>${prefix}base_footprint</child_frame_id>
         <max_linear_acceleration>2.0</max_linear_acceleration>
         <min_linear_acceleration>-2.0</min_linear_acceleration>
         <max_angular_acceleration>3.0</max_angular_acceleration>
         <min_angular_acceleration>-3.0</min_angular_acceleration>
+      </plugin>
+
+      <!-- Ground-Truth Odometry and TF Publisher in map frame -->
+      <plugin
+        filename="gz-sim-odometry-publisher-system"
+        name="gz::sim::systems::OdometryPublisher">
+        <odom_frame>map</odom_frame>
+        <robot_base_frame>${prefix}base_footprint</robot_base_frame>
+        <odom_topic>/${robot_name}/odom</odom_topic>
+        <tf_topic>/${robot_name}/tf</tf_topic>
+        <dimensions>2</dimensions>
+        <odom_publish_frequency>30</odom_publish_frequency>
       </plugin>
 
       <plugin
@@ -67,6 +79,21 @@
           </noise>
         </lidar>
       </sensor>
+    </gazebo>
+
+    <!-- Surface properties for high-traction drive wheels -->
+    <gazebo reference="${prefix}left_wheel">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp>10000000.0</kp>
+      <kd>1.0</kd>
+    </gazebo>
+
+    <gazebo reference="${prefix}right_wheel">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp>10000000.0</kp>
+      <kd>1.0</kd>
     </gazebo>
 
     <!-- Surface properties for low-friction casters -->

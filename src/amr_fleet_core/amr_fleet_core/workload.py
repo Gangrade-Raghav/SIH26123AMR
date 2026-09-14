@@ -40,6 +40,7 @@ class WorkloadManager:
                     created_at=float(item.get('created_at', 0.0)),
                     deadline=deadline,
                     metadata=item.get('metadata', {}),
+                    release_time_sec=float(item.get('release_time_sec', 0.0)),
                 )
                 tasks.append(task)
             return tasks
@@ -52,6 +53,9 @@ class WorkloadManager:
             id_prefix=str(workload_data.get('id_prefix', 'task')),
             base_time=float(workload_data.get('base_time', 0.0)),
         )
+
+        if 'staged_releases' in workload_data:
+            config.staged_releases = list(workload_data['staged_releases'])
 
         if 'priority_weights' in workload_data:
             config.priority_weights = {

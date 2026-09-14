@@ -1,0 +1,152 @@
+{
+  "schema_version": "m8b.v1",
+  "experiment_id": "exp_m8b_w30_t0_s42_adaptive_1789369204",
+  "metadata": {
+    "experiment_id": "exp_m8b_w30_t0_s42_adaptive_1789369204",
+    "timestamp_utc": "2026-09-14T07:00:04.032453+00:00",
+    "timestamp_unix": 1789369204.0324671,
+    "git_commit": "9e33886",
+    "software_version": "m8b.v1",
+    "fleet_size": 5,
+    "workload_id": "workload_30_tasks",
+    "workload_size": 30,
+    "trial_id": 0,
+    "seed": 42,
+    "mission_horizon_sec": 120.0,
+    "actual_duration_sec": 39.35,
+    "communication_profile": "HIGH_LATENCY",
+    "compute_mode": "ADAPTIVE",
+    "map_id": "warehouse_grid_small",
+    "termination_reason": "SAFETY_ABORT"
+  },
+  "metrics": {
+    "generated_tasks": 30,
+    "assigned_tasks": 7,
+    "completed_tasks": 0,
+    "failed_tasks": 0,
+    "remaining_tasks": 30,
+    "completion_rate_pct": 0.0,
+    "throughput_tasks_per_min": 0.0,
+    "makespan_sec": 39.35,
+    "planning_cycles": 423,
+    "replan_count": 505,
+    "planning_latency_mean_ms": 0.09,
+    "planning_latency_p50_ms": 0.07,
+    "planning_latency_p95_ms": 0.21,
+    "planning_latency_p99_ms": 0.34,
+    "cbba_convergence_time_ms": null,
+    "allocation_changes": 0,
+    "unassigned_tasks": 23,
+    "conflicts_detected": 8,
+    "conflicts_resolved": 8,
+    "deadlocks_detected": 0,
+    "deadlocks_recovered": 0,
+    "minimum_inter_robot_distance_m": 0.346,
+    "collision_contact_events": 1,
+    "safety_brake_interventions": 31,
+    "cpu_utilization_mean_pct": 30.7,
+    "cpu_utilization_max_pct": 34.8,
+    "ram_utilization_mean_mb": 7207.3,
+    "ram_utilization_max_mb": 7359.4,
+    "mode_transitions": 5,
+    "failsafe_fallbacks": 0,
+    "mode_occupancy_low_pct": 0.0,
+    "mode_occupancy_normal_pct": 94.2,
+    "mode_occupancy_high_pct": 5.8
+  },
+  "completed_task_ids": [],
+  "collision_events": [
+    {
+      "r1": "amr_1",
+      "r2": "amr_0",
+      "p1": [
+        5.787,
+        2.807
+      ],
+      "p2": [
+        5.794,
+        2.461
+      ],
+      "dist": 0.346,
+      "time": 1789369251.1229954
+    }
+  ],
+  "compute_mode_events": [
+    {
+      "robot_id": "amr_1",
+      "previous_mode": "NORMAL",
+      "current_mode": "HIGH",
+      "trigger_signal": "active_conflicts",
+      "trigger_value": 2.0,
+      "threshold_value": 2.0,
+      "reason": "SPACE_TIME_CONFLICTS_IN_LOCAL_WINDOW",
+      "dwell_time_sec": 0.0,
+      "timestamp": 1789369248.1470687
+    },
+    {
+      "robot_id": "amr_2",
+      "previous_mode": "NORMAL",
+      "current_mode": "HIGH",
+      "trigger_signal": "active_conflicts",
+      "trigger_value": 2.0,
+      "threshold_value": 2.0,
+      "reason": "SPACE_TIME_CONFLICTS_IN_LOCAL_WINDOW",
+      "dwell_time_sec": 0.0,
+      "timestamp": 1789369248.6614127
+    },
+    {
+      "robot_id": "amr_3",
+      "previous_mode": "NORMAL",
+      "current_mode": "HIGH",
+      "trigger_signal": "active_conflicts",
+      "trigger_value": 2.0,
+      "threshold_value": 2.0,
+      "reason": "SPACE_TIME_CONFLICTS_IN_LOCAL_WINDOW",
+      "dwell_time_sec": 0.0,
+      "timestamp": 1789369249.0862224
+    },
+    {
+      "robot_id": "amr_0",
+      "previous_mode": "NORMAL",
+      "current_mode": "HIGH",
+      "trigger_signal": "active_conflicts",
+      "trigger_value": 2.0,
+      "threshold_value": 2.0,
+      "reason": "SPACE_TIME_CONFLICTS_IN_LOCAL_WINDOW",
+      "dwell_time_sec": 0.0,
+      "timestamp": 1789369249.093124
+    },
+    {
+      "robot_id": "amr_4",
+      "previous_mode": "NORMAL",
+      "current_mode": "HIGH",
+      "trigger_signal": "active_conflicts",
+      "trigger_value": 2.0,
+      "threshold_value": 2.0,
+      "reason": "SPACE_TIME_CONFLICTS_IN_LOCAL_WINDOW",
+      "dwell_time_sec": 0.0,
+      "timestamp": 1789369249.144189
+    }
+  ],
+  "replan_counts_initial": {
+    "amr_0": 1,
+    "amr_1": 2,
+    "amr_2": 2,
+    "amr_3": 0,
+    "amr_4": 3
+  },
+  "replan_counts_final": {
+    "amr_0": 122,
+    "amr_1": 95,
+    "amr_2": 75,
+    "amr_3": 108,
+    "amr_4": 113
+  },
+  "replan_counts_delta": {
+    "amr_0": 121,
+    "amr_1": 93,
+    "amr_2": 73,
+    "amr_3": 108,
+    "amr_4": 110
+  }
+}

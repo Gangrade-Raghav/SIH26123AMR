@@ -25,6 +25,14 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/PlanningRequest.msg"
   "msg/PlanningResponse.msg"
   "msg/RollingHorizonPlan.msg"
+  "msg/SpaceTimeReservation.msg"
+  "msg/ConflictReport.msg"
+  "msg/DeadlockEvent.msg"
+  "msg/CoordinationStatus.msg"
+  "msg/CommunicationProfile.msg"
+  "msg/CommunicationMetrics.msg"
+  "msg/ComputeModeEvent.msg"
+  "msg/AisleBlockageEvent.msg"
   DEPENDENCIES
     std_msgs
     geometry_msgs

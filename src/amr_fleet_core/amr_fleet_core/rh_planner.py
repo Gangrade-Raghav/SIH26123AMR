@@ -62,6 +62,35 @@ class SingleAgentAStar:
         if not self.grid.in_bounds(start_grid) or not self.grid.in_bounds(goal_grid):
             return None
 
+        actual_start = start_grid
+        if not self.grid.is_free(actual_start):
+            neighbors = self.grid.get_neighbors(actual_start, allow_wait=False)
+            if not neighbors:
+                found = False
+                for r in range(1, 4):
+                    for dx in range(-r, r + 1):
+                        for dy in range(-r, r + 1):
+                            cand = (actual_start[0] + dx, actual_start[1] + dy)
+                            if self.grid.is_free(cand):
+                                actual_start = cand
+                                found = True
+                                break
+                        if found:
+                            break
+                    if found:
+                        break
+                if not found:
+                    return None
+            else:
+                actual_start = min(
+                    neighbors,
+                    key=lambda p: (
+                        self.grid.manhattan_distance(p, goal_grid),
+                        p[0],
+                        p[1],
+                    ),
+                )
+
         actual_goal = goal_grid
         if not self.grid.is_free(actual_goal):
             neighbors = self.grid.get_neighbors(actual_goal, allow_wait=False)
@@ -70,23 +99,23 @@ class SingleAgentAStar:
             actual_goal = min(
                 neighbors,
                 key=lambda p: (
-                    self.grid.manhattan_distance(p, start_grid),
+                    self.grid.manhattan_distance(p, actual_start),
                     p[0],
                     p[1],
                 ),
             )
 
-        if start_grid == actual_goal:
-            return [start_grid]
+        if actual_start == actual_goal:
+            return [actual_start]
 
         open_set: List[Tuple[int, int, int, Position]] = []
         counter = 0
 
-        h_start = self.grid.manhattan_distance(start_grid, actual_goal)
-        heapq.heappush(open_set, (h_start, h_start, counter, start_grid))
+        h_start = self.grid.manhattan_distance(actual_start, actual_goal)
+        heapq.heappush(open_set, (h_start, h_start, counter, actual_start))
 
         came_from: Dict[Position, Position] = {}
-        g_score: Dict[Position, int] = {start_grid: 0}
+        g_score: Dict[Position, int] = {actual_start: 0}
         closed_set: Set[Position] = set()
 
         while open_set:
@@ -232,9 +261,11 @@ class RollingHorizonPlanner:
         # Telemetry & Metrics
         self.replan_count: int = 0
         self.steps_executed_in_window: int = 0
+        self.active_waypoint_idx: int = 1
         self.last_latency_ms: float = 0.0
         self.last_plan_success: bool = False
         self.total_distance_planned: float = 0.0
+        self.last_progress_time: float = time.time()
 
     def update_position(self, pos: Tuple[float, float]) -> None:
         """Update localized robot position from odometry."""
@@ -248,31 +279,67 @@ class RollingHorizonPlanner:
         """
         Ingest assigned tasks from M4 CBBA.
 
+        Preserves currently executing tasks without interruption when new tasks
+        are appended or bundle is expanded dynamically.
         Returns True if the bundle contents changed.
         """
         bundle_changed = set(bundle) != set(self.assigned_bundle)
         self.assigned_bundle = list(bundle)
         self.tasks_map = dict(tasks_map)
 
-        if bundle_changed or (self.assigned_bundle and not self.ordered_tasks):
-            self.ordered_tasks = TaskSequencer.sequence(
-                self.assigned_bundle,
+        if not bundle_changed and (not self.assigned_bundle or self.ordered_tasks):
+            return False
+
+        # If robot is actively executing an in-progress task, preserve it without interruption
+        if (
+            self.active_phase in ('TRANSIT_TO_PICKUP', 'TRANSIT_TO_DROPOFF')
+            and self.ordered_tasks
+            and self.active_task_idx < len(self.ordered_tasks)
+        ):
+            curr_tid = self.ordered_tasks[self.active_task_idx]
+            completed_tasks = list(self.ordered_tasks[:self.active_task_idx])
+            # Unstarted / newly added tasks in bundle
+            future_tasks = [
+                t for t in self.assigned_bundle
+                if t != curr_tid and t not in completed_tasks
+            ]
+            if curr_tid in self.tasks_map:
+                anchor_pos = self.tasks_map[curr_tid].get('dropoff', self.current_position)
+            else:
+                anchor_pos = self.current_position
+
+            sequenced_future = TaskSequencer.sequence(
+                future_tasks,
                 self.tasks_map,
-                self.current_position,
+                anchor_pos,
                 heuristic=self.config.sequencing_heuristic,
             )
-            self.active_task_idx = 0
-            if self.ordered_tasks and self.ordered_tasks[0] in self.tasks_map:
-                self.active_phase = 'TRANSIT_TO_PICKUP'
-                first_t = self.tasks_map[self.ordered_tasks[0]]
-                self.current_goal = first_t.get('pickup')
-            else:
-                self.active_phase = 'IDLE'
-                self.current_goal = None
-            self.replan()
+            self.ordered_tasks = completed_tasks + [curr_tid] + sequenced_future
+            # Keep active_task_idx, active_phase, and current_goal untouched
             return True
 
-        return False
+        # Robot was IDLE or uninitialized: sequence entire bundle
+        uncompleted_bundle = [
+            t for t in self.assigned_bundle
+            if t in self.tasks_map and self.tasks_map[t].get('status') != 'COMPLETED'
+        ] or list(self.assigned_bundle)
+
+        self.ordered_tasks = TaskSequencer.sequence(
+            uncompleted_bundle,
+            self.tasks_map,
+            self.current_position,
+            heuristic=self.config.sequencing_heuristic,
+        )
+        self.active_task_idx = 0
+        if self.ordered_tasks and self.ordered_tasks[0] in self.tasks_map:
+            self.active_phase = 'TRANSIT_TO_PICKUP'
+            first_t = self.tasks_map[self.ordered_tasks[0]]
+            self.current_goal = first_t.get('pickup')
+        else:
+            self.active_phase = 'IDLE'
+            self.current_goal = None
+        self.replan()
+        return True
 
     def check_subgoal_arrival(self) -> bool:
         """Check whether the robot has arrived at its active sub-goal."""
@@ -343,9 +410,13 @@ class RollingHorizonPlanner:
             return True
 
         if self.active_phase != 'IDLE':
-            if not self.full_path:
+            if not self.full_path or not self.execution_path:
                 return True
             if self.steps_executed_in_window >= self.config.execution_window:
+                return True
+            if self.active_waypoint_idx >= len(self.execution_path):
+                return True
+            if time.time() - self.last_progress_time > 3.0:
                 return True
 
         return False
@@ -360,6 +431,8 @@ class RollingHorizonPlanner:
         start_time = time.perf_counter()
         self.replan_count += 1
         self.steps_executed_in_window = 0
+        self.active_waypoint_idx = 1
+        self.last_progress_time = time.time()
 
         curr_tid = (
             self.ordered_tasks[self.active_task_idx]
@@ -425,6 +498,17 @@ class RollingHorizonPlanner:
             )
 
         world_path = [self.grid.to_world(p) for p in grid_path]
+        if grid_path[-1] == goal_grid and self.current_goal is not None:
+            world_path[-1] = (round(self.current_goal[0], 3), round(self.current_goal[1], 3))
+
+        if len(world_path) == 1 and self.current_goal is not None:
+            # If start_grid == goal_grid but not arrived within tolerance,
+            # drive remaining sub-grid distance to continuous goal.
+            if not self.check_subgoal_arrival():
+                world_path = [
+                    self.current_position,
+                    (round(self.current_goal[0], 3), round(self.current_goal[1], 3)),
+                ]
 
         total_cost = 0.0
         for i in range(len(world_path) - 1):
@@ -465,21 +549,38 @@ class RollingHorizonPlanner:
             replan_count=self.replan_count,
         )
 
-    def advance_execution_step(self) -> Optional[Tuple[float, float]]:
+    def get_current_target_waypoint(self) -> Optional[Tuple[float, float]]:
         """
-        Advance one step along the current execution window.
+        Return the immediate target waypoint in world coordinates.
 
-        Returns the immediate target waypoint in world coordinates.
+        Returns None if no active execution path exists.
+        """
+        if not self.execution_path or len(self.execution_path) <= 1:
+            return None
+        target_idx = min(self.active_waypoint_idx, len(self.execution_path) - 1)
+        return self.execution_path[target_idx]
+
+    def advance_waypoint(self) -> Optional[Tuple[float, float]]:
+        """
+        Advance one waypoint along the current execution window upon arrival.
+
+        Returns the new target waypoint in world coordinates.
         """
         if not self.execution_path or len(self.execution_path) <= 1:
             return None
 
+        self.active_waypoint_idx += 1
         self.steps_executed_in_window += 1
-        target_idx = min(
-            self.steps_executed_in_window,
-            len(self.execution_path) - 1,
-        )
-        return self.execution_path[target_idx]
+        self.last_progress_time = time.time()
+        return self.get_current_target_waypoint()
+
+    def advance_execution_step(self) -> Optional[Tuple[float, float]]:
+        """
+        Advance one step along current execution window (backward-compatibility).
+
+        Returns the immediate target waypoint in world coordinates.
+        """
+        return self.advance_waypoint()
 
     def to_plan_dict(self) -> Dict[str, Any]:
         """Serialize current rolling-horizon plan state."""

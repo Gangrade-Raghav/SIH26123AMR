@@ -98,3 +98,39 @@ def test_create_warehouse_grid():
     # Perimeter walls must be obstacles
     assert not grid.is_free(grid.to_grid(0.1, 8.0))
     assert not grid.is_free(grid.to_grid(15.9, 8.0))
+
+
+def test_from_yaml_m9_v1():
+    import os
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))
+    )))
+    yaml_path = os.path.join(
+        repo_root, 'config', 'maps', 'warehouse_m9_v1.yaml'
+    )
+    if not os.path.exists(yaml_path):
+        pytest.skip('warehouse_m9_v1.yaml not found')
+
+    grid = GridWorld.from_yaml(yaml_path)
+    assert grid.width == 64
+    assert grid.height == 64
+    assert grid.resolution == 0.5
+    assert grid.map_id == 'warehouse_m9_v1'
+
+    # Verify stations are loaded
+    assert len(grid.stations.get('pickups', [])) == 8
+    assert len(grid.stations.get('dropoffs', [])) == 4
+    assert len(grid.stations.get('charging', [])) == 8
+
+    # Free positions: Central arterial (16.0, 16.0), pickups, dropoffs
+    assert grid.is_free(grid.to_grid(16.0, 16.0))
+    assert grid.is_free(grid.to_grid(2.5, 2.0))
+    assert grid.is_free(grid.to_grid(8.5, 8.5))
+
+    # Rack obstacles: rack_1 at (5.5, 5.0), rack_16 at (26.5, 27.0)
+    assert not grid.is_free(grid.to_grid(5.5, 5.0))
+    assert not grid.is_free(grid.to_grid(26.5, 27.0))
+
+    # Perimeter walls: (0.2, 16.0), (31.8, 16.0)
+    assert not grid.is_free(grid.to_grid(0.2, 16.0))
+    assert not grid.is_free(grid.to_grid(31.8, 16.0))

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""M3 Task Generation and Lifecycle Infrastructure Verification Script.
+"""
+M3 Task Generation and Lifecycle Infrastructure Verification Script.
 
 Empirically validates:
 1. Workload YAML specifications load and validate correctly.

@@ -1,0 +1,336 @@
+[INFO] [launch]: All log files can be found below /home/raghav/.ros/log/2026-09-15-00-27-01-100335-Raze-297877
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: [FLEET] Spawning 10 robots into world "warehouse_m9_v2" (headless=True)
+[INFO] [launch.user]: [M8B Fleet Bringup] Starting 10 CBBA nodes (bundle cap: 8, profile: NORMAL, compute_mode: ADAPTIVE)
+[INFO] [launch.user]: [M8B Fleet Bringup] Starting 10 M8B RH nodes (compute_mode: ADAPTIVE, adaptive: True, h=10, w=4, replan_rate=2.0Hz)
+[INFO] [gazebo-1]: process started with pid [297907]
+[INFO] [parameter_bridge-2]: process started with pid [297908]
+[INFO] [warehouse_visualizer-3]: process started with pid [297909]
+[INFO] [task_manager-4]: process started with pid [297911]
+[INFO] [cbba_node-5]: process started with pid [297912]
+[INFO] [cbba_node-6]: process started with pid [297913]
+[INFO] [cbba_node-7]: process started with pid [297914]
+[INFO] [cbba_node-8]: process started with pid [297915]
+[INFO] [cbba_node-9]: process started with pid [297916]
+[INFO] [cbba_node-10]: process started with pid [297917]
+[INFO] [cbba_node-11]: process started with pid [297918]
+[INFO] [cbba_node-12]: process started with pid [297919]
+[INFO] [cbba_node-13]: process started with pid [297920]
+[INFO] [cbba_node-14]: process started with pid [297921]
+[INFO] [rh_node-15]: process started with pid [297922]
+[INFO] [rh_node-16]: process started with pid [297923]
+[INFO] [rh_node-17]: process started with pid [297924]
+[INFO] [rh_node-18]: process started with pid [297925]
+[INFO] [rh_node-19]: process started with pid [297926]
+[INFO] [rh_node-20]: process started with pid [297929]
+[INFO] [rh_node-21]: process started with pid [297930]
+[INFO] [rh_node-22]: process started with pid [297931]
+[INFO] [rh_node-23]: process started with pid [297932]
+[INFO] [rh_node-24]: process started with pid [297933]
+[parameter_bridge-2] [INFO] [1789412221.477550447] [clock_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[cbba_node-10] [INFO] [1789412221.982994471] [amr_5.cbba_node]: CBBA Node initialized for amr_5 (bundle cap: 8)
+[rh_node-15] [INFO] [1789412222.124369552] [amr_0.rh_node]: [amr_0] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[rh_node-22] [INFO] [1789412222.155495326] [amr_7.rh_node]: [amr_7] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[cbba_node-13] [INFO] [1789412222.160786302] [amr_8.cbba_node]: CBBA Node initialized for amr_8 (bundle cap: 8)
+[cbba_node-5] [INFO] [1789412222.201804339] [amr_0.cbba_node]: CBBA Node initialized for amr_0 (bundle cap: 8)
+[cbba_node-9] [INFO] [1789412222.225975493] [amr_4.cbba_node]: CBBA Node initialized for amr_4 (bundle cap: 8)
+[task_manager-4] [INFO] [1789412222.248979358] [amr_task_manager]: Loaded 30 tasks from workload: /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/workloads/workload_30_tasks_m9_v3_d.yaml
+[rh_node-24] [INFO] [1789412222.279521189] [amr_9.rh_node]: [amr_9] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[task_manager-4] [INFO] [1789412222.299818919] [amr_task_manager]: Task Manager Node initialized.
+[rh_node-18] [INFO] [1789412222.358641682] [amr_3.rh_node]: [amr_3] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[cbba_node-7] [INFO] [1789412222.369329117] [amr_2.cbba_node]: CBBA Node initialized for amr_2 (bundle cap: 8)
+[rh_node-22] [INFO] [1789412222.405399769] [amr_7.rh_node]: Rolling-Horizon Planner initialized for amr_7 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-15] [INFO] [1789412222.413390070] [amr_0.rh_node]: Rolling-Horizon Planner initialized for amr_0 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[cbba_node-12] [INFO] [1789412222.418432355] [amr_7.cbba_node]: CBBA Node initialized for amr_7 (bundle cap: 8)
+[warehouse_visualizer-3] [INFO] [1789412222.420211295] [warehouse_visualizer]: WarehouseVisualizerNode started with config: /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml. Publishing to /warehouse_markers.
+[rh_node-24] [INFO] [1789412222.434938678] [amr_9.rh_node]: Rolling-Horizon Planner initialized for amr_9 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-21] [INFO] [1789412222.445634320] [amr_6.rh_node]: [amr_6] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[cbba_node-6] [INFO] [1789412222.474445372] [amr_1.cbba_node]: CBBA Node initialized for amr_1 (bundle cap: 8)
+[rh_node-18] [INFO] [1789412222.477219202] [amr_3.rh_node]: Rolling-Horizon Planner initialized for amr_3 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-23] [INFO] [1789412222.480058918] [amr_8.rh_node]: [amr_8] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[cbba_node-11] [INFO] [1789412222.480914610] [amr_6.cbba_node]: CBBA Node initialized for amr_6 (bundle cap: 8)
+[cbba_node-14] [INFO] [1789412222.490475400] [amr_9.cbba_node]: CBBA Node initialized for amr_9 (bundle cap: 8)
+[cbba_node-8] [INFO] [1789412222.495897763] [amr_3.cbba_node]: CBBA Node initialized for amr_3 (bundle cap: 8)
+[rh_node-21] [INFO] [1789412222.506779874] [amr_6.rh_node]: Rolling-Horizon Planner initialized for amr_6 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-19] [INFO] [1789412222.512983996] [amr_4.rh_node]: [amr_4] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[rh_node-23] [INFO] [1789412222.555131803] [amr_8.rh_node]: Rolling-Horizon Planner initialized for amr_8 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-19] [INFO] [1789412222.575744038] [amr_4.rh_node]: Rolling-Horizon Planner initialized for amr_4 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-20] [INFO] [1789412222.590946535] [amr_5.rh_node]: [amr_5] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[rh_node-20] [INFO] [1789412222.918411015] [amr_5.rh_node]: Rolling-Horizon Planner initialized for amr_5 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-16] [INFO] [1789412222.959431886] [amr_1.rh_node]: [amr_1] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[rh_node-17] [INFO] [1789412222.959972404] [amr_2.rh_node]: [amr_2] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v2.yaml (64x64)
+[rh_node-17] [INFO] [1789412223.004065195] [amr_2.rh_node]: Rolling-Horizon Planner initialized for amr_2 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[rh_node-16] [INFO] [1789412223.004413110] [amr_1.rh_node]: Rolling-Horizon Planner initialized for amr_1 (h=10, w=4, heuristic=PRIORITY_FIRST)
+[INFO] [robot_state_publisher-25]: process started with pid [298279]
+[INFO] [create-26]: process started with pid [298280]
+[INFO] [parameter_bridge-27]: process started with pid [298281]
+[INFO] [static_transform_publisher-28]: process started with pid [298282]
+[INFO] [robot_state_publisher-29]: process started with pid [298283]
+[INFO] [create-30]: process started with pid [298284]
+[INFO] [parameter_bridge-31]: process started with pid [298285]
+[INFO] [static_transform_publisher-32]: process started with pid [298286]
+[INFO] [robot_state_publisher-33]: process started with pid [298287]
+[INFO] [create-34]: process started with pid [298288]
+[INFO] [parameter_bridge-35]: process started with pid [298289]
+[INFO] [static_transform_publisher-36]: process started with pid [298290]
+[INFO] [robot_state_publisher-37]: process started with pid [298291]
+[INFO] [create-38]: process started with pid [298296]
+[INFO] [parameter_bridge-39]: process started with pid [298299]
+[INFO] [static_transform_publisher-40]: process started with pid [298300]
+[INFO] [robot_state_publisher-41]: process started with pid [298309]
+[INFO] [create-42]: process started with pid [298314]
+[INFO] [parameter_bridge-43]: process started with pid [298315]
+[INFO] [static_transform_publisher-44]: process started with pid [298317]
+[INFO] [robot_state_publisher-45]: process started with pid [298319]
+[INFO] [create-46]: process started with pid [298320]
+[INFO] [parameter_bridge-47]: process started with pid [298328]
+[INFO] [static_transform_publisher-48]: process started with pid [298336]
+[INFO] [robot_state_publisher-49]: process started with pid [298338]
+[INFO] [create-50]: process started with pid [298343]
+[INFO] [parameter_bridge-51]: process started with pid [298347]
+[INFO] [static_transform_publisher-52]: process started with pid [298362]
+[INFO] [robot_state_publisher-53]: process started with pid [298383]
+[INFO] [create-54]: process started with pid [298384]
+[INFO] [parameter_bridge-55]: process started with pid [298389]
+[INFO] [static_transform_publisher-56]: process started with pid [298392]
+[INFO] [robot_state_publisher-57]: process started with pid [298461]
+[INFO] [create-58]: process started with pid [298464]
+[INFO] [parameter_bridge-59]: process started with pid [298477]
+[INFO] [static_transform_publisher-60]: process started with pid [298482]
+[INFO] [robot_state_publisher-61]: process started with pid [298485]
+[INFO] [create-62]: process started with pid [298489]
+[INFO] [parameter_bridge-63]: process started with pid [298490]
+[INFO] [static_transform_publisher-64]: process started with pid [298491]
+[static_transform_publisher-36] [INFO] [1789412224.988264965] [amr_2_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-36] translation: ('1.500000', '16.000000', '0.000000')
+[static_transform_publisher-36] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-36] from 'map' to 'amr_2/odom'
+[create-30] [INFO] [1789412224.998418982] [amr_1_spawner]: Waiting messages on topic [amr_1/robot_description].
+[static_transform_publisher-32] [INFO] [1789412225.026506032] [amr_1_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-32] translation: ('1.500000', '10.000000', '0.000000')
+[static_transform_publisher-32] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-32] from 'map' to 'amr_1/odom'
+[create-46] [INFO] [1789412225.057812292] [amr_5_spawner]: Waiting messages on topic [amr_5/robot_description].
+[create-50] [INFO] [1789412225.068124044] [amr_6_spawner]: Waiting messages on topic [amr_6/robot_description].
+[static_transform_publisher-44] [INFO] [1789412225.068213412] [amr_4_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-44] translation: ('1.500000', '27.500000', '0.000000')
+[static_transform_publisher-44] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-44] from 'map' to 'amr_4/odom'
+[parameter_bridge-43] [INFO] [1789412225.083206207] [amr_4_bridge]: Creating ROS->GZ Bridge: [/amr_4/cmd_vel (geometry_msgs/msg/Twist) -> /amr_4/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-43] [INFO] [1789412225.085594324] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/odom (gz.msgs.Odometry) -> /amr_4/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-43] [INFO] [1789412225.087646491] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/scan (gz.msgs.LaserScan) -> /amr_4/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-43] [INFO] [1789412225.089218963] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/tf (gz.msgs.Pose_V) -> /amr_4/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-43] [INFO] [1789412225.090965364] [amr_4_bridge]: Creating GZ->ROS Bridge: [/amr_4/joint_states (gz.msgs.Model) -> /amr_4/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[create-54] [INFO] [1789412225.135278112] [amr_7_spawner]: Waiting messages on topic [amr_7/robot_description].
+[create-34] [INFO] [1789412225.175699387] [amr_2_spawner]: Waiting messages on topic [amr_2/robot_description].
+[static_transform_publisher-28] [INFO] [1789412225.179327493] [amr_0_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-28] translation: ('1.500000', '4.500000', '0.000000')
+[static_transform_publisher-28] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-28] from 'map' to 'amr_0/odom'
+[create-42] [INFO] [1789412225.192358402] [amr_4_spawner]: Waiting messages on topic [amr_4/robot_description].
+[robot_state_publisher-45] [INFO] [1789412225.211676756] [amr_5.robot_state_publisher]: Robot initialized
+[parameter_bridge-31] [INFO] [1789412225.212215089] [amr_1_bridge]: Creating ROS->GZ Bridge: [/amr_1/cmd_vel (geometry_msgs/msg/Twist) -> /amr_1/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[robot_state_publisher-53] [INFO] [1789412225.219299453] [amr_7.robot_state_publisher]: Robot initialized
+[create-62] [INFO] [1789412225.225353977] [amr_9_spawner]: Waiting messages on topic [amr_9/robot_description].
+[parameter_bridge-31] [INFO] [1789412225.231228965] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/odom (gz.msgs.Odometry) -> /amr_1/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[create-26] [INFO] [1789412225.239242189] [amr_0_spawner]: Waiting messages on topic [amr_0/robot_description].
+[parameter_bridge-31] [INFO] [1789412225.252081669] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/scan (gz.msgs.LaserScan) -> /amr_1/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-35] [INFO] [1789412225.252717092] [amr_2_bridge]: Creating ROS->GZ Bridge: [/amr_2/cmd_vel (geometry_msgs/msg/Twist) -> /amr_2/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-39] [INFO] [1789412225.254455362] [amr_3_bridge]: Creating ROS->GZ Bridge: [/amr_3/cmd_vel (geometry_msgs/msg/Twist) -> /amr_3/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[static_transform_publisher-56] [INFO] [1789412225.261770653] [amr_7_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-56] translation: ('30.500000', '16.000000', '0.000000')
+[static_transform_publisher-56] rotation: ('0.000000', '0.000000', '1.000000', '0.000001')
+[static_transform_publisher-56] from 'map' to 'amr_7/odom'
+[parameter_bridge-27] [INFO] [1789412225.269506159] [amr_0_bridge]: Creating ROS->GZ Bridge: [/amr_0/cmd_vel (geometry_msgs/msg/Twist) -> /amr_0/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-27] [INFO] [1789412225.271642539] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/odom (gz.msgs.Odometry) -> /amr_0/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-39] [INFO] [1789412225.272614884] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/odom (gz.msgs.Odometry) -> /amr_3/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-27] [INFO] [1789412225.273404931] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/scan (gz.msgs.LaserScan) -> /amr_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-39] [INFO] [1789412225.274487627] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/scan (gz.msgs.LaserScan) -> /amr_3/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-27] [INFO] [1789412225.275034270] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/tf (gz.msgs.Pose_V) -> /amr_0/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-27] [INFO] [1789412225.276852054] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/joint_states (gz.msgs.Model) -> /amr_0/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-39] [INFO] [1789412225.278475357] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/tf (gz.msgs.Pose_V) -> /amr_3/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[robot_state_publisher-57] [INFO] [1789412225.280042212] [amr_8.robot_state_publisher]: Robot initialized
+[parameter_bridge-35] [INFO] [1789412225.291137532] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/odom (gz.msgs.Odometry) -> /amr_2/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-39] [INFO] [1789412225.298994317] [amr_3_bridge]: Creating GZ->ROS Bridge: [/amr_3/joint_states (gz.msgs.Model) -> /amr_3/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-31] [INFO] [1789412225.307235531] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/tf (gz.msgs.Pose_V) -> /amr_1/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[create-58] [INFO] [1789412225.308620647] [amr_8_spawner]: Waiting messages on topic [amr_8/robot_description].
+[parameter_bridge-47] [INFO] [1789412225.310259749] [amr_5_bridge]: Creating ROS->GZ Bridge: [/amr_5/cmd_vel (geometry_msgs/msg/Twist) -> /amr_5/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-47] [INFO] [1789412225.320998801] [amr_5_bridge]: Creating GZ->ROS Bridge: [/amr_5/odom (gz.msgs.Odometry) -> /amr_5/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-31] [INFO] [1789412225.323223959] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/joint_states (gz.msgs.Model) -> /amr_1/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-35] [INFO] [1789412225.327131330] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/scan (gz.msgs.LaserScan) -> /amr_2/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-51] [INFO] [1789412225.329269562] [amr_6_bridge]: Creating ROS->GZ Bridge: [/amr_6/cmd_vel (geometry_msgs/msg/Twist) -> /amr_6/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-35] [INFO] [1789412225.331697595] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/tf (gz.msgs.Pose_V) -> /amr_2/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-51] [INFO] [1789412225.333561991] [amr_6_bridge]: Creating GZ->ROS Bridge: [/amr_6/odom (gz.msgs.Odometry) -> /amr_6/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-47] [INFO] [1789412225.335509275] [amr_5_bridge]: Creating GZ->ROS Bridge: [/amr_5/scan (gz.msgs.LaserScan) -> /amr_5/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-51] [INFO] [1789412225.337194523] [amr_6_bridge]: Creating GZ->ROS Bridge: [/amr_6/scan (gz.msgs.LaserScan) -> /amr_6/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-47] [INFO] [1789412225.337492055] [amr_5_bridge]: Creating GZ->ROS Bridge: [/amr_5/tf (gz.msgs.Pose_V) -> /amr_5/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-51] [INFO] [1789412225.339199151] [amr_6_bridge]: Creating GZ->ROS Bridge: [/amr_6/tf (gz.msgs.Pose_V) -> /amr_6/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-51] [INFO] [1789412225.341081254] [amr_6_bridge]: Creating GZ->ROS Bridge: [/amr_6/joint_states (gz.msgs.Model) -> /amr_6/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-47] [INFO] [1789412225.342184463] [amr_5_bridge]: Creating GZ->ROS Bridge: [/amr_5/joint_states (gz.msgs.Model) -> /amr_5/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-35] [INFO] [1789412225.343132095] [amr_2_bridge]: Creating GZ->ROS Bridge: [/amr_2/joint_states (gz.msgs.Model) -> /amr_2/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[robot_state_publisher-33] [INFO] [1789412225.343277852] [amr_2.robot_state_publisher]: Robot initialized
+[static_transform_publisher-52] [INFO] [1789412225.345552298] [amr_6_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-52] translation: ('30.500000', '10.000000', '0.000000')
+[static_transform_publisher-52] rotation: ('0.000000', '0.000000', '1.000000', '0.000001')
+[static_transform_publisher-52] from 'map' to 'amr_6/odom'
+[robot_state_publisher-61] [INFO] [1789412225.379144834] [amr_9.robot_state_publisher]: Robot initialized
+[static_transform_publisher-64] [INFO] [1789412225.380190680] [amr_9_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-64] translation: ('30.500000', '27.500000', '0.000000')
+[static_transform_publisher-64] rotation: ('0.000000', '0.000000', '1.000000', '0.000001')
+[static_transform_publisher-64] from 'map' to 'amr_9/odom'
+[static_transform_publisher-40] [INFO] [1789412225.381385634] [amr_3_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-40] translation: ('1.500000', '22.000000', '0.000000')
+[static_transform_publisher-40] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+[static_transform_publisher-40] from 'map' to 'amr_3/odom'
+[create-38] [INFO] [1789412225.394777384] [amr_3_spawner]: Waiting messages on topic [amr_3/robot_description].
+[robot_state_publisher-41] [INFO] [1789412225.403977963] [amr_4.robot_state_publisher]: Robot initialized
+[static_transform_publisher-60] [INFO] [1789412225.408955181] [amr_8_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-60] translation: ('30.500000', '22.000000', '0.000000')
+[static_transform_publisher-60] rotation: ('0.000000', '0.000000', '1.000000', '0.000001')
+[static_transform_publisher-60] from 'map' to 'amr_8/odom'
+[parameter_bridge-63] [INFO] [1789412225.410842411] [amr_9_bridge]: Creating ROS->GZ Bridge: [/amr_9/cmd_vel (geometry_msgs/msg/Twist) -> /amr_9/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-63] [INFO] [1789412225.421742965] [amr_9_bridge]: Creating GZ->ROS Bridge: [/amr_9/odom (gz.msgs.Odometry) -> /amr_9/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-63] [INFO] [1789412225.425091384] [amr_9_bridge]: Creating GZ->ROS Bridge: [/amr_9/scan (gz.msgs.LaserScan) -> /amr_9/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-63] [INFO] [1789412225.427218965] [amr_9_bridge]: Creating GZ->ROS Bridge: [/amr_9/tf (gz.msgs.Pose_V) -> /amr_9/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-63] [INFO] [1789412225.431350395] [amr_9_bridge]: Creating GZ->ROS Bridge: [/amr_9/joint_states (gz.msgs.Model) -> /amr_9/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[robot_state_publisher-49] [INFO] [1789412225.490970501] [amr_6.robot_state_publisher]: Robot initialized
+[robot_state_publisher-29] [INFO] [1789412225.503372839] [amr_1.robot_state_publisher]: Robot initialized
+[static_transform_publisher-48] [INFO] [1789412225.562822739] [amr_5_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-48] translation: ('30.500000', '4.500000', '0.000000')
+[static_transform_publisher-48] rotation: ('0.000000', '0.000000', '1.000000', '0.000001')
+[static_transform_publisher-48] from 'map' to 'amr_5/odom'
+[parameter_bridge-59] [INFO] [1789412225.569476172] [amr_8_bridge]: Creating ROS->GZ Bridge: [/amr_8/cmd_vel (geometry_msgs/msg/Twist) -> /amr_8/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-59] [INFO] [1789412225.573778768] [amr_8_bridge]: Creating GZ->ROS Bridge: [/amr_8/odom (gz.msgs.Odometry) -> /amr_8/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-59] [INFO] [1789412225.576696579] [amr_8_bridge]: Creating GZ->ROS Bridge: [/amr_8/scan (gz.msgs.LaserScan) -> /amr_8/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-59] [INFO] [1789412225.581406489] [amr_8_bridge]: Creating GZ->ROS Bridge: [/amr_8/tf (gz.msgs.Pose_V) -> /amr_8/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[cbba_node-12] [INFO] [1789412225.598886874] [amr_7.cbba_node]: Committed task task_m9_v3_w30_0008 assignment to amr_7
+[task_manager-4] [INFO] [1789412225.606604800] [amr_task_manager]: Task 'task_m9_v3_w30_0008' transitioned to ASSIGNED
+[parameter_bridge-55] [INFO] [1789412225.646264151] [amr_7_bridge]: Creating ROS->GZ Bridge: [/amr_7/cmd_vel (geometry_msgs/msg/Twist) -> /amr_7/cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[task_manager-4] [INFO] [1789412225.648486233] [amr_task_manager]: Task 'task_m9_v3_w30_0002' transitioned to ASSIGNED
+[cbba_node-6] [INFO] [1789412225.649218787] [amr_1.cbba_node]: Committed task task_m9_v3_w30_0002 assignment to amr_1
+[cbba_node-6] [INFO] [1789412225.650197897] [amr_1.cbba_node]: Committed task task_m9_v3_w30_0012 assignment to amr_1
+[parameter_bridge-55] [INFO] [1789412225.659621038] [amr_7_bridge]: Creating GZ->ROS Bridge: [/amr_7/odom (gz.msgs.Odometry) -> /amr_7/odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[cbba_node-14] [INFO] [1789412225.678290838] [amr_9.cbba_node]: Committed task task_m9_v3_w30_0010 assignment to amr_9
+[parameter_bridge-55] [INFO] [1789412225.685256688] [amr_7_bridge]: Creating GZ->ROS Bridge: [/amr_7/scan (gz.msgs.LaserScan) -> /amr_7/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[task_manager-4] [INFO] [1789412225.689072893] [amr_task_manager]: Task 'task_m9_v3_w30_0012' transitioned to ASSIGNED
+[cbba_node-11] [INFO] [1789412225.691011507] [amr_6.cbba_node]: Committed task task_m9_v3_w30_0007 assignment to amr_6
+[cbba_node-8] [INFO] [1789412225.693215785] [amr_3.cbba_node]: Committed task task_m9_v3_w30_0004 assignment to amr_3
+[parameter_bridge-59] [INFO] [1789412225.693260512] [amr_8_bridge]: Creating GZ->ROS Bridge: [/amr_8/joint_states (gz.msgs.Model) -> /amr_8/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[cbba_node-8] [INFO] [1789412225.696123082] [amr_3.cbba_node]: Committed task task_m9_v3_w30_0014 assignment to amr_3
+[parameter_bridge-55] [INFO] [1789412225.697166106] [amr_7_bridge]: Creating GZ->ROS Bridge: [/amr_7/tf (gz.msgs.Pose_V) -> /amr_7/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-55] [INFO] [1789412225.700357976] [amr_7_bridge]: Creating GZ->ROS Bridge: [/amr_7/joint_states (gz.msgs.Model) -> /amr_7/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[robot_state_publisher-37] [INFO] [1789412225.707905734] [amr_3.robot_state_publisher]: Robot initialized
+[parameter_bridge-31] [INFO] [1789412225.715220063] [amr_1_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[task_manager-4] [INFO] [1789412225.721358502] [amr_task_manager]: Task 'task_m9_v3_w30_0010' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.722703581] [amr_task_manager]: Task 'task_m9_v3_w30_0004' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.742286872] [amr_task_manager]: Task 'task_m9_v3_w30_0007' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.743611908] [amr_task_manager]: Task 'task_m9_v3_w30_0014' transitioned to ASSIGNED
+[cbba_node-7] [INFO] [1789412225.751889607] [amr_2.cbba_node]: Committed task task_m9_v3_w30_0003 assignment to amr_2
+[cbba_node-7] [INFO] [1789412225.758335000] [amr_2.cbba_node]: Committed task task_m9_v3_w30_0013 assignment to amr_2
+[cbba_node-13] [INFO] [1789412225.761328897] [amr_8.cbba_node]: Committed task task_m9_v3_w30_0009 assignment to amr_8
+[task_manager-4] [INFO] [1789412225.767520364] [amr_task_manager]: Task 'task_m9_v3_w30_0003' transitioned to ASSIGNED
+[robot_state_publisher-25] [INFO] [1789412225.767518235] [amr_0.robot_state_publisher]: Robot initialized
+[task_manager-4] [INFO] [1789412225.768860343] [amr_task_manager]: Task 'task_m9_v3_w30_0013' transitioned to ASSIGNED
+[cbba_node-5] [INFO] [1789412225.776247531] [amr_0.cbba_node]: Committed task task_m9_v3_w30_0001 assignment to amr_0
+[cbba_node-5] [INFO] [1789412225.777092176] [amr_0.cbba_node]: Committed task task_m9_v3_w30_0011 assignment to amr_0
+[task_manager-4] [INFO] [1789412225.782181328] [amr_task_manager]: Task 'task_m9_v3_w30_0009' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.783559308] [amr_task_manager]: Task 'task_m9_v3_w30_0001' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.784763725] [amr_task_manager]: Task 'task_m9_v3_w30_0011' transitioned to ASSIGNED
+[cbba_node-9] [INFO] [1789412225.798317541] [amr_4.cbba_node]: Committed task task_m9_v3_w30_0005 assignment to amr_4
+[cbba_node-9] [INFO] [1789412225.799133533] [amr_4.cbba_node]: Committed task task_m9_v3_w30_0015 assignment to amr_4
+[cbba_node-10] [INFO] [1789412225.800002010] [amr_5.cbba_node]: Committed task task_m9_v3_w30_0006 assignment to amr_5
+[task_manager-4] [INFO] [1789412225.796243162] [amr_task_manager]: Task 'task_m9_v3_w30_0005' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.810991781] [amr_task_manager]: Task 'task_m9_v3_w30_0006' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412225.823804946] [amr_task_manager]: Task 'task_m9_v3_w30_0015' transitioned to ASSIGNED
+[parameter_bridge-63] [INFO] [1789412225.842821760] [amr_9_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-59] [INFO] [1789412225.905368941] [amr_8_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-51] [INFO] [1789412225.905967092] [amr_6_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[parameter_bridge-39] [INFO] [1789412225.912089023] [amr_3_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[rh_node-18] [INFO] [1789412225.981417406] [amr_3.rh_node]: [amr_3] Reached pickup for task 'task_m9_v3_w30_0004'. Moving to dropoff.
+[task_manager-4] [INFO] [1789412225.983343373] [amr_task_manager]: Task 'task_m9_v3_w30_0004' transitioned to IN_PROGRESS
+[parameter_bridge-55] [INFO] [1789412225.983773108] [amr_7_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[create-30] [INFO] [1789412225.999344444] [amr_1_spawner]: Waiting messages on topic [amr_1/robot_description].
+[parameter_bridge-47] [INFO] [1789412226.025307207] [amr_5_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[create-46] [INFO] [1789412226.058027878] [amr_5_spawner]: Waiting messages on topic [amr_5/robot_description].
+[create-50] [INFO] [1789412226.068277157] [amr_6_spawner]: Waiting messages on topic [amr_6/robot_description].
+[create-42] [INFO] [1789412226.088111063] [amr_4_spawner]: Entity creation successful.
+[create-54] [INFO] [1789412226.135474707] [amr_7_spawner]: Waiting messages on topic [amr_7/robot_description].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_4/base_footprint"]/sensor[@name="amr_4_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[parameter_bridge-27] [INFO] [1789412226.212394483] [amr_0_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_5/base_footprint"]/sensor[@name="amr_5_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[create-26] [INFO] [1789412226.239421470] [amr_0_spawner]: Waiting messages on topic [amr_0/robot_description].
+[INFO] [create-42]: process has finished cleanly [pid 298314]
+[create-46] [INFO] [1789412226.296481352] [amr_5_spawner]: Entity creation successful.
+[create-62] [INFO] [1789412226.310611362] [amr_9_spawner]: Waiting messages on topic [amr_9/robot_description].
+[create-34] [INFO] [1789412226.318844298] [amr_2_spawner]: Waiting messages on topic [amr_2/robot_description].
+[create-38] [INFO] [1789412226.394951904] [amr_3_spawner]: Waiting messages on topic [amr_3/robot_description].
+[create-58] [INFO] [1789412226.464773451] [amr_8_spawner]: Entity creation successful.
+[INFO] [create-46]: process has finished cleanly [pid 298320]
+[create-50] [INFO] [1789412226.564470926] [amr_6_spawner]: Entity creation successful.
+[rh_node-19] [INFO] [1789412226.580351941] [amr_4.rh_node]: [amr_4] Adaptive Compute Mode switched to COMPUTE_MODE_LOW: HOST_CPU_SATURATION (trigger: cpu_utilization_pct=90.70, thresh=85.00)
+[parameter_bridge-43] [INFO] [1789412226.582188341] [amr_4_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[cbba_node-9] [INFO] [1789412226.585492941] [amr_4.cbba_node]: [amr_4] CBBA consensus rate updated to 2.0 Hz (COMPUTE_MODE_LOW)
+[INFO] [create-58]: process has finished cleanly [pid 298464]
+[create-62] [INFO] [1789412226.665832188] [amr_9_spawner]: Entity creation successful.
+[INFO] [create-50]: process has finished cleanly [pid 298343]
+[create-54] [INFO] [1789412226.765352691] [amr_7_spawner]: Entity creation successful.
+[INFO] [create-62]: process has finished cleanly [pid 298489]
+[create-38] [INFO] [1789412226.865973176] [amr_3_spawner]: Entity creation successful.
+[INFO] [create-54]: process has finished cleanly [pid 298384]
+[parameter_bridge-35] [INFO] [1789412226.903174201] [amr_2_bridge]: Passing message from ROS geometry_msgs/msg/Twist to Gazebo gz.msgs.Twist (showing msg only once per type)
+[create-30] [INFO] [1789412226.966181527] [amr_1_spawner]: Entity creation successful.
+[INFO] [create-38]: process has finished cleanly [pid 298296]
+[create-34] [INFO] [1789412227.066335642] [amr_2_spawner]: Entity creation successful.
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_8/base_footprint"]/sensor[@name="amr_8_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[INFO] [create-30]: process has finished cleanly [pid 298284]
+[create-26] [INFO] [1789412227.166642464] [amr_0_spawner]: Entity creation successful.
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_6/base_footprint"]/sensor[@name="amr_6_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[INFO] [create-34]: process has finished cleanly [pid 298288]
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_9/base_footprint"]/sensor[@name="amr_9_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_7/base_footprint"]/sensor[@name="amr_7_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_3/base_footprint"]/sensor[@name="amr_3_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[INFO] [create-26]: process has finished cleanly [pid 298280]
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_1/base_footprint"]/sensor[@name="amr_1_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_2/base_footprint"]/sensor[@name="amr_2_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[gazebo-1] [1;33mWarning [Utils.cc:132][0m [/sdf/model[@name="amr"]/link[@name="amr_0/base_footprint"]/sensor[@name="amr_0_lidar"]/gz_frame_id:<urdf-string>:L0]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[task_manager-4] [INFO] [1789412227.456763385] [amr_task_manager]: Mission clock anchored at t=1789412227.46s
+[task_manager-4] [INFO] [1789412227.457283186] [amr_task_manager]: Mission clock anchored at t=1789412227.46s
+[rh_node-19] [INFO] [1789412231.582286114] [amr_4.rh_node]: [amr_4] Adaptive Compute Mode switched to COMPUTE_MODE_NORMAL: COMMUNICATION_AND_CPU_RECOVERED_TO_NOMINAL (trigger: comm_and_cpu_recovered=0.00, thresh=0.80)
+[cbba_node-9] [INFO] [1789412231.583359786] [amr_4.cbba_node]: [amr_4] CBBA consensus rate updated to 5.0 Hz (COMPUTE_MODE_NORMAL)
+[task_manager-4] [INFO] [1789412272.800791463] [amr_task_manager]: Dynamically released 15 tasks at t=45.3s: ['task_m9_v3_w30_0016', 'task_m9_v3_w30_0017', 'task_m9_v3_w30_0018', 'task_m9_v3_w30_0019', 'task_m9_v3_w30_0020', 'task_m9_v3_w30_0021', 'task_m9_v3_w30_0022', 'task_m9_v3_w30_0023', 'task_m9_v3_w30_0024', 'task_m9_v3_w30_0025', 'task_m9_v3_w30_0026', 'task_m9_v3_w30_0027', 'task_m9_v3_w30_0028', 'task_m9_v3_w30_0029', 'task_m9_v3_w30_0030']
+[rh_node-20] [INFO] [1789412272.918468347] [amr_5.rh_node]: [amr_5] Reached pickup for task 'task_m9_v3_w30_0006'. Moving to dropoff.
+[task_manager-4] [INFO] [1789412272.920020051] [amr_task_manager]: Task 'task_m9_v3_w30_0006' transitioned to IN_PROGRESS
+[cbba_node-7] [INFO] [1789412275.541049299] [amr_2.cbba_node]: Committed task task_m9_v3_w30_0023 assignment to amr_2
+[task_manager-4] [INFO] [1789412275.543444742] [amr_task_manager]: Task 'task_m9_v3_w30_0023' transitioned to ASSIGNED
+[cbba_node-13] [INFO] [1789412275.543679383] [amr_8.cbba_node]: Committed task task_m9_v3_w30_0019 assignment to amr_8
+[task_manager-4] [INFO] [1789412275.544653155] [amr_task_manager]: Task 'task_m9_v3_w30_0019' transitioned to ASSIGNED
+[cbba_node-13] [INFO] [1789412275.544951478] [amr_8.cbba_node]: Committed task task_m9_v3_w30_0029 assignment to amr_8
+[task_manager-4] [INFO] [1789412275.545807603] [amr_task_manager]: Task 'task_m9_v3_w30_0029' transitioned to ASSIGNED
+[cbba_node-10] [INFO] [1789412275.559763315] [amr_5.cbba_node]: Committed task task_m9_v3_w30_0016 assignment to amr_5
+[task_manager-4] [INFO] [1789412275.559994704] [amr_task_manager]: Task 'task_m9_v3_w30_0016' transitioned to ASSIGNED
+[cbba_node-10] [INFO] [1789412275.560567608] [amr_5.cbba_node]: Committed task task_m9_v3_w30_0026 assignment to amr_5
+[task_manager-4] [INFO] [1789412275.561235951] [amr_task_manager]: Task 'task_m9_v3_w30_0026' transitioned to ASSIGNED
+[cbba_node-5] [INFO] [1789412275.570209211] [amr_0.cbba_node]: Committed task task_m9_v3_w30_0021 assignment to amr_0
+[task_manager-4] [INFO] [1789412275.570793936] [amr_task_manager]: Task 'task_m9_v3_w30_0021' transitioned to ASSIGNED
+[cbba_node-9] [INFO] [1789412275.584254268] [amr_4.cbba_node]: Committed task task_m9_v3_w30_0025 assignment to amr_4
+[task_manager-4] [INFO] [1789412275.584641985] [amr_task_manager]: Task 'task_m9_v3_w30_0025' transitioned to ASSIGNED
+[cbba_node-12] [INFO] [1789412275.595679640] [amr_7.cbba_node]: Committed task task_m9_v3_w30_0018 assignment to amr_7
+[cbba_node-12] [INFO] [1789412275.596558927] [amr_7.cbba_node]: Committed task task_m9_v3_w30_0028 assignment to amr_7
+[task_manager-4] [INFO] [1789412275.597189765] [amr_task_manager]: Task 'task_m9_v3_w30_0018' transitioned to ASSIGNED
+[task_manager-4] [INFO] [1789412275.598157682] [amr_task_manager]: Task 'task_m9_v3_w30_0028' transitioned to ASSIGNED
+[cbba_node-6] [INFO] [1789412275.648716213] [amr_1.cbba_node]: Committed task task_m9_v3_w30_0022 assignment to amr_1
+[task_manager-4] [INFO] [1789412275.648731024] [amr_task_manager]: Task 'task_m9_v3_w30_0022' transitioned to ASSIGNED
+[cbba_node-11] [INFO] [1789412275.664412829] [amr_6.cbba_node]: Committed task task_m9_v3_w30_0017 assignment to amr_6
+[task_manager-4] [INFO] [1789412275.664782048] [amr_task_manager]: Task 'task_m9_v3_w30_0017' transitioned to ASSIGNED
+[cbba_node-11] [INFO] [1789412275.665122828] [amr_6.cbba_node]: Committed task task_m9_v3_w30_0027 assignment to amr_6
+[task_manager-4] [INFO] [1789412275.665547031] [amr_task_manager]: Task 'task_m9_v3_w30_0027' transitioned to ASSIGNED
+[cbba_node-8] [INFO] [1789412275.669306890] [amr_3.cbba_node]: Committed task task_m9_v3_w30_0024 assignment to amr_3
+[task_manager-4] [INFO] [1789412275.669989315] [amr_task_manager]: Task 'task_m9_v3_w30_0024' transitioned to ASSIGNED
+[cbba_node-14] [INFO] [1789412275.674538261] [amr_9.cbba_node]: Committed task task_m9_v3_w30_0020 assignment to amr_9
+[task_manager-4] [INFO] [1789412275.675093545] [amr_task_manager]: Task 'task_m9_v3_w30_0020' transitioned to ASSIGNED
+[cbba_node-14] [INFO] [1789412275.675275493] [amr_9.cbba_node]: Committed task task_m9_v3_w30_0030 assignment to amr_9
+[task_manager-4] [INFO] [1789412275.675838261] [amr_task_manager]: Task 'task_m9_v3_w30_0030' transitioned to ASSIGNED
+[rh_node-17] [INFO] [1789412321.504244876] [amr_2.rh_node]: [amr_2] Reached pickup for task 'task_m9_v3_w30_0013'. Moving to dropoff.
+[task_manager-4] [INFO] [1789412321.507781702] [amr_task_manager]: Task 'task_m9_v3_w30_0013' transitioned to IN_PROGRESS
+[rh_node-20] [INFO] [1789412377.918194160] [amr_5.rh_node]: [amr_5] Completed task 'task_m9_v3_w30_0006'. Advancing to next task.
+[task_manager-4] [INFO] [1789412377.920919180] [amr_task_manager]: Task 'task_m9_v3_w30_0006' transitioned to COMPLETED

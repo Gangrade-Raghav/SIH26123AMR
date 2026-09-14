@@ -9,6 +9,7 @@ from launch.actions import (
     IncludeLaunchDescription,
     LogInfo,
     OpaqueFunction,
+    TimerAction,
 )
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -34,22 +35,63 @@ def launch_setup(context, *args, **kwargs):
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Resolve world path
-    world_path = os.path.join(pkg_amr_bringup, 'worlds', f'{world_name}.sdf')
+    clean_world_name = world_name[:-4] if world_name.endswith('.sdf') else world_name
+    world_path = os.path.join(pkg_amr_bringup, 'worlds', f'{clean_world_name}.sdf')
     gz_args = f'-r -s {world_path}' if headless else f'-r {world_path}'
 
     # Resolve robot configurations
-    # Locate project root config directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+    cur = current_dir
+    workspace_root = None
+    for _ in range(6):
+        if os.path.isdir(os.path.join(cur, 'config', 'robots')):
+            workspace_root = cur
+            break
+        cur = os.path.dirname(cur)
+    if not workspace_root:
+        if os.path.isdir(os.path.join(os.getcwd(), 'config', 'robots')):
+            workspace_root = os.getcwd()
+        else:
+            workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+    map_config_arg = context.perform_substitution(LaunchConfiguration('map_config_file'))
     config_dir = os.path.join(workspace_root, 'config', 'robots')
+    maps_dir = os.path.join(workspace_root, 'config', 'maps')
+
+    # Resolve map config file
+    tag = clean_world_name.replace('warehouse_', '')
+    cand_map_1 = os.path.join(maps_dir, f'{clean_world_name}.yaml')
+    cand_map_2 = os.path.join(maps_dir, f'warehouse_{tag}.yaml')
+    cand_map_3 = os.path.join(maps_dir, 'warehouse_grid_small.yaml')
+
+    resolved_map_file = ''
+    if map_config_arg and os.path.isfile(map_config_arg):
+        resolved_map_file = map_config_arg
+    elif os.path.isfile(cand_map_1):
+        resolved_map_file = cand_map_1
+    elif os.path.isfile(cand_map_2):
+        resolved_map_file = cand_map_2
+    elif os.path.isfile(cand_map_3):
+        resolved_map_file = cand_map_3
 
     config_path = None
     if fleet_config_arg and os.path.isfile(fleet_config_arg):
         config_path = fleet_config_arg
     else:
-        candidate = os.path.join(config_dir, f'fleet_{robot_count}_robots.yaml')
+        cand_world_1 = os.path.join(
+            config_dir, f'fleet_{robot_count}_robots_{tag}.yaml'
+        )
+        cand_world_2 = os.path.join(
+            config_dir, f'fleet_{robot_count}_robots_{clean_world_name}.yaml'
+        )
+        candidate = os.path.join(
+            config_dir, f'fleet_{robot_count}_robots.yaml'
+        )
         default_candidate = os.path.join(config_dir, 'fleet_default.yaml')
-        if os.path.isfile(candidate):
+        if os.path.isfile(cand_world_1):
+            config_path = cand_world_1
+        elif os.path.isfile(cand_world_2):
+            config_path = cand_world_2
+        elif os.path.isfile(candidate):
             config_path = candidate
         elif os.path.isfile(default_candidate):
             config_path = default_candidate
@@ -60,13 +102,18 @@ def launch_setup(context, *args, **kwargs):
             data = yaml.safe_load(f)
         robot_configs = data.get('fleet', {}).get('robots', [])
 
-    # If configuration has fewer robots than requested, generate remaining deterministic poses
+    # If configuration has fewer robots than requested, generate poses
+    is_32m = 'm9' in clean_world_name or '32' in clean_world_name
     while len(robot_configs) < robot_count:
         idx = len(robot_configs)
         col = idx // 5
         row = idx % 5
-        x_coord = 2.0 if col == 0 else 8.0
-        y_coord = 2.0 + row * 3.0
+        if is_32m:
+            x_coord = 2.5 if col == 0 else 16.0
+            y_coord = 5.0 + row * 5.0
+        else:
+            x_coord = 2.0 if col == 0 else 8.0
+            y_coord = 2.0 + row * 3.0
         robot_configs.append({
             'id': f'amr_{idx}',
             'x': x_coord,
@@ -111,6 +158,7 @@ def launch_setup(context, *args, **kwargs):
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(spawn_launch_path),
                 launch_arguments={
+                    'world': clean_world_name,
                     'robot_name': str(r['id']),
                     'x': str(r['x']),
                     'y': str(r['y']),
@@ -139,6 +187,13 @@ def launch_setup(context, *args, **kwargs):
             )
         )
 
+    # Delay robot spawning slightly so Gazebo Harmonic finishes initializing
+    # its world and transport service
+    delayed_spawns = TimerAction(
+        period=2.0,
+        actions=spawn_actions,
+    )
+
     # Optional RViz
     rviz_config = os.path.join(pkg_amr_bringup, 'rviz', 'fleet_default.rviz')
     if not os.path.isfile(rviz_config):
@@ -154,20 +209,36 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{'use_sim_time': use_sim_time}],
     )
 
-    return [log_info, gz_sim, clock_bridge] + spawn_actions + [rviz_node]
+    warehouse_viz_node = Node(
+        package='amr_fleet_bringup',
+        executable='warehouse_visualizer',
+        name='warehouse_visualizer',
+        output='screen',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'config_file': resolved_map_file,
+        }],
+    )
+
+    return [log_info, gz_sim, clock_bridge, warehouse_viz_node, delayed_spawns, rviz_node]
 
 
 def generate_launch_description():
     declared_arguments = [
         DeclareLaunchArgument(
             'robot_count',
-            default_value='2',
+            default_value='10',
             description='Number of AMRs to spawn in fleet simulation (1 to 10)',
         ),
         DeclareLaunchArgument(
             'fleet_config',
             default_value='',
             description='Path to custom YAML fleet configuration file (optional)',
+        ),
+        DeclareLaunchArgument(
+            'map_config_file',
+            default_value='',
+            description='Path to map YAML configuration file (optional)',
         ),
         DeclareLaunchArgument(
             'world',

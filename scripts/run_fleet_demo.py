@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""NRDAS Multi-AMR Demonstration Scenario Coordinator.
+"""
+NRDAS Multi-AMR Demonstration Scenario Coordinator.
 
 Executes deterministic, collision-free, multi-stage fleet trajectories
 in the warehouse environment to showcase decentralized AMR fleet capability

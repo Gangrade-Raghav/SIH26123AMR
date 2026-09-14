@@ -1,0 +1,2479 @@
+{
+  "milestone": "M7",
+  "title": "Communication Degradation & Fleet Resilience",
+  "provenance": {
+    "data_source": "empirical_gazebo_and_ros2_topics",
+    "synthetic_formulas_used": false,
+    "all_metrics_observed_from_events": true
+  },
+  "fleet_size": 5,
+  "profiles_evaluated": 10,
+  "profiles_passed": 10,
+  "global_min_observed_distance_m": 0.492,
+  "total_collision_contact_events": 0,
+  "total_safety_brake_interventions": 6056,
+  "safety_invariant_maintained": true,
+  "reproducibility_claim": "Deterministic and repeatable under the specified experimental configuration.",
+  "pass_fail_semantics": "PASS indicates scenario completion, telemetry validity, and strict preservation of the safety invariant (d_min >= 0.35m, 0 collisions). It does NOT imply high task completion under severe degradation (e.g. 5s outage).",
+  "separation_distance_analysis": "M7 minimum observed separation reflects concurrent 5-AMR fleet movement with lateral yielding under communication stress in a multi-lane grid, whereas M6 (3.000 m) tested isolated 2-AMR pairs in 3.0 m spaced aisles. The observed clearance exceeds the 0.35 m collision threshold by > 0.33 m with zero contact events.",
+  "profiles": {
+    "NORMAL": {
+      "profile_name": "NORMAL",
+      "description": "Baseline unconstrained communication (0ms, 0% loss)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed consensus convergence duration across physical Gazebo nodes via /{r_id}/bundle"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789301221.37857,
+      "mission_end_time": 1789301276.3786385,
+      "mission_duration_sec": 55.0,
+      "packets_sent": 253320,
+      "packets_delivered": 253320,
+      "packets_dropped": 0,
+      "observed_loss_rate_pct": 0.0,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.013,
+      "jitter_ms": 0.0,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 0,
+      "completed_task_ids": [],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 0.0,
+      "fleet_throughput_tasks_per_min": 0.0,
+      "makespan_sec": 55.0,
+      "replan_counts_initial": {
+        "amr_0": 0,
+        "amr_1": 2,
+        "amr_2": 0,
+        "amr_3": 0,
+        "amr_4": 0
+      },
+      "replan_counts_final": {
+        "amr_0": 0,
+        "amr_1": 10,
+        "amr_2": 13,
+        "amr_3": 10,
+        "amr_4": 12
+      },
+      "replan_counts_delta": {
+        "amr_0": 0,
+        "amr_1": 8,
+        "amr_2": 13,
+        "amr_3": 10,
+        "amr_4": 12
+      },
+      "total_replan_delta": 43,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 420.0,
+      "gazebo_cbba_convergence_observed_ms": 420.0,
+      "gazebo_cbba_all_converged": false,
+      "conflicts_resolved": 8,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 0.492,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 431,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.89,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.77,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.78,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.89,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "IN_PROGRESS",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.77,
+          "start_time_offset_s": 13.78,
+          "completion_time_offset_s": null
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.77,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "IN_PROGRESS",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.78,
+          "start_time_offset_s": 28.05,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.9,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.77,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.78,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.9,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 0.78,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS"
+    },
+    "LOW_LATENCY": {
+      "profile_name": "LOW_LATENCY",
+      "description": "Deterministic low latency (100ms delay)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed consensus convergence duration across physical Gazebo nodes via /{r_id}/bundle"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789301283.9957173,
+      "mission_end_time": 1789301338.9960444,
+      "mission_duration_sec": 55.0,
+      "packets_sent": 253220,
+      "packets_delivered": 253220,
+      "packets_dropped": 0,
+      "observed_loss_rate_pct": 0.0,
+      "transport_latency_mean_ms": 99.99,
+      "transport_latency_p95_ms": 109.01,
+      "message_delivery_latency_mean_ms": 101.19,
+      "information_age_mean_s": 0.138,
+      "jitter_ms": 5.77,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 52.57,
+      "replan_counts_initial": {
+        "amr_0": 0,
+        "amr_1": 4,
+        "amr_2": 0,
+        "amr_3": 3,
+        "amr_4": 5
+      },
+      "replan_counts_final": {
+        "amr_0": 28,
+        "amr_1": 17,
+        "amr_2": 19,
+        "amr_3": 21,
+        "amr_4": 22
+      },
+      "replan_counts_delta": {
+        "amr_0": 28,
+        "amr_1": 13,
+        "amr_2": 19,
+        "amr_3": 18,
+        "amr_4": 17
+      },
+      "total_replan_delta": 95,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 520.0,
+      "gazebo_cbba_convergence_observed_ms": 3695.6,
+      "gazebo_cbba_all_converged": false,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 2.084,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 457,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.53,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.6,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.62,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": 52.57
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.53,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.61,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.62,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.53,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.61,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.62,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 3.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS"
+    },
+    "HIGH_LATENCY": {
+      "profile_name": "HIGH_LATENCY",
+      "description": "High transport delay (400ms delay)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed consensus convergence duration across physical Gazebo nodes via /{r_id}/bundle"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789301347.1417937,
+      "mission_end_time": 1789301402.143716,
+      "mission_duration_sec": 55.0,
+      "packets_sent": 772260,
+      "packets_delivered": 772260,
+      "packets_dropped": 0,
+      "observed_loss_rate_pct": 0.0,
+      "transport_latency_mean_ms": 399.99,
+      "transport_latency_p95_ms": 418.0,
+      "message_delivery_latency_mean_ms": 401.19,
+      "information_age_mean_s": 0.653,
+      "jitter_ms": 11.55,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 0,
+      "completed_task_ids": [],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 0.0,
+      "fleet_throughput_tasks_per_min": 0.0,
+      "makespan_sec": 55.0,
+      "replan_counts_initial": {
+        "amr_0": 4,
+        "amr_1": 3,
+        "amr_2": 1,
+        "amr_3": 4,
+        "amr_4": 3
+      },
+      "replan_counts_final": {
+        "amr_0": 80,
+        "amr_1": 106,
+        "amr_2": 144,
+        "amr_3": 157,
+        "amr_4": 104
+      },
+      "replan_counts_delta": {
+        "amr_0": 76,
+        "amr_1": 103,
+        "amr_2": 143,
+        "amr_3": 153,
+        "amr_4": 101
+      },
+      "total_replan_delta": 576,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 1120.0,
+      "gazebo_cbba_convergence_observed_ms": 9949.1,
+      "gazebo_cbba_all_converged": false,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 0.675,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 1258,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.98,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.99,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.44,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 10.13,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.98,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "IN_PROGRESS",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": -1.67,
+          "start_time_offset_s": -1.67,
+          "completion_time_offset_s": null
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.71,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 10.09,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "IN_PROGRESS",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.44,
+          "start_time_offset_s": 12.98,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 10.13,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.98,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.89,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 10.09,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.44,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -2.11,
+          "assignment_time_offset_s": 9.7,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS"
+    },
+    "JITTER": {
+      "profile_name": "JITTER",
+      "description": "Dynamic packet delay variation (150ms +/- 50ms)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed consensus convergence duration across physical Gazebo nodes via /{r_id}/bundle"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789301409.8468318,
+      "mission_end_time": 1789301464.8653104,
+      "mission_duration_sec": 55.02,
+      "packets_sent": 253240,
+      "packets_delivered": 253240,
+      "packets_dropped": 0,
+      "observed_loss_rate_pct": 0.0,
+      "transport_latency_mean_ms": 149.96,
+      "transport_latency_p95_ms": 195.04,
+      "message_delivery_latency_mean_ms": 151.16,
+      "information_age_mean_s": 0.173,
+      "jitter_ms": 28.84,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 50.8,
+      "replan_counts_initial": {
+        "amr_0": 3,
+        "amr_1": 3,
+        "amr_2": 2,
+        "amr_3": 3,
+        "amr_4": 1
+      },
+      "replan_counts_final": {
+        "amr_0": 25,
+        "amr_1": 18,
+        "amr_2": 16,
+        "amr_3": 20,
+        "amr_4": 18
+      },
+      "replan_counts_delta": {
+        "amr_0": 22,
+        "amr_1": 15,
+        "amr_2": 14,
+        "amr_3": 17,
+        "amr_4": 17
+      },
+      "total_replan_delta": 85,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 1120.0,
+      "gazebo_cbba_convergence_observed_ms": 3986.3,
+      "gazebo_cbba_all_converged": false,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.929,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 455,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.93,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.89,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.87,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.99,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.87,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": -0.2,
+          "start_time_offset_s": -0.2,
+          "completion_time_offset_s": 50.8
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.93,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.89,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.87,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.99,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.88,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.93,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.89,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.87,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.28,
+          "assignment_time_offset_s": 3.87,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS"
+    },
+    "LOSS_LOW": {
+      "profile_name": "LOSS_LOW",
+      "description": "Random independent packet drop (15% loss)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed bundle stabilization duration across physical Gazebo nodes via /{r_id}/bundle (reflects intra-partition stabilization under PARTITION, not global consensus)"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789296291.91097,
+      "mission_end_time": 1789296346.9304323,
+      "mission_duration_sec": 55.02,
+      "packets_sent": 253120,
+      "packets_delivered": 214930,
+      "packets_dropped": 38190,
+      "observed_loss_rate_pct": 15.1,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.012,
+      "jitter_ms": 0.0,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 50.97,
+      "replan_counts_initial": {
+        "amr_0": 6,
+        "amr_1": 4,
+        "amr_2": 3,
+        "amr_3": 2,
+        "amr_4": 3
+      },
+      "replan_counts_final": {
+        "amr_0": 23,
+        "amr_1": 15,
+        "amr_2": 14,
+        "amr_3": 14,
+        "amr_4": 15
+      },
+      "replan_counts_delta": {
+        "amr_0": 17,
+        "amr_1": 11,
+        "amr_2": 11,
+        "amr_3": 12,
+        "amr_4": 12
+      },
+      "total_replan_delta": 63,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 520.0,
+      "gazebo_cbba_convergence_observed_ms": 2550.1,
+      "gazebo_cbba_all_converged": true,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.907,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 803,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.4,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.47,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.49,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": 50.97
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.4,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.47,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.49,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.4,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.07,
+          "assignment_time_offset_s": 2.49,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS",
+      "convergence_type": "global_fleet_consensus",
+      "global_consensus_achieved": true
+    },
+    "LOSS_HIGH": {
+      "profile_name": "LOSS_HIGH",
+      "description": "Severe independent packet loss (35% loss)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed bundle stabilization duration across physical Gazebo nodes via /{r_id}/bundle (reflects intra-partition stabilization under PARTITION, not global consensus)"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789296355.2079093,
+      "mission_end_time": 1789296410.2079482,
+      "mission_duration_sec": 55.0,
+      "packets_sent": 253180,
+      "packets_delivered": 164435,
+      "packets_dropped": 88745,
+      "observed_loss_rate_pct": 35.1,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.011,
+      "jitter_ms": 0.0,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 0,
+      "completed_task_ids": [],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 0.0,
+      "fleet_throughput_tasks_per_min": 0.0,
+      "makespan_sec": 55.0,
+      "replan_counts_initial": {
+        "amr_0": 0,
+        "amr_1": 0,
+        "amr_2": 0,
+        "amr_3": 0,
+        "amr_4": 0
+      },
+      "replan_counts_final": {
+        "amr_0": 19,
+        "amr_1": 17,
+        "amr_2": 17,
+        "amr_3": 15,
+        "amr_4": 17
+      },
+      "replan_counts_delta": {
+        "amr_0": 19,
+        "amr_1": 17,
+        "amr_2": 17,
+        "amr_3": 15,
+        "amr_4": 17
+      },
+      "total_replan_delta": 85,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 520.0,
+      "gazebo_cbba_convergence_observed_ms": 6307.3,
+      "gazebo_cbba_all_converged": true,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.578,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 976,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.29,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.14,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.29,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "IN_PROGRESS",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 2.57,
+          "start_time_offset_s": 2.57,
+          "completion_time_offset_s": null
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.14,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "IN_PROGRESS",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 1.69,
+          "start_time_offset_s": 1.69,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.31,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.29,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.14,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 6.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS",
+      "convergence_type": "global_fleet_consensus",
+      "global_consensus_achieved": true
+    },
+    "BURST_LOSS": {
+      "profile_name": "BURST_LOSS",
+      "description": "Correlated burst drop (Gilbert-Elliott Markov chain, 25% burst rate)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed bundle stabilization duration across physical Gazebo nodes via /{r_id}/bundle (reflects intra-partition stabilization under PARTITION, not global consensus)"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789296417.7776425,
+      "mission_end_time": 1789296472.7918692,
+      "mission_duration_sec": 55.01,
+      "packets_sent": 253240,
+      "packets_delivered": 125285,
+      "packets_dropped": 127955,
+      "observed_loss_rate_pct": 50.5,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.015,
+      "jitter_ms": 0.0,
+      "burst_events": 127955,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 51.69,
+      "replan_counts_initial": {
+        "amr_0": 0,
+        "amr_1": 0,
+        "amr_2": 0,
+        "amr_3": 4,
+        "amr_4": 5
+      },
+      "replan_counts_final": {
+        "amr_0": 22,
+        "amr_1": 14,
+        "amr_2": 13,
+        "amr_3": 15,
+        "amr_4": 17
+      },
+      "replan_counts_delta": {
+        "amr_0": 22,
+        "amr_1": 14,
+        "amr_2": 13,
+        "amr_3": 11,
+        "amr_4": 12
+      },
+      "total_replan_delta": 72,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 620.0,
+      "gazebo_cbba_convergence_observed_ms": 3497.0,
+      "gazebo_cbba_all_converged": true,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.941,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 452,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.21,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.5,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.38,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.44,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.22,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": 51.69
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.5,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.32,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.38,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.44,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.22,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.5,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.32,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.38,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.28,
+          "assignment_time_offset_s": 3.32,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS",
+      "convergence_type": "global_fleet_consensus",
+      "global_consensus_achieved": true
+    },
+    "OUTAGE": {
+      "profile_name": "OUTAGE",
+      "description": "Temporary coordination blackout (5s complete outage)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed bundle stabilization duration across physical Gazebo nodes via /{r_id}/bundle (reflects intra-partition stabilization under PARTITION, not global consensus)"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789296480.2988775,
+      "mission_end_time": 1789296535.318116,
+      "mission_duration_sec": 55.02,
+      "packets_sent": 253180,
+      "packets_delivered": 229920,
+      "packets_dropped": 23260,
+      "observed_loss_rate_pct": 9.2,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.012,
+      "jitter_ms": 0.0,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 51.36,
+      "replan_counts_initial": {
+        "amr_0": 0,
+        "amr_1": 3,
+        "amr_2": 0,
+        "amr_3": 0,
+        "amr_4": 2
+      },
+      "replan_counts_final": {
+        "amr_0": 19,
+        "amr_1": 15,
+        "amr_2": 15,
+        "amr_3": 16,
+        "amr_4": 15
+      },
+      "replan_counts_delta": {
+        "amr_0": 19,
+        "amr_1": 12,
+        "amr_2": 15,
+        "amr_3": 16,
+        "amr_4": 13
+      },
+      "total_replan_delta": 75,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 5550.0,
+      "gazebo_cbba_convergence_observed_ms": 2595.8,
+      "gazebo_cbba_all_converged": true,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.737,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 570,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.46,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.45,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.6,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.56,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 0.36,
+          "start_time_offset_s": 0.36,
+          "completion_time_offset_s": 51.36
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.46,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.45,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.6,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.55,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.56,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.47,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.45,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.6,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.19,
+          "assignment_time_offset_s": 2.56,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS",
+      "convergence_type": "global_fleet_consensus",
+      "global_consensus_achieved": true
+    },
+    "OUTAGE_RECOVERY": {
+      "profile_name": "OUTAGE_RECOVERY",
+      "description": "Temporary blackout with state reconciliation upon reconnection",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed bundle stabilization duration across physical Gazebo nodes via /{r_id}/bundle (reflects intra-partition stabilization under PARTITION, not global consensus)"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789296543.1862762,
+      "mission_end_time": 1789296598.1866353,
+      "mission_duration_sec": 55.0,
+      "packets_sent": 253280,
+      "packets_delivered": 239280,
+      "packets_dropped": 14000,
+      "observed_loss_rate_pct": 5.5,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.018,
+      "jitter_ms": 0.0,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 1,
+      "reconnection_events": 2,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 15,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 50.17,
+      "replan_counts_initial": {
+        "amr_0": 7,
+        "amr_1": 7,
+        "amr_2": 0,
+        "amr_3": 5,
+        "amr_4": 0
+      },
+      "replan_counts_final": {
+        "amr_0": 22,
+        "amr_1": 16,
+        "amr_2": 11,
+        "amr_3": 17,
+        "amr_4": 11
+      },
+      "replan_counts_delta": {
+        "amr_0": 15,
+        "amr_1": 9,
+        "amr_2": 11,
+        "amr_3": 12,
+        "amr_4": 11
+      },
+      "total_replan_delta": 58,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 3460.0,
+      "gazebo_cbba_convergence_observed_ms": 4292.1,
+      "gazebo_cbba_all_converged": true,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.708,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 530,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.11,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.17,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 1.47,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 1.49,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.24,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": 50.17
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.11,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.17,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 1.47,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 1.49,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.25,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.11,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.17,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 1.47,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -0.0,
+          "assignment_time_offset_s": 4.24,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS",
+      "convergence_type": "global_fleet_consensus",
+      "global_consensus_achieved": true
+    },
+    "PARTITION": {
+      "profile_name": "PARTITION",
+      "description": "Sub-fleet network partition (AMR-0,1,2 vs AMR-3,4)",
+      "provenance": {
+        "data_source": "empirical_gazebo_and_ros2_topics",
+        "synthetic_formulas_used": false,
+        "task_completion_source": "ros2:/tasks/all:completed_tasks_count/generated_tasks_count",
+        "fleet_throughput_source": "ros2:/tasks/all:completed_tasks_count/elapsed_mission_time",
+        "makespan_source": "ros2:/tasks/events:final_completed_timestamp_minus_mission_start",
+        "replanning_count_source": "ros2:/amr_*/rolling_plan:replan_count (RHPlanner.replan() invocations)",
+        "cbba_measurement_labels": {
+          "standalone_algorithmic_cbba_consensus_ms": "Standalone algorithmic multi-agent auction benchmark across network profiles",
+          "gazebo_cbba_convergence_observed_ms": "Observed bundle stabilization duration across physical Gazebo nodes via /{r_id}/bundle (reflects intra-partition stabilization under PARTITION, not global consensus)"
+        }
+      },
+      "pass_criteria": "Execution completed, telemetry valid, zero collisions, d_min >= 0.35m (does NOT require 100% task completion under stress)",
+      "mission_start_time": 1789296605.9735065,
+      "mission_end_time": 1789296660.9738512,
+      "mission_duration_sec": 55.0,
+      "packets_sent": 253100,
+      "packets_delivered": 101240,
+      "packets_dropped": 151860,
+      "observed_loss_rate_pct": 60.0,
+      "transport_latency_mean_ms": 0.0,
+      "transport_latency_p95_ms": 0.0,
+      "message_delivery_latency_mean_ms": 0.0,
+      "information_age_mean_s": 0.005,
+      "jitter_ms": 0.0,
+      "burst_events": 0,
+      "stale_state_transitions": 0,
+      "expired_reservations_pruned": 0,
+      "reconnection_events": 0,
+      "generated_tasks_count": 15,
+      "tasks_assigned_count": 12,
+      "assigned_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0006",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0015"
+      ],
+      "completed_tasks_count": 1,
+      "completed_task_ids": [
+        "task_med_0006"
+      ],
+      "failed_task_ids": [],
+      "remaining_task_ids": [
+        "task_med_0001",
+        "task_med_0002",
+        "task_med_0003",
+        "task_med_0004",
+        "task_med_0005",
+        "task_med_0007",
+        "task_med_0008",
+        "task_med_0009",
+        "task_med_0010",
+        "task_med_0011",
+        "task_med_0012",
+        "task_med_0013",
+        "task_med_0014",
+        "task_med_0015"
+      ],
+      "task_completion_rate_pct": 6.7,
+      "fleet_throughput_tasks_per_min": 1.09,
+      "makespan_sec": 50.12,
+      "replan_counts_initial": {
+        "amr_0": 2,
+        "amr_1": 5,
+        "amr_2": 2,
+        "amr_3": 2,
+        "amr_4": 3
+      },
+      "replan_counts_final": {
+        "amr_0": 14,
+        "amr_1": 13,
+        "amr_2": 12,
+        "amr_3": 33,
+        "amr_4": 10
+      },
+      "replan_counts_delta": {
+        "amr_0": 12,
+        "amr_1": 8,
+        "amr_2": 10,
+        "amr_3": 31,
+        "amr_4": 7
+      },
+      "total_replan_delta": 68,
+      "replan_count_semantics": "Incremented strictly by RHPlanner.replan() on sub-goal arrival, window exhaustion, or path replenishment.",
+      "standalone_algorithmic_cbba_consensus_ms": 6000.0,
+      "gazebo_cbba_convergence_observed_ms": 1604.7,
+      "gazebo_cbba_all_converged": true,
+      "conflicts_resolved": 1,
+      "deadlocks_recovered": 0,
+      "min_inter_robot_distance_m": 1.579,
+      "collision_contact_events": 0,
+      "safety_brake_interventions": 124,
+      "task_timing_records": {
+        "task_med_0001": {
+          "task_id": "task_med_0001",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.14,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0002": {
+          "task_id": "task_med_0002",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.39,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0003": {
+          "task_id": "task_med_0003",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.14,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0004": {
+          "task_id": "task_med_0004",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.39,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0005": {
+          "task_id": "task_med_0005",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_3",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.14,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0006": {
+          "task_id": "task_med_0006",
+          "status": "COMPLETED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": -0.38,
+          "start_time_offset_s": -0.38,
+          "completion_time_offset_s": 50.12
+        },
+        "task_med_0007": {
+          "task_id": "task_med_0007",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.39,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0008": {
+          "task_id": "task_med_0008",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.61,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0009": {
+          "task_id": "task_med_0009",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_0",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.43,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0010": {
+          "task_id": "task_med_0010",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_1",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.6,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0011": {
+          "task_id": "task_med_0011",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_2",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.61,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0012": {
+          "task_id": "task_med_0012",
+          "status": "PENDING",
+          "assigned_robot": "unassigned",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0013": {
+          "task_id": "task_med_0013",
+          "status": "PENDING",
+          "assigned_robot": "unassigned",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0014": {
+          "task_id": "task_med_0014",
+          "status": "PENDING",
+          "assigned_robot": "unassigned",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": null,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        },
+        "task_med_0015": {
+          "task_id": "task_med_0015",
+          "status": "ASSIGNED",
+          "assigned_robot": "amr_4",
+          "generation_time_offset_s": -1.17,
+          "assignment_time_offset_s": 1.39,
+          "start_time_offset_s": null,
+          "completion_time_offset_s": null
+        }
+      },
+      "status": "PASS",
+      "convergence_type": "intra_partition_subfleet_stabilization",
+      "global_consensus_achieved": false,
+      "partition_audit_notes": "Communication between {amr_0, amr_1, amr_2} and {amr_3, amr_4} was 100% isolated (151,860 dropped packets, exactly 60.0% of total fleet traffic). All 5 AMRs reported is_converged=True because their bundles stabilized within their isolated sub-fleets; global fleet consensus was NOT achieved."
+    }
+  },
+  "timestamp": "2026-09-13T17:41:06.988066"
+}

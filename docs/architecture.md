@@ -207,3 +207,21 @@ Infrastructure abstraction in `amr_fleet_core.fleet_state`:
 - Headless execution is established as default due to Intel integrated GPU constraints.
 - No decentralized coordination (CBBA, RHCR, PIBT, WFG) is active in M2.
 
+---
+
+## Environment & Scenario Scaling Architecture (M9 Design Baseline)
+
+Milestone M9 decouples the operational environment topology from planning and coordination nodes, enabling progressive evaluation across four environment tiers:
+
+1. **Decoupled Grid Representation**:
+   - `GridWorld` supports declarative map loading (`from_yaml()`) defining arbitrary workspace bounds $(W, H)$, metric resolution $\delta$, obstacle matrices, stations, and passing alcoves.
+   - Core planning algorithms (Rolling-Horizon A*, Space-Time Reservations, PIBT, WFG) interact with `GridWorld` strictly through its geometric and topological interfaces (`is_free`, `get_neighbors`, `to_grid`, `to_world`).
+2. **Multi-Tier Environment Hierarchy**:
+   - **M9-V1 (Expanded Baseline)**: $32\,\text{m} \times 32\,\text{m}$ arena with 16 industrial racks and standard wide corridors ($2.4\,\text{m}-3.0\,\text{m}$), establishing baseline transfer over longer routes ($>15\,\text{m}$).
+   - **M9-V2 (Congested Warehouse)**: $32\,\text{m} \times 32\,\text{m}$ arena with 24 racks, narrow aisles ($1.6\,\text{m}-1.8\,\text{m}$), and a single shared central dropoff hub, stressing reservation density and intersection deconfliction.
+   - **M9-V3 (Hard Coordination)**: $48\,\text{m} \times 32\,\text{m}$ multi-zone layout featuring single-lane bidirectional tunnels ($1.1\,\text{m}$) with dedicated passing bays ($2.5\,\text{m} \times 2.0\,\text{m}$), asymmetric cross-zone logistics, and charging pad contention.
+   - **M9-V4 (Research Stress)**: Dual-scale architecture combining a $60\,\text{m} \times 40\,\text{m}$ Gazebo physical simulation and a $120\,\text{m} \times 80\,\text{m}$ abstract discrete MAPF simulation for ultra-large fleet scaling ($50-100+$ AMRs).
+3. **M8B Frozen Baseline Invariance**:
+   - The full M8B coordination and resilience stack (CBBA, RHCR, PIBT, Reservations, WFG, Local Safety, Adaptive Compute) operates without algorithmic modification, serving as the controlled benchmark baseline for discovering environmental and topological limits.
+
+

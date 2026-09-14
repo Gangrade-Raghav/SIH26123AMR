@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass, field
 import math
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 
 @dataclass
@@ -80,6 +80,7 @@ class CBBAAgent:
         task: Dict[str, Any],
         task_map: Dict[str, Any],
         current_time: float = 0.0,
+        min_insert_index: int = 0,
     ) -> Tuple[float, int]:
         """
         Compute marginal utility and optimal insertion index in the current bundle.
@@ -87,6 +88,7 @@ class CBBAAgent:
         :param task: Candidate task dictionary.
         :param task_map: Lookup map of all known task definitions.
         :param current_time: Current simulation or wall-clock epoch.
+        :param min_insert_index: Minimum insertion index (to prevent preempting locked tasks).
         :return: Tuple of (maximum marginal utility, optimal insertion index).
         """
         raw_prio = task.get('priority', 2)
@@ -107,8 +109,9 @@ class CBBAAgent:
         best_score = -float('inf')
         best_index = len(curr_bundle)
 
-        # Evaluate all candidate insertion positions in the bundle
-        for m in range(len(curr_bundle) + 1):
+        # Evaluate all candidate insertion positions in the bundle (respecting min_insert_index)
+        start_idx = max(0, min(min_insert_index, len(curr_bundle)))
+        for m in range(start_idx, len(curr_bundle) + 1):
             cand_bundle = curr_bundle[:m] + [task['task_id']] + curr_bundle[m:]
 
             # Cumulative distance from robot position up to completion of candidate task
@@ -170,14 +173,29 @@ class CBBAAgent:
         self,
         task_map: Dict[str, Any],
         current_time: float = 0.0,
+        locked_tasks: Optional[Set[str]] = None,
+        full_task_map: Optional[Dict[str, Any]] = None,
     ) -> int:
         """
         Construct or expand task bundle up to max capacity using marginal scoring.
 
         :param task_map: Dictionary of available candidate tasks.
         :param current_time: Current simulation timestamp.
+        :param locked_tasks: Set of task IDs that must not be preempted or reordered.
+        :param full_task_map: Complete task definitions lookup (including assigned tasks).
         :return: Number of tasks successfully appended during this phase.
         """
+        lookup_map = full_task_map if full_task_map is not None else task_map
+
+        # Determine minimum insertion index to protect locked in-progress tasks
+        min_insert_index = 0
+        if locked_tasks:
+            for t_id in self.state.bundle:
+                if t_id in locked_tasks:
+                    min_insert_index += 1
+                else:
+                    break
+
         added_count = 0
         while len(self.state.bundle) < self.config.max_bundle_size:
             best_task_id: Optional[str] = None
@@ -187,7 +205,12 @@ class CBBAAgent:
                 if t_id in self.state.bundle:
                     continue
 
-                util, _ = self.compute_marginal_utility(task, task_map, current_time)
+                util, _ = self.compute_marginal_utility(
+                    task,
+                    lookup_map,
+                    current_time,
+                    min_insert_index=min_insert_index,
+                )
                 curr_winning_bid = self.state.winning_bids.get(t_id, 0.0)
                 curr_winning_robot = self.state.winning_robots.get(t_id, '')
 
@@ -210,7 +233,7 @@ class CBBAAgent:
             self.state.timestamps[best_task_id] = current_time
             added_count += 1
 
-        self._rebuild_path(task_map)
+        self._rebuild_path(lookup_map)
         return added_count
 
     def _rebuild_path(self, task_map: Dict[str, Any]) -> None:
@@ -232,6 +255,7 @@ class CBBAAgent:
         peer_timestamps: Dict[str, float],
         task_map: Dict[str, Any],
         current_time: float = 0.0,
+        locked_tasks: Optional[Set[str]] = None,
     ) -> bool:
         """
         Execute CBBA consensus decision matrix to resolve bidding conflicts.
@@ -258,6 +282,10 @@ class CBBAAgent:
             y_k = peer_winning_bids.get(t_id, 0.0)
             z_k = peer_winning_robots.get(t_id, '')
             s_k = peer_timestamps.get(t_id, 0.0)
+
+            # Protect locked in-progress tasks: cannot be outbid or yielded
+            if locked_tasks and t_id in locked_tasks and z_i == self.robot_id:
+                continue
 
             # CBBA consensus decision logic
             if z_k == peer_id:
@@ -335,6 +363,8 @@ class CBBAAgent:
         # Find earliest index in bundle where self is no longer the winning robot
         first_outbid_idx: Optional[int] = None
         for idx, t_id in enumerate(self.state.bundle):
+            if locked_tasks and t_id in locked_tasks:
+                continue
             if self.state.winning_robots.get(t_id) != self.robot_id:
                 first_outbid_idx = idx
                 break

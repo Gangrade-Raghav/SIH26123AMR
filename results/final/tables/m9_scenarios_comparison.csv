@@ -1,0 +1,6 @@
+scenario,world,fleet_size,workload,horizon_s,seed,comm_profile,compute_mode,cbba_initial_ms,cbba_dynamic_ms,replans,planning_latency_mean_ms,planning_latency_p95_ms,min_distance_m,proximity_breaches,gazebo_physical_contacts,obb_overlap_samples,safety_brakes,safety_aborts,packets_sent,packets_delivered,packets_dropped,observed_loss_rate_pct,tasks_generated,tasks_assigned,tasks_in_progress,tasks_completed,tasks_remaining,cpu_mean_pct,ram_mean_mb
+M9-V1 (Expanded 5 AMR),warehouse_m9_v1,5,15,120.0,42,NORMAL,ADAPTIVE,1322.7,0.0,255,0.14,0.47,4.442,0,0,0,39,0,0,0,0,0.0,15,15,0,0,15,27.2,7648.2
+M9-V2 (Congested 10 AMR),warehouse_m9_v2,10,30,180.0,42,NORMAL,ADAPTIVE,4.5,0.0,492,0.14,0.27,2.047,0,0,0,3,0,0,0,0,0.0,30,29,0,0,30,39.3,9818.0
+M9-V3-D (Dynamic Arrival),warehouse_m9_v2,10,30,180.0,42,NORMAL,ADAPTIVE,8.3,2875.3,423,0.27,0.53,5.45,0,0,0,5,0,0,0,0,0.0,30,27,2,1,29,44.8,10043.8
+M9-V3-A (Dynamic Blockage),warehouse_m9_v2,10,30,180.0,42,NORMAL,ADAPTIVE,8.5,2695.9,454,0.23,0.46,5.45,0,0,0,5,0,0,0,0,0.0,30,28,2,0,30,47.4,9893.6
+M9-V3-E (Combined Stress),warehouse_m9_v2,10,30,180.0,42,NORMAL,ADAPTIVE,14.0,167.6,454,0.31,0.62,5.45,0,0,0,4,0,65795,60153,5642,8.58,30,28,2,0,30,54.3,9912.0

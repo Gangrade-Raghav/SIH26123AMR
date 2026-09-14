@@ -1,0 +1,139 @@
+{
+  "schema_version": "m9.v1",
+  "experiment_id": "exp_m9_v3_a_w1_t0_s42_adaptive_1789416211",
+  "metadata": {
+    "experiment_id": "exp_m9_v3_a_w1_t0_s42_adaptive_1789416211",
+    "timestamp_utc": "2026-09-14T20:03:31.559749+00:00",
+    "timestamp_unix": 1789416211.5597577,
+    "git_commit": "9e33886",
+    "software_version": "m9.v1",
+    "fleet_size": 1,
+    "world": "warehouse_m9_v2",
+    "workload_id": "workload_1_tasks",
+    "workload_size": 1,
+    "trial_id": 0,
+    "seed": 42,
+    "mission_horizon_sec": 55.0,
+    "actual_duration_sec": 55.03,
+    "communication_profile": "NORMAL",
+    "compute_mode": "ADAPTIVE",
+    "map_id": "warehouse_m9_v2",
+    "termination_reason": "HORIZON_REACHED"
+  },
+  "metrics": {
+    "generated_tasks": 1,
+    "staged_tasks": 0,
+    "pending_tasks": 0,
+    "assigned_tasks": 0,
+    "in_progress_tasks": 1,
+    "completed_tasks": 0,
+    "failed_tasks": 0,
+    "cancelled_tasks": 0,
+    "remaining_tasks": 1,
+    "completion_rate_pct": 0.0,
+    "throughput_tasks_per_min": 0.0,
+    "makespan_sec": 55.03,
+    "planning_cycles": 112,
+    "replan_count": 14,
+    "planning_latency_mean_ms": 0.08,
+    "planning_latency_p50_ms": 0.07,
+    "planning_latency_p95_ms": 0.12,
+    "planning_latency_p99_ms": 0.12,
+    "cbba_convergence_time_ms": 34.4,
+    "cbba_initial_convergence_time_ms": 34.4,
+    "cbba_dynamic_convergence_time_ms": null,
+    "allocation_changes": 0,
+    "unassigned_tasks": 0,
+    "conflicts_detected": 0,
+    "conflicts_resolved": 0,
+    "deadlocks_detected": 0,
+    "deadlocks_recovered": 0,
+    "minimum_center_to_center_distance_m": 1.5,
+    "minimum_inter_robot_distance_m": 1.5,
+    "proximity_breaches": 0,
+    "physical_gazebo_contacts": 0,
+    "obb_chassis_overlap_samples": 0,
+    "collision_contact_events": 0,
+    "safety_brake_interventions": 7,
+    "safety_aborts": 0,
+    "cpu_utilization_mean_pct": 13.8,
+    "cpu_utilization_max_pct": 18.4,
+    "ram_utilization_mean_mb": 8348.4,
+    "ram_utilization_max_mb": 8560.4,
+    "mode_transitions": 0,
+    "failsafe_fallbacks": 0,
+    "mode_occupancy_low_pct": 0.0,
+    "mode_occupancy_normal_pct": 100.0,
+    "mode_occupancy_high_pct": 0.0,
+    "v3_a_blockage_injected": true,
+    "v3_a_blockage_removed": true,
+    "v3_a_affected_robots_count": 1,
+    "v3_a_affected_tasks_count": 1,
+    "v3_a_diverted_robots_count": 1,
+    "v3_a_replan_latency_mean_ms": 293.42
+  },
+  "completed_task_ids": [],
+  "proximity_breach_events": [],
+  "physical_contact_events": [],
+  "obb_chassis_overlap_events": [],
+  "safety_brake_events": [
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.278,
+      "timestamp": 1789416226.9239056
+    },
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.15,
+      "timestamp": 1789416235.5542946
+    },
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.17,
+      "timestamp": 1789416237.555272
+    },
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.176,
+      "timestamp": 1789416238.1551688
+    },
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.181,
+      "timestamp": 1789416238.7549486
+    },
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.172,
+      "timestamp": 1789416243.1518843
+    },
+    {
+      "robot_id": "amr_0",
+      "range_m": 0.168,
+      "timestamp": 1789416243.8514059
+    }
+  ],
+  "collision_events": [],
+  "compute_mode_events": [],
+  "replan_counts_initial": {
+    "amr_0": 2
+  },
+  "replan_counts_final": {
+    "amr_0": 16
+  },
+  "replan_counts_delta": {
+    "amr_0": 14
+  },
+  "v3_a_affected_robots": [
+    "amr_0"
+  ],
+  "v3_a_affected_tasks": [
+    "task_smoke_0"
+  ],
+  "v3_a_diverted_robots": [
+    "amr_0"
+  ],
+  "v3_a_replan_latencies_ms": [
+    293.41578483581543
+  ]
+}

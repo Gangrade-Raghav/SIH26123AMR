@@ -1,6 +1,9 @@
 """Deterministic 2D Grid World representation for MAPF evaluation."""
 
-from typing import Iterable, List, Set, Tuple
+import os
+from typing import Any, Dict, Iterable, List, Set, Tuple
+
+import yaml
 
 Position = Tuple[int, int]
 
@@ -24,6 +27,9 @@ class GridWorld:
         self.height = height
         self.resolution = float(resolution)
         self.obstacles: Set[Position] = set()
+        self.map_id: str = ''
+        self.stations: Dict[str, Any] = {}
+        self.spawn_points: Dict[str, Any] = {}
 
         for ox, oy in obstacles:
             if 0 <= ox < width and 0 <= oy < height:
@@ -52,6 +58,10 @@ class GridWorld:
     def is_free(self, pos: Position) -> bool:
         """Check if position is inside grid and not an obstacle."""
         return self.in_bounds(pos) and pos not in self.obstacles
+
+    def is_traversable(self, pos: Position) -> bool:
+        """Check if position is traversable (in-bounds and not an obstacle)."""
+        return self.is_free(pos)
 
     def add_obstacle(self, pos: Position) -> None:
         """Add an obstacle cell."""
@@ -174,5 +184,89 @@ class GridWorld:
 
         return cls(width, height, obstacles, resolution=resolution)
 
+    @classmethod
+    def from_yaml(cls, yaml_path: str) -> 'GridWorld':
+        """
+        Load grid world configuration from a YAML file.
+
+        Parses map dimensions, resolution, perimeter wall thickness, and
+        obstacle definitions into a discrete GridWorld.
+        """
+        if not os.path.exists(yaml_path):
+            raise FileNotFoundError(f'Map config file not found: {yaml_path}')
+
+        with open(yaml_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+
+        dim_data = data.get('dimensions', {})
+        resolution = float(
+            data.get('resolution', dim_data.get('resolution', 0.5))
+        )
+        if 'x' in dim_data:
+            dim_x = float(dim_data['x'])
+        elif 'width' in dim_data:
+            dim_x = float(dim_data['width']) * resolution
+        else:
+            dim_x = 32.0
+
+        if 'y' in dim_data:
+            dim_y = float(dim_data['y'])
+        elif 'height' in dim_data:
+            dim_y = float(dim_data['height']) * resolution
+        else:
+            dim_y = 32.0
+
+        width = int(round(dim_x / resolution))
+        height = int(round(dim_y / resolution))
+        obstacles: Set[Position] = set()
+
+        perimeter_thickness = float(
+            data.get('perimeter_walls', {}).get('thickness', 0.4)
+            if 'perimeter_walls' in data else 0.0
+        )
+        obstacles_data = data.get('obstacles', [])
+
+        for obst in obstacles_data:
+            if isinstance(obst, (list, tuple)) and len(obst) >= 2:
+                obstacles.add((int(obst[0]), int(obst[1])))
+
+        for gx in range(width):
+            for gy in range(height):
+                wx = (gx + 0.5) * resolution
+                wy = (gy + 0.5) * resolution
+
+                # Perimeter walls
+                if perimeter_thickness > 0.0:
+                    if (
+                        wx <= perimeter_thickness
+                        or wx >= (dim_x - perimeter_thickness)
+                        or wy <= perimeter_thickness
+                        or wy >= (dim_y - perimeter_thickness)
+                    ):
+                        obstacles.add((gx, gy))
+                        continue
+
+                # Obstacles (storage racks)
+                for obst in obstacles_data:
+                    if isinstance(obst, dict):
+                        center = obst.get('center', [0.0, 0.0])
+                        size = obst.get('size', [0.0, 0.0])
+                        rx, ry = float(center[0]), float(center[1])
+                        sx, sy = float(size[0]), float(size[1])
+                        half_x = sx / 2.0
+                        half_y = sy / 2.0
+                        in_x = (rx - half_x) <= wx <= (rx + half_x)
+                        in_y = (ry - half_y) <= wy <= (ry + half_y)
+                        if in_x and in_y:
+                            obstacles.add((gx, gy))
+                            break
+
+        gw = cls(width, height, obstacles, resolution=resolution)
+        gw.map_id = str(data.get('map_id', ''))
+        gw.stations = data.get('stations', {})
+        gw.spawn_points = data.get('spawn_points', {})
+        return gw
+
 
 create_warehouse_grid = GridWorld.create_warehouse_grid
+from_yaml = GridWorld.from_yaml
