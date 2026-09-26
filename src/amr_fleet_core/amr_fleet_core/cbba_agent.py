@@ -47,6 +47,21 @@ class CBBAAgent:
         self.position = (float(initial_position[0]), float(initial_position[1]))
         self.state = CBBALocalState(robot_id=robot_id)
 
+    @property
+    def winning_robots(self) -> Dict[str, str]:
+        """Return winning robots dictionary from local state."""
+        return self.state.winning_robots
+
+    @property
+    def winning_bids(self) -> Dict[str, float]:
+        """Return winning bids dictionary from local state."""
+        return self.state.winning_bids
+
+    @property
+    def timestamps(self) -> Dict[str, float]:
+        """Return timestamps dictionary from local state."""
+        return self.state.timestamps
+
     def update_position(self, position: Tuple[float, float]) -> None:
         """Update current agent position."""
         self.position = (float(position[0]), float(position[1]))
@@ -203,6 +218,15 @@ class CBBAAgent:
 
             for t_id, task in task_map.items():
                 if t_id in self.state.bundle:
+                    continue
+
+                # Filter by requested_robot allocation constraint (AUTO vs DIRECT)
+                req_robot = task.get('requested_robot')
+                if (
+                    req_robot
+                    and req_robot not in ('AUTO', 'NONE', '')
+                    and req_robot != self.robot_id
+                ):
                     continue
 
                 util, _ = self.compute_marginal_utility(
@@ -413,3 +437,57 @@ class CBBAAgent:
             if abs(y_i - y_k) > self.config.epsilon:
                 return False
         return True
+
+    def purge_failed_peer_tasks(
+        self,
+        failed_robot_id: str,
+        current_time: float = 0.0,
+    ) -> List[str]:
+        """
+        Purge beliefs for all tasks held by a failed peer robot.
+
+        When a peer robot is confirmed failed, resets winning_robots to ''
+        and winning_bids to 0.0 for all tasks that the peer was believed to hold.
+        This enables local robot to consider those tasks as available for re-bidding.
+        Returns the list of task IDs that were freed.
+        """
+        freed_tasks: List[str] = []
+        for t_id, winner in list(self.state.winning_robots.items()):
+            if winner == failed_robot_id:
+                self.state.winning_robots[t_id] = ''
+                self.state.winning_bids[t_id] = 0.0
+                self.state.timestamps[t_id] = current_time
+                freed_tasks.append(t_id)
+        return freed_tasks
+
+    def reconcile_reconnection(
+        self,
+        peer_winning_robots: Dict[str, str],
+        peer_timestamps: Dict[str, float],
+        peer_winning_bids: Optional[Dict[str, float]] = None,
+    ) -> List[str]:
+        """
+        Reconcile local beliefs when reconnecting after communication loss.
+
+        If a task was reallocated to another robot while self was disconnected
+        (indicated by a strictly newer peer timestamp and non-self winner),
+        yields the task from self's bundle to prevent stale task resurrection
+        or duplicate ownership. Returns list of yielded tasks.
+        """
+        yielded_tasks: List[str] = []
+        for t_id in list(self.state.bundle):
+            peer_winner = peer_winning_robots.get(t_id, '')
+            peer_ts = peer_timestamps.get(t_id, 0.0)
+            local_ts = self.state.timestamps.get(t_id, 0.0)
+
+            if peer_winner and peer_winner != self.robot_id and peer_ts > local_ts:
+                self.state.bundle.remove(t_id)
+                if t_id in self.state.path:
+                    self.state.path.remove(t_id)
+                self.state.winning_robots[t_id] = peer_winner
+                if peer_winning_bids and t_id in peer_winning_bids:
+                    self.state.winning_bids[t_id] = peer_winning_bids[t_id]
+                self.state.timestamps[t_id] = peer_ts
+                yielded_tasks.append(t_id)
+
+        return yielded_tasks

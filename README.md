@@ -49,6 +49,13 @@ empirically prevents collisions and deadlocks under severe concurrent operationa
    - Independent $10\,\text{Hz}$ reactive braking controller directly monitoring 2D LaserScan with absolute stopping authority ($<0.35\,\text{m}$ buffer).
 9. **Observability & Visual Dashboard**:
    - Zero-dependency web dashboard (`http://localhost:8080`) with SVG mini-map and rich terminal TUI.
+10. **Operator Task Allocation & Live Task Control**:
+   - Live ROS 2 service layer (`/tasks/create`, `/tasks/control`, `/tasks/cancel`, `/tasks/requeue`).
+   - Dynamic task creation with bounds checking ($[0.0, 30.0]\,\text{m}$), duplicate detection, and sequential `T###` generation.
+   - Dual dispatch modes: **AUTO** (decentralized CBBA auction) and **DIRECT** (specific AMR target constraint).
+   - In-flight task cancellation and failure requeuing with clean bundle purging.
+   - Web console modal and tactical controls with real-time CBBA Bid Inspector.
+   - Standalone operator CLI tool: `scripts/create_task.py`.
 
 ---
 
@@ -78,7 +85,7 @@ source install/setup.bash
 ```bash
 colcon test && colcon test-result --verbose
 ```
-*Result*: **211 tests passed, 0 failures, 0 errors, 0 skipped**.
+*Result*: **216 tests passed, 0 failures, 0 errors, 0 skipped**.
 
 ---
 
@@ -116,10 +123,46 @@ python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 10 --world warehouse
 
 ---
 
-## 7. Key Documentation Links
+## 7. How Do I Use Operator Task Allocation & Live Control?
+
+Operators can inject tasks dynamically or control in-flight missions using either the Web Dashboard or the CLI tool.
+
+### Option A: Via Web Dashboard (`http://localhost:8080`)
+1. Click the **`+ CREATE TASK`** button in the header navigation bar.
+2. Enter pickup and dropoff coordinates ($[0.0, 30.0]\,\text{m}$) and select Priority (`NORMAL`, `HIGH`, `LOW`).
+3. Choose Allocation Mode:
+   - **AUTO**: Enters the decentralized CBBA auction pool; the fleet dynamically outbids and converges.
+   - **DIRECT**: Selects a specific target AMR (e.g. `amr_3`); only the designated AMR bids on it.
+4. Use the **CANCEL** or **REQUEUE** action buttons directly on rows in the live task table.
+5. Click any task row to inspect multi-robot bids, winning bid values, and consensus status in the **CBBA Bid Inspector**.
+
+### Option B: Via Operator CLI Tool (`scripts/create_task.py`)
+```bash
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+# Dispatch an AUTO task for decentralized CBBA auction
+python3 scripts/create_task.py \
+  --pickup-x 2.5 --pickup-y 4.0 \
+  --dropoff-x 14.0 --dropoff-y 12.0 \
+  --priority HIGH
+
+# Dispatch a DIRECT task constrained to amr_2
+python3 scripts/create_task.py \
+  --pickup-x 8.0 --pickup-y 3.0 \
+  --dropoff-x 16.0 --dropoff-y 6.0 \
+  --priority NORMAL \
+  --robot amr_2
+```
+For complete details, see [`docs/TASK_ALLOCATION_GUIDE.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/TASK_ALLOCATION_GUIDE.md).
+
+---
+
+## 8. Key Documentation Links
 
 | Document | File Path | Purpose |
 | :--- | :--- | :--- |
+| **Task Allocation Operator Guide** | [`docs/TASK_ALLOCATION_GUIDE.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/TASK_ALLOCATION_GUIDE.md) | Operator guide for live task creation, CLI, and dashboard controls |
 | **Final Operator Runbook** | [`docs/FINAL_RUNBOOK.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/FINAL_RUNBOOK.md) | Terminal-by-terminal commands for build, demo, inspection, and shutdown |
 | **Command Cheat Sheet** | [`docs/COMMAND_CHEATSHEET.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/COMMAND_CHEATSHEET.md) | Quick-reference copy-pasteable commands |
 | **Final Research Report** | [`docs/FINAL_RESEARCH_REPORT.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/FINAL_RESEARCH_REPORT.md) | 27-section comprehensive academic research paper |
@@ -130,7 +173,7 @@ python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 10 --world warehouse
 
 ---
 
-## 8. Where Are the Results & Experimental Artifacts?
+## 9. Where Are the Results & Experimental Artifacts?
 
 All empirical artifacts are archived and structured under [`results/final/`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/results/final/):
 
@@ -153,7 +196,7 @@ All empirical artifacts are archived and structured under [`results/final/`](fil
 
 ---
 
-## 9. Limitations & Scientific Scope
+## 10. Limitations & Scientific Scope
 
 1. **Deterministic Single-Run Benchmarks ($n=1$)**:
    The canonical benchmarks were evaluated with fixed pseudo-random seed 42 to establish bitwise reproducible baseline timelines. They do not constitute broad statistical distributions or claims across unseed variance.

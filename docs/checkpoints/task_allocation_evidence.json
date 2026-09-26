@@ -1,0 +1,38 @@
+{
+  "timestamp": 1789479428.7766376,
+  "gazebo_online": true,
+  "dashboard_online": true,
+  "task_auto_created": true,
+  "task_direct_created": true,
+  "cbba_consensus_reached": true,
+  "direct_allocation_verified": true,
+  "cancel_action_verified": true,
+  "final_task_states": {
+    "task_small_0001": "ASSIGNED",
+    "task_small_0002": "ASSIGNED",
+    "task_small_0003": "ASSIGNED",
+    "task_small_0004": "ASSIGNED",
+    "task_small_0005": "ASSIGNED",
+    "T_DEMO_AUTO": "CANCELLED",
+    "T_DEMO_DIR3": "ASSIGNED"
+  },
+  "final_bundles": {
+    "amr_3": [
+      "task_small_0004",
+      "T_DEMO_DIR3"
+    ],
+    "amr_1": [
+      "task_small_0002"
+    ],
+    "amr_4": [
+      "task_small_0005"
+    ],
+    "amr_2": [
+      "task_small_0003"
+    ],
+    "amr_0": [
+      "task_small_0001"
+    ]
+  },
+  "bids_count": 127
+}

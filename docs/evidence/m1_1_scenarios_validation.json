@@ -1,0 +1,76 @@
+{
+  "suite": "NRDAS-FR Milestone 1.1 Multi-Robot Scenarios Validation",
+  "timestamp": "2026-09-23T22:27:47.188656",
+  "all_passed": true,
+  "scenarios_count": 6,
+  "results": [
+    {
+      "scenario": "M1-A",
+      "title": "Single Robot Hard Kill during Task Execution",
+      "status": "PASSED",
+      "reclaimed": true,
+      "reassigned_to": "amr_0",
+      "reassignment_count": 1,
+      "stranded_obstacle_cell": [
+        6,
+        8
+      ]
+    },
+    {
+      "scenario": "M1-B",
+      "title": "Heartbeat Timeout during Narrow Corridor Transit",
+      "status": "PASSED",
+      "timeout_detected": true,
+      "corridor_cell": [
+        4,
+        5
+      ],
+      "bypass_path_length": 11,
+      "bypass_avoids_chassis": true
+    },
+    {
+      "scenario": "M1-C",
+      "title": "Simultaneous Dual Detection & Re-auction Race",
+      "status": "PASSED",
+      "cas_peer0_success": true,
+      "cas_peer2_noop": true,
+      "consensus_winner": "amr_0",
+      "duplicate_tasks_count": 0
+    },
+    {
+      "scenario": "M1-D",
+      "title": "Actuator Failure with Stranded Chassis Avoidance",
+      "status": "PASSED",
+      "path_found": true,
+      "stranded_chassis_cell": [
+        5,
+        5
+      ],
+      "min_clearance_m": 1.0,
+      "clearance_threshold_m": 0.45,
+      "avoidance_verified": true
+    },
+    {
+      "scenario": "M1-E",
+      "title": "Operator Restoration & Re-integration into Fleet",
+      "status": "PASSED",
+      "restoration_confirmed": true,
+      "obstacle_cleared": true,
+      "cbba_reintegrated": true
+    },
+    {
+      "scenario": "M1-F",
+      "title": "Comm Loss vs Node Kill Distinction",
+      "status": "PASSED",
+      "state_at_2s": "COMM_LOSS",
+      "is_failed_at_2s": false,
+      "state_after_reconnect": "HEALTHY",
+      "spurious_reclamation_avoided": true
+    }
+  ],
+  "provenance_metadata": {
+    "contact_detection_method": "2D OBB Geometric Proxy (Separating Axis Theorem on Odometry bounding boxes)",
+    "raw_hardware_sensor": "None (Geometric proxy used in benchmark harness)",
+    "safety_buffer_radius_m": 0.45
+  }
+}

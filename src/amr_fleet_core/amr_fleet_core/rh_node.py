@@ -24,6 +24,11 @@ from amr_fleet_core.compute_modes import (
 )
 from amr_fleet_core.coordination_models import ConflictType, CoordinationState, Position
 from amr_fleet_core.deadlock_recovery import DeadlockRecoveryManager
+from amr_fleet_core.fault_detector import FaultDetector
+from amr_fleet_core.local_obstacle_detector import (
+    LocalObstacleDetector,
+    LocalRecoveryAction,
+)
 from amr_fleet_core.pibt_planner import PIBTLocalPlanner
 from amr_fleet_core.reservation_table import SpaceTimeReservationTable
 from amr_fleet_core.rh_planner import PlanningResponseData, RHConfig, RollingHorizonPlanner
@@ -64,6 +69,16 @@ try:
     HAVE_PSUTIL = True
 except ImportError:
     HAVE_PSUTIL = False
+try:
+    from amr_fleet_msgs.srv import InjectFault
+    HAVE_FAULT_SRV = True
+except ImportError:
+    HAVE_FAULT_SRV = False
+try:
+    from amr_fleet_msgs.msg import RobotHealth
+    HAVE_HEALTH_MSG = True
+except ImportError:
+    HAVE_HEALTH_MSG = False
 from amr_fleet_sim.grid_world import GridWorld
 from builtin_interfaces.msg import Time as BuiltinTime
 from geometry_msgs.msg import Point, PoseStamped, Twist
@@ -169,6 +184,7 @@ class RollingHorizonPlannerNode(Node):
 
         heuristic = self.get_parameter('sequencing_heuristic').value
         res = self.get_parameter('grid_resolution').value
+        self.grid_resolution = float(res)
         tol = self.get_parameter('goal_tolerance_m').value
         self.enable_motion = self.get_parameter('enable_motion_execution').value
         self.enable_coordination = self.get_parameter('enable_coordination').value
@@ -388,6 +404,12 @@ class RollingHorizonPlannerNode(Node):
             )
 
         self.obstacle_ahead: bool = False
+        self.local_detector = LocalObstacleDetector(
+            grid_resolution=self.grid_resolution,
+            safety_threshold_m=0.28,
+            detection_horizon_m=1.5,
+            forward_arc_deg=24.0,
+        )
         self.sub_scan = self.create_subscription(
             LaserScan,
             f'/{self.robot_id}/scan',
@@ -399,6 +421,34 @@ class RollingHorizonPlannerNode(Node):
         period = 1.0 / max(0.1, replan_rate)
         self.timer = self.create_timer(period, self._planning_cycle)
         self.control_timer = self.create_timer(0.1, self._control_loop)
+
+        # NRDAS-FR Fault Resilience Layer
+        self.spawn_time = float(self.get_clock().now().nanoseconds * 1e-9)
+        self.fault_detector = FaultDetector(self.robot_id)
+        self.failed_robot_obstacles: Dict[str, Set[Tuple[int, int]]] = {}
+        if HAVE_FAULT_SRV:
+            self.srv_inject_fault = self.create_service(
+                InjectFault,
+                f'/{self.robot_id}/inject_fault',
+                self._handle_inject_fault,
+            )
+        if HAVE_HEALTH_MSG:
+            self.pub_health = self.create_publisher(
+                RobotHealth,
+                f'/{self.robot_id}/health',
+                10,
+            )
+            self.pub_fleet_health = self.create_publisher(
+                RobotHealth,
+                '/fleet/robot_health',
+                20,
+            )
+            self.sub_fleet_health = self.create_subscription(
+                RobotHealth,
+                '/fleet/robot_health',
+                self._handle_robot_health,
+                20,
+            )
 
         self.get_logger().info(
             f'Rolling-Horizon Planner initialized for {self.robot_id} '
@@ -433,6 +483,32 @@ class RollingHorizonPlannerNode(Node):
         self.current_yaw = map_yaw
         pos = (round(mx, 3), round(my, 3))
         self.planner.update_position(pos)
+
+    @property
+    def current_x(self) -> float:
+        """Return current continuous world X position."""
+        if hasattr(self, 'planner') and self.planner.current_position:
+            return float(self.planner.current_position[0])
+        return float(self.spawn_x)
+
+    @property
+    def current_y(self) -> float:
+        """Return current continuous world Y position."""
+        if hasattr(self, 'planner') and self.planner.current_position:
+            return float(self.planner.current_position[1])
+        return float(self.spawn_y)
+
+    @property
+    def current_grid_x(self) -> int:
+        """Return current discrete grid cell X coordinate."""
+        gx, _ = self.grid.to_grid(self.current_x, self.current_y)
+        return int(gx)
+
+    @property
+    def current_grid_y(self) -> int:
+        """Return current discrete grid cell Y coordinate."""
+        _, gy = self.grid.to_grid(self.current_x, self.current_y)
+        return int(gy)
 
     def _handle_bundle(self, msg: RobotBundle) -> None:
         """Update assigned bundle from CBBA."""
@@ -532,23 +608,76 @@ class RollingHorizonPlannerNode(Node):
             )
 
     def _handle_scan(self, msg: LaserScan) -> None:
-        """Process LiDAR to detect obstacles in forward arc."""
+        """Process LiDAR to detect obstacles in forward arc and update local occupancy."""
         num_rays = len(msg.ranges)
         if num_rays == 0:
             return
 
-        # Forward (0 rad) is at center_idx = num_rays // 2
+        # 1. Update local obstacle detector from sensor ranges
+        self.local_detector.process_scan(
+            ranges=list(msg.ranges),
+            range_min=msg.range_min,
+            range_max=msg.range_max,
+            angle_min=msg.angle_min,
+            angle_increment=msg.angle_increment,
+            robot_pose=(self.current_x, self.current_y, self.current_yaw),
+        )
+
+        # 2. Forward arc reactive emergency braking threshold: 0.28m experimental threshold
         center_idx = num_rays // 2
         arc_rays = max(1, int(num_rays * (12.0 / 360.0)))
         forward_ranges = []
         for idx in range(center_idx - arc_rays, center_idx + arc_rays + 1):
             if 0 <= idx < num_rays:
                 r = msg.ranges[idx]
-                if msg.range_min < r < msg.range_max and not math.isinf(r) and not math.isnan(r):
+                if (
+                    msg.range_min < r < msg.range_max
+                    and not math.isinf(r)
+                    and not math.isnan(r)
+                ):
                     forward_ranges.append(r)
 
-        # Immediate bumper hazard threshold: 0.28m from lidar (~18cm ahead of front bumper)
-        self.obstacle_ahead = bool(forward_ranges and min(forward_ranges) < 0.28)
+        self.obstacle_ahead = bool(
+            (forward_ranges and min(forward_ranges) < 0.28) or
+            self.local_detector.has_immediate_hazard()
+        )
+
+        # 3. Path-intersection check and sensor-driven recovery
+        if self.planner.full_path and self.planner.active_phase != 'IDLE':
+            action, sidestep, reason = (
+                self.local_detector.evaluate_local_recovery(
+                    current_pos=(self.current_x, self.current_y),
+                    current_cell=(self.current_grid_x, self.current_grid_y),
+                    planned_path_cells=self.planner.full_path,
+                    grid=self.grid,
+                    res_table=self.res_table,
+                    robot_id=self.robot_id,
+                )
+            )
+            if action in (
+                LocalRecoveryAction.LOCAL_SAFETY_HOLD,
+                LocalRecoveryAction.EMERGENCY_BRAKE,
+            ):
+                sensor_cells = (
+                    self.local_detector.get_sensor_occupied_cells()
+                )
+                blocked_on_path = [
+                    c for c in self.planner.full_path[:4]
+                    if c in sensor_cells
+                ]
+                if blocked_on_path:
+                    for bc in blocked_on_path:
+                        self.grid.add_obstacle(bc)
+                    if self.enable_coordination:
+                        self.res_table.invalidate_cells(set(blocked_on_path))
+                        self.res_table.release_robot(self.robot_id)
+                    self.planner.full_path = []
+                    self.planner.horizon_path = []
+                    self.planner.execution_path = []
+                    self.planner.active_waypoint_idx = 1
+                    if self.planner.current_goal:
+                        self.planner.replan()
+                        self._publish_rolling_plan()
 
     def _publish_task_transition(
         self,
@@ -566,6 +695,98 @@ class RollingHorizonPlannerNode(Node):
         msg.timestamp = float_to_builtin_time(self.get_clock().now().nanoseconds * 1e-9)
         msg.details = details
         self.pub_task_status.publish(msg)
+
+    def _handle_inject_fault(self, request: Any, response: Any) -> Any:
+        """Handle fault injection command for testing."""
+        ok, msg = self.fault_detector.inject_fault(request.fault_type, request.duration_sec)
+        response.success = ok
+        response.message = msg
+        self.get_logger().warn(
+            f'[{self.robot_id}] Fault injected: {request.fault_type} -> {msg}'
+        )
+        if self.fault_detector.is_self_healthy():
+            self.planner.assigned_bundle = []
+            self.planner.full_path = []
+            self.planner.horizon_path = []
+            self.planner.execution_path = []
+            if self.enable_coordination:
+                self.res_table.release_robot(self.robot_id)
+            self.get_logger().info(
+                f'[{self.robot_id}] Operator restore completed. Fleet state clean-slated.'
+            )
+        else:
+            self.planner.full_path = []
+            self.planner.horizon_path = []
+            self.planner.execution_path = []
+            if self.enable_coordination:
+                self.res_table.release_robot(self.robot_id)
+            twist = Twist()
+            self.pub_cmd_vel.publish(twist)
+        self._publish_health_status()
+        return response
+
+    def _handle_robot_health(self, msg: Any) -> None:
+        """Process peer robot health telemetry."""
+        if msg.robot_id == self.robot_id:
+            return
+
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+
+        # Filter through impairment model if active
+        if hasattr(self, 'comm_model') and self.comm_model.config.enabled:
+            action, delay_ms, _ = self.comm_model.process_message(
+                sender_id=msg.robot_id,
+                receiver_id=self.robot_id,
+                current_time=now_sec,
+            )
+            if action == CommunicationAction.DROP:
+                return
+            if action == CommunicationAction.DELAY:
+                deliver_at = now_sec + (delay_ms / 1000.0)
+                self.delayed_queue.schedule(
+                    deliver_at,
+                    self._apply_robot_health,
+                    msg,
+                )
+                return
+
+        self._apply_robot_health(msg)
+
+    def _apply_robot_health(self, msg: Any) -> None:
+        """Apply validated peer health update to fault detector."""
+        pose = (float(msg.last_pose.x), float(msg.last_pose.y))
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        self.fault_detector.record_peer_heartbeat(
+            msg.robot_id,
+            msg.health_state,
+            pose,
+            msg.active_task_id,
+            now_sec,
+        )
+
+    def _publish_health_status(self) -> None:
+        """Broadcast local AMR operational health state."""
+        if not HAVE_HEALTH_MSG or not hasattr(self, 'pub_health'):
+            return
+        msg = RobotHealth()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.robot_id = self.robot_id
+        msg.health_state = self.fault_detector.self_state.value
+        msg.last_pose.x = float(self.planner.current_position[0])
+        msg.last_pose.y = float(self.planner.current_position[1])
+        curr_tid = ''
+        if (
+            self.planner.ordered_tasks
+            and self.planner.active_task_idx < len(self.planner.ordered_tasks)
+        ):
+            curr_tid = self.planner.ordered_tasks[self.planner.active_task_idx]
+        msg.active_task_id = curr_tid
+        now_sec = float(self.get_clock().now().nanoseconds * 1e-9)
+        if not hasattr(self, 'spawn_time') or self.spawn_time <= 0.0:
+            self.spawn_time = now_sec
+        msg.uptime_sec = max(0.0, float(now_sec - self.spawn_time))
+        self.pub_health.publish(msg)
+        self.pub_fleet_health.publish(msg)
 
     def _publish_plan_request(
         self,
@@ -1317,6 +1538,83 @@ class RollingHorizonPlannerNode(Node):
 
     def _planning_cycle(self) -> None:
         """Periodic rolling-horizon planning, replanning check, and execution control."""
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        curr_tid = ''
+        if (
+            self.planner.ordered_tasks
+            and self.planner.active_task_idx < len(self.planner.ordered_tasks)
+        ):
+            curr_tid = self.planner.ordered_tasks[self.planner.active_task_idx]
+
+        # NRDAS-FR: Decentralized health monitoring & failure recovery
+        if hasattr(self, 'fault_detector'):
+            self.fault_detector.update_self_telemetry(
+                self.planner.current_position,
+                curr_tid,
+                now_sec,
+            )
+            self._publish_health_status()
+
+            if not self.fault_detector.self_state.can_move:
+                # Self is dead or motor failed: command stop and exit
+                twist = Twist()
+                self.pub_cmd_vel.publish(twist)
+                return
+
+            newly_failed, newly_recovered = self.fault_detector.evaluate_peers(now_sec)
+            for failed_p in newly_failed:
+                self.get_logger().warn(
+                    f'[{self.robot_id}] Detected peer failure: {failed_p}. '
+                    'Executing autonomous recovery.'
+                )
+                if self.enable_coordination:
+                    self.res_table.release_robot(failed_p)
+
+                dead_pose = self.fault_detector.get_peer_pose(failed_p)
+                if dead_pose:
+                    dead_cell = self.grid.to_grid(dead_pose[0], dead_pose[1])
+                    self.failed_robot_obstacles.setdefault(failed_p, set()).add(dead_cell)
+                    self.grid.add_obstacle(dead_cell)
+                    for wp in (self.planner.full_path or self.planner.execution_path):
+                        if self.grid.to_grid(wp[0], wp[1]) == dead_cell:
+                            self.planner.full_path = []
+                            self.planner.horizon_path = []
+                            self.planner.execution_path = []
+                            self.planner.replan()
+                            break
+
+                reclaim_tids = set()
+                peer_task = self.fault_detector.get_peer_task(failed_p)
+                if peer_task:
+                    reclaim_tids.add(peer_task)
+                if self.cached_tasks:
+                    for tid, tinfo in self.cached_tasks.items():
+                        if (
+                            tinfo.get('assigned_robot_id') == failed_p
+                            and tinfo.get('status') in ('ASSIGNED', 'IN_PROGRESS')
+                        ):
+                            reclaim_tids.add(tid)
+
+                for r_tid in reclaim_tids:
+                    self.get_logger().warn(
+                        f'[{self.robot_id}] Autonomous reclamation: task {r_tid} '
+                        f'from failed peer {failed_p} -> PENDING'
+                    )
+                    self._publish_task_transition(
+                        r_tid,
+                        'PENDING',
+                        f'Autonomous reclamation from failed peer {failed_p}',
+                    )
+
+            for rec_p in newly_recovered:
+                self.get_logger().info(
+                    f'[{self.robot_id}] Peer {rec_p} restored to HEALTHY. '
+                    'Clearing stranded chassis obstacle.'
+                )
+                obs_cells = self.failed_robot_obstacles.pop(rec_p, set())
+                for cell in obs_cells:
+                    self.grid.remove_obstacle(cell)
+
         if not self.planner.assigned_bundle and self.cached_bundle and self.cached_tasks:
             self.planner.update_assigned_bundle(self.cached_bundle, self.cached_tasks)
 
@@ -1523,6 +1821,11 @@ class RollingHorizonPlannerNode(Node):
 
         cmd = Twist()
 
+        # Halt immediately if self cannot move (e.g. FAILED, MOTION_FAILURE, EMERGENCY_STOP)
+        if hasattr(self, 'fault_detector') and not self.fault_detector.self_state.can_move:
+            self.pub_cmd_vel.publish(cmd)
+            return
+
         # Stop if yielding to another robot
         if self.coordination_state in (
             CoordinationState.YIELDING.value,
@@ -1538,6 +1841,25 @@ class RollingHorizonPlannerNode(Node):
 
         rx, ry = self.planner.current_position
         tx, ty = target_wp
+
+        # Local Autonomy check during COMM_LOSS: verify valid reservation before entering cell
+        if (
+            hasattr(self, 'fault_detector')
+            and self.fault_detector.is_in_comm_loss()
+            and self.enable_coordination
+        ):
+            target_cell = self.grid.to_grid(tx, ty)
+            current_cell = self.grid.to_grid(rx, ry)
+            if target_cell != current_cell:
+                held_cells = {
+                    r.to_pos
+                    for r in self.res_table.get_reservations_for_robot(self.robot_id)
+                }
+                if target_cell not in held_cells:
+                    cmd.linear.x = 0.0
+                    cmd.angular.z = 0.0
+                    self.pub_cmd_vel.publish(cmd)
+                    return
 
         dx = tx - rx
         dy = ty - ry

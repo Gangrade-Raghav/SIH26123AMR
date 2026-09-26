@@ -12,7 +12,8 @@ Variant Description:
 - Commits reservations directly into SpaceTimeReservationTable.
 """
 
-from typing import Dict, List, Optional, Set, Tuple
+import time
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from amr_fleet_core.coordination_models import Conflict, CoordinationState, Position
 from amr_fleet_core.reservation_table import SpaceTimeReservationTable
@@ -255,6 +256,36 @@ class PIBTLocalPlanner:
                 self.table.reserve_edge(c_pos, tgt, time_step, r_id, priority=prio)
 
         return decided_moves, conflicts
+
+    def plan_step_with_telemetry(
+        self,
+        agents: Dict[str, PIBTAgentState],
+        time_step: int,
+        trigger: str = 'LOCAL_VERTEX_CONTENTION_FALLBACK',
+    ) -> Tuple[Dict[str, Position], List[Conflict], Dict[str, Any]]:
+        """
+        Execute one synchronous PIBT step and return structured telemetry.
+
+        Provides direct evidence traceability from actual PIBT execution.
+        """
+        t0 = time.perf_counter()
+        moves, conflicts = self.plan_step(agents, time_step)
+        duration_ms = (time.perf_counter() - t0) * 1000.0
+
+        assigned_cells = list(moves.values())
+        no_overlap = len(assigned_cells) == len(set(assigned_cells))
+
+        telemetry = {
+            'pibt_invoked': True,
+            'trigger': trigger,
+            'robots_involved': list(agents.keys()),
+            'action': 'PRIORITIZED_PUSH_AND_YIELD',
+            'result': 'SUCCESS' if no_overlap else 'CONFLICT_UNRESOLVED',
+            'duration_ms': round(duration_ms, 3),
+            'execution_level': 'PLANNER_LEVEL_PIBT_INTEGRATION',
+            'assigned_moves': {r: list(pos) for r, pos in moves.items()},
+        }
+        return moves, conflicts, telemetry
 
     def plan_window(
         self,

@@ -101,7 +101,7 @@ class Task:
         },
         TaskLifecycleState.ASSIGNED: {
             TaskLifecycleState.IN_PROGRESS,
-            TaskLifecycleState.PENDING,     # Task preemption / release
+            TaskLifecycleState.PENDING,     # Task preemption / release / requeue
             TaskLifecycleState.CANCELLED,
             TaskLifecycleState.FAILED,
         },
@@ -109,9 +109,12 @@ class Task:
             TaskLifecycleState.COMPLETED,
             TaskLifecycleState.FAILED,
             TaskLifecycleState.CANCELLED,
+            TaskLifecycleState.PENDING,     # Safe operator abort / requeue
         },
         TaskLifecycleState.COMPLETED: set(),  # Terminal
-        TaskLifecycleState.FAILED: set(),     # Terminal
+        TaskLifecycleState.FAILED: {
+            TaskLifecycleState.PENDING,     # Operator requeue
+        },
         TaskLifecycleState.CANCELLED: set(),  # Terminal
     }
 
@@ -125,10 +128,13 @@ class Task:
         deadline: Optional[float] = None,
         metadata: Optional[Dict[str, Any]] = None,
         release_time_sec: float = 0.0,
+        requested_robot: Optional[str] = None,
     ) -> None:
         self.task_id = task_id
         self.pickup = (float(pickup[0]), float(pickup[1]))
         self.dropoff = (float(dropoff[0]), float(dropoff[1]))
+        self.requested_robot = requested_robot if requested_robot else None
+        self.reassignment_count = 0
         if isinstance(priority, TaskPriority):
             self.priority = priority
         else:
@@ -212,12 +218,22 @@ class Task:
             self.assigned_robot_id = robot_id
             self.assigned_at = now
             event_type = 'ASSIGNED'
-        elif new_state == TaskLifecycleState.PENDING and old_state == TaskLifecycleState.ASSIGNED:
-            # Unassigned / preempted
+        elif new_state == TaskLifecycleState.PENDING:
             self.assigned_robot_id = None
-            event_type = 'UNASSIGNED'
-        elif new_state == TaskLifecycleState.PENDING and old_state == TaskLifecycleState.STAGED:
-            event_type = 'RELEASED'
+            if old_state == TaskLifecycleState.ASSIGNED:
+                self.reassignment_count += 1
+                event_type = (
+                    'REQUEUED'
+                    if ('requeue' in details.lower() or 'operator' in details.lower())
+                    else 'UNASSIGNED'
+                )
+            elif old_state == TaskLifecycleState.STAGED:
+                event_type = 'RELEASED'
+            elif old_state in (TaskLifecycleState.FAILED, TaskLifecycleState.IN_PROGRESS):
+                self.reassignment_count += 1
+                event_type = 'REQUEUED'
+            else:
+                event_type = 'REQUEUED'
         elif new_state == TaskLifecycleState.IN_PROGRESS:
             self.started_at = now
             if robot_id:
@@ -294,6 +310,8 @@ class Task:
             'created_at': self.created_at,
             'release_time_sec': self.release_time_sec,
             'deadline': self.deadline,
+            'requested_robot': self.requested_robot,
+            'reassignment_count': self.reassignment_count,
             'assigned_robot_id': self.assigned_robot_id,
             'assigned_at': self.assigned_at,
             'started_at': self.started_at,
@@ -320,7 +338,9 @@ class Task:
             deadline=data.get('deadline'),
             metadata=data.get('metadata', {}),
             release_time_sec=float(data.get('release_time_sec', 0.0)),
+            requested_robot=data.get('requested_robot'),
         )
+        task.reassignment_count = int(data.get('reassignment_count', 0))
         status_str = data.get('status')
         if status_str and status_str != TaskLifecycleState.PENDING.value:
             # Replay state transition if non-pending

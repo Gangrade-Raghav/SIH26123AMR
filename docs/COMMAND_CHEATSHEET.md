@@ -4,12 +4,37 @@
 
 ---
 
+### ⭐ ALL-IN-ONE SINGLE COMMAND LAUNCH (EVERYTHING IN ONE GO)
+Lauches **Gazebo Harmonic (3D GUI)** + **RViz 2** + **AMR Fleet Autonomy Stack** + **Fleet Observability Dashboard (Port 8080)** + **Resilience & Fault Dashboard (Port 8081)** all in a single command with clean `Ctrl+C` teardown!
+
+#### Option 1: Big Congested Warehouse (10 AMRs, `warehouse_m9_v2`) [Recommended]
+```bash
+cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project && ./scripts/launch_all_in_one.sh --world warehouse_m9_v2 --robots 10
+```
+
+#### Option 2: Standard Warehouse (5 AMRs, `warehouse_small`)
+```bash
+cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project && ./scripts/launch_all_in_one.sh --world warehouse_small --robots 5
+```
+
+> **Web Interfaces**:
+> - Fleet Observability: http://localhost:8080
+> - Resilience & Fault Console: http://localhost:8081
+>
+> **Teardown**: Press `Ctrl + C` in the terminal to automatically and cleanly terminate all background simulators, visualizers, nodes, and web servers.
+
+---
+
 ### 0. CLEAN START & ENVIRONMENT RESET
 ```bash
-# Terminal 1 — Kill any dangling ROS 2 or Gazebo processes
-killall -9 gz sim-server sim-gui ruby ros2 rviz2 python3 2>/dev/null || true
+# Emergency kill of all dangling ROS 2, Gazebo, bridges, visualizers, and dashboards
+killall -9 gz sim-server sim-gui ruby ros2 rviz2 parameter_bridge robot_state_publisher static_transform_publisher task_manager cbba_node rh_node warehouse_visualizer 2>/dev/null || true
+pkill -9 -f "amr_fleet" 2>/dev/null || true
+pkill -9 -f "fleet_dashboard" 2>/dev/null || true
+pkill -9 -f "resilience_dashboard" 2>/dev/null || true
+rm -f /dev/shm/sem.fastrtps* /dev/shm/fastrtps* 2>/dev/null || true
 sleep 1
-ps aux | grep -E 'gz|ros2|amr_fleet' | grep -v grep || true
+ps aux | grep -E 'gz|ros2|amr_fleet|parameter_bridge' | grep -v grep || echo "All clean!"
 ```
 
 ---
@@ -106,6 +131,21 @@ python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 10 --world warehouse
 
 ---
 
+### 5B. LAUNCH RESILIENCE & FAULT INJECTION DASHBOARD (TERMINAL 3B)
+```bash
+# Terminal 3B — Launch Resilience Console (Port 8081)
+cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+python3 scripts/resilience_dashboard.py --port 8081 --world warehouse_m9_v2
+
+# Open Web Interface in Browser:
+# http://localhost:8081
+```
+
+---
+
 ### 6. RUN DETERMINISTIC WAYPOINT DEMO TRAJECTORY (TERMINAL 4)
 ```bash
 # Terminal 4 — Optional waypoint presentation controller
@@ -151,6 +191,10 @@ gz model --list
 ```bash
 # In each terminal: Press Ctrl + C
 
-# Emergency cleanup if any process hangs:
-killall -9 gz sim-server sim-gui ruby ros2 rviz2 python3 2>/dev/null || true
+# Emergency comprehensive cleanup if any process hangs:
+killall -9 gz sim-server sim-gui ruby ros2 rviz2 parameter_bridge robot_state_publisher static_transform_publisher task_manager cbba_node rh_node warehouse_visualizer 2>/dev/null || true
+pkill -9 -f "amr_fleet" 2>/dev/null || true
+pkill -9 -f "fleet_dashboard" 2>/dev/null || true
+pkill -9 -f "resilience_dashboard" 2>/dev/null || true
+rm -f /dev/shm/sem.fastrtps* /dev/shm/fastrtps* 2>/dev/null || true
 ```

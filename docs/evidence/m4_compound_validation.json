@@ -1,0 +1,139 @@
+{
+  "milestone": "M4",
+  "title": "Compound Fault Resilience & Adversarial Recovery",
+  "execution_level": "INTEGRATION / SIMULATION",
+  "timestamp": "2026-09-23T16:58:06.464317+00:00",
+  "total_scenarios": 7,
+  "passed_scenarios": 7,
+  "failed_scenarios": 0,
+  "all_passed": true,
+  "provenance_disclaimers": {
+    "geometric_overlap_proxy": "Non-zero collision or overlap metrics are measured via geometric distance and bounding proxy envelopes, not raw physical contact dynamics.",
+    "runtime_measurement": "Timings reflect actual runtime execution of the Python simulation harness.",
+    "planner_level_integration": "Multi-agent conflict resolution utilizes planner-level reservation tables and PIBT-style decentralized fallbacks."
+  },
+  "scenarios": [
+    {
+      "scenario_id": "M4-A",
+      "title": "Robot Failure + Dynamic Blockage",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "replan_runtime_ms": 0.259,
+        "detour_path_len": 13,
+        "geometric_overlap_proxy_count": 0,
+        "resolving_component": "FaultDetector + ReservationTable + SingleAgentAStar",
+        "task_uniqueness_invariant_i1": true,
+        "reservation_exclusivity_invariant_i2": true
+      },
+      "verification_notes": "amr_0 successfully replanned path (13 cells) avoiding both failed AMR keep-out (7, 4) and dynamic blockage (7, 5). Geometric overlap proxy count: 0."
+    },
+    {
+      "scenario_id": "M4-B",
+      "title": "Robot Failure + Communication Loss Discrimination",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "evaluation_runtime_ms": 0.081,
+        "comm_loss_threshold_s": 1.5,
+        "failure_timeout_s": 3.5,
+        "false_positive_failures": 0,
+        "amr1_state_at_2s": "COMM_LOSS",
+        "amr2_state_at_2s": "COMM_LOSS",
+        "amr1_final_state": "FAILED",
+        "amr2_final_state": "HEALTHY",
+        "resolving_component": "FaultDetector Debounce & Tiered Discrimination"
+      },
+      "verification_notes": "Confirmed clean discrimination between COMM_LOSS (1.5s) and FAILED (3.5s). Reconnecting peer amr_2 avoided spurious fault declaration (0 false positives)."
+    },
+    {
+      "scenario_id": "M4-C",
+      "title": "Multiple Overlapping Robot Failures",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "execution_runtime_ms": 0.201,
+        "tasks_reclaimed_count": 2,
+        "surviving_robot_bundle_size": 2,
+        "stale_reservations_remaining": 0,
+        "task_uniqueness_invariant_i1": true,
+        "reservation_exclusivity_invariant_i2": true,
+        "resolving_component": "CBBA Consensus + Invalidation Manager"
+      },
+      "verification_notes": "Two staggered AMR failures resolved cleanly. Both tasks reclaimed to PENDING and bundled into amr_0 without stale reservation retention."
+    },
+    {
+      "scenario_id": "M4-D",
+      "title": "Robot Failure + Sensor-Visible Obstacle",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "sensor_process_runtime_ms": 0.225,
+        "detected_obstacle_count": 1,
+        "safety_threshold_m": 0.28,
+        "hazard_detected_at_threshold": true,
+        "clamped_linear_velocity_mps": 0.0,
+        "geometric_overlap_proxy_count": 0,
+        "resolving_component": "LocalObstacleDetector (0.28m Safety Envelope)"
+      },
+      "verification_notes": "Demonstrated pure onboard sensor decoupling. 0.9m obstacle detected without emergency stop; crossing into 0.22m triggered immediate reactive brake to 0.0 m/s."
+    },
+    {
+      "scenario_id": "M4-E",
+      "title": "Network Partition + Robot Failure",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "reconciliation_runtime_ms": 0.116,
+        "partition_yielded_tasks": 1,
+        "amr0_claim_timestamp_s": 105.0,
+        "amr2_claim_timestamp_s": 90.0,
+        "reconciled_owner": "amr_0",
+        "task_uniqueness_invariant_i1": true,
+        "resolving_component": "Timestamp CAS Reconnection Reconciliation"
+      },
+      "verification_notes": "Network partition heal tested. Stale claim from isolated AMR yielded monotonically to newer assignment timestamp (105.0s > 90.0s). Zero dual ownership."
+    },
+    {
+      "scenario_id": "M4-F",
+      "title": "Network Loss + Dynamic Blockage",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "safety_hold_runtime_ms": 0.029,
+        "local_autonomy_permitted": true,
+        "obstacle_detected": true,
+        "robot_action": "LOCAL_SAFETY_HOLD",
+        "unauthorized_advance_count": 0,
+        "geometric_overlap_proxy_count": 0,
+        "resolving_component": "Bounded Local Autonomy & Reactive Safety Hold"
+      },
+      "verification_notes": "COMM_LOSS AMR halted forward progress when encountering dynamically blocked cell. Transitioned to LOCAL_SAFETY_HOLD with 0 unauthorized advances."
+    },
+    {
+      "scenario_id": "M4-G",
+      "title": "Master Compound Quad Failure",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "provenance": "ACTUAL RUNTIME MEASUREMENT",
+      "passed": true,
+      "metrics": {
+        "quad_resolution_runtime_ms": 0.668,
+        "loss_probability": 0.5,
+        "shared_bundle_tasks": 0,
+        "path_obstacle_intersection": false,
+        "task_uniqueness_invariant_i1": true,
+        "reservation_exclusivity_invariant_i2": true,
+        "local_safety_invariant_i3": true,
+        "geometric_overlap_proxy_count": 0,
+        "resolving_component": "Full NRDAS Composite Layered Architecture"
+      },
+      "verification_notes": "Simultaneous quad failure composition (2 crashes, 50% packet loss, corridor blockage) converged monotonically without deadlock, split-brain, or collisions."
+    }
+  ]
+}

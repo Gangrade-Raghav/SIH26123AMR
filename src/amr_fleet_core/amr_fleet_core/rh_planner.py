@@ -291,12 +291,49 @@ class RollingHorizonPlanner:
             return False
 
         # If robot is actively executing an in-progress task, preserve it without interruption
+        # unless it was explicitly cancelled, failed, or requeued
         if (
             self.active_phase in ('TRANSIT_TO_PICKUP', 'TRANSIT_TO_DROPOFF')
             and self.ordered_tasks
             and self.active_task_idx < len(self.ordered_tasks)
         ):
             curr_tid = self.ordered_tasks[self.active_task_idx]
+            curr_status = self.tasks_map.get(curr_tid, {}).get('status', '')
+
+            is_purged = (
+                curr_tid not in self.assigned_bundle
+                or curr_status in ('CANCELLED', 'FAILED', 'PENDING')
+            )
+            if is_purged:
+                # Active task was cancelled or requeued: safely transition away from it
+                completed_tasks = list(self.ordered_tasks[:self.active_task_idx])
+                future_tasks = [
+                    t for t in self.assigned_bundle
+                    if t != curr_tid and t not in completed_tasks
+                    and self.tasks_map.get(t, {}).get('status') not in (
+                        'COMPLETED', 'CANCELLED', 'FAILED'
+                    )
+                ]
+                sequenced_future = TaskSequencer.sequence(
+                    future_tasks,
+                    self.tasks_map,
+                    self.current_position,
+                    heuristic=self.config.sequencing_heuristic,
+                )
+                self.ordered_tasks = completed_tasks + sequenced_future
+                if self.active_task_idx < len(self.ordered_tasks):
+                    next_tid = self.ordered_tasks[self.active_task_idx]
+                    self.active_phase = 'TRANSIT_TO_PICKUP'
+                    self.current_goal = self.tasks_map[next_tid]['pickup']
+                    self.replan()
+                else:
+                    self.active_phase = 'IDLE'
+                    self.current_goal = None
+                    self.full_path = []
+                    self.horizon_path = []
+                    self.execution_path = []
+                return True
+
             completed_tasks = list(self.ordered_tasks[:self.active_task_idx])
             # Unstarted / newly added tasks in bundle
             future_tasks = [

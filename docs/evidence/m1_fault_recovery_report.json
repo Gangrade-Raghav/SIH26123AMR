@@ -1,0 +1,53 @@
+{
+  "status": "PASSED",
+  "victim_id": "amr_1",
+  "stranded_chassis_pose": [
+    4.5,
+    10.0
+  ],
+  "orphaned_task_id": "T2",
+  "reallocated_robot_id": "amr_2",
+  "reassignment_count": 1,
+  "events_count": 4,
+  "timeline": [
+    {
+      "timestamp": 0.0,
+      "type": "INITIAL_ALLOCATION",
+      "allocations": {
+        "amr_0": [
+          "T1",
+          "T4"
+        ],
+        "amr_1": [
+          "T2"
+        ],
+        "amr_2": [
+          "T3"
+        ]
+      }
+    },
+    {
+      "timestamp": 4.0,
+      "type": "FAULT_INJECTION",
+      "victim": "amr_1",
+      "pose": [
+        4.5,
+        10.0
+      ],
+      "task": "T2"
+    },
+    {
+      "timestamp": 9.0,
+      "type": "PEER_FAILURE_DETECTED",
+      "detector": "amr_0",
+      "failed_peer": "amr_1"
+    },
+    {
+      "timestamp": 9.0,
+      "type": "TASK_REALLOCATED",
+      "task_id": "T2",
+      "new_robot": "amr_2"
+    }
+  ],
+  "verified_at": "2026-09-23T22:28:16.388144"
+}

@@ -12,3 +12,6 @@ __pycache__/
 .idea/
 .env
 .DS_Store
+.pytest_cache/
+*.egg-info/
+.agents/

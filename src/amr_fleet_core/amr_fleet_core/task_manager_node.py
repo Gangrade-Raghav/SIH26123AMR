@@ -1,6 +1,6 @@
-"""ROS 2 Task Manager Node for workload publishing and lifecycle management."""
-
+import math
 import os
+import re
 from typing import Dict, Optional
 
 from amr_fleet_core.task_model import (
@@ -8,9 +8,11 @@ from amr_fleet_core.task_model import (
     Task,
     TaskEvent,
     TaskLifecycleState,
+    TaskPriority,
 )
 from amr_fleet_core.workload import WorkloadManager
 from amr_fleet_msgs.msg import TaskDefinition, TaskEvent as TaskEventMsg, TaskList
+from amr_fleet_msgs.srv import ControlTask, CreateTask
 from builtin_interfaces.msg import Time as BuiltinTime
 from geometry_msgs.msg import Point
 import rclpy
@@ -86,12 +88,35 @@ class TaskManagerNode(Node):
 
         self.mission_start_time: Optional[float] = None
         self.current_sim_time: float = 0.0
+        self._task_counter: int = 1
+
+        # Services for operator task management
+        self.srv_create_task = self.create_service(
+            CreateTask,
+            '/tasks/create',
+            self._handle_create_task,
+        )
+        self.srv_control_task = self.create_service(
+            ControlTask,
+            '/tasks/control',
+            self._handle_control_task,
+        )
+        self.srv_cancel_task = self.create_service(
+            ControlTask,
+            '/tasks/cancel',
+            self._handle_cancel_service,
+        )
+        self.srv_requeue_task = self.create_service(
+            ControlTask,
+            '/tasks/requeue',
+            self._handle_requeue_service,
+        )
 
         # Periodic publication timer
         timer_period = 1.0 / max(0.1, pub_rate)
         self.timer = self.create_timer(timer_period, self._publish_task_lists)
 
-        self.get_logger().info('Task Manager Node initialized.')
+        self.get_logger().info('Task Manager Node initialized with operator control services.')
 
     def _handle_mission_start(self, msg: Optional[TaskEventMsg] = None) -> None:
         """Anchor mission start time to synchronize dynamic task release with benchmark clock."""
@@ -120,6 +145,7 @@ class TaskManagerNode(Node):
         msg.deadline = float_to_builtin_time(task.deadline)
         msg.status = task.state.value
         msg.assigned_robot_id = task.assigned_robot_id or ''
+        msg.requested_robot = task.requested_robot or ''
         return msg
 
     def event_to_msg(self, event: TaskEvent, task_id: str) -> TaskEventMsg:
@@ -231,10 +257,43 @@ class TaskManagerNode(Node):
                 )
                 self.pub_events.publish(self.event_to_msg(task.events[-1], task_id))
 
+            # NRDAS-FR: Idempotent CAS Precondition Check for Autonomous Task Reclamation
+            if target_state == TaskLifecycleState.PENDING and msg.details:
+                reclaim_match = re.search(
+                    r'from failed peer\s+(\w+)', msg.details, re.IGNORECASE
+                )
+                if reclaim_match:
+                    expected_failed_robot = reclaim_match.group(1)
+                    if task.assigned_robot_id != expected_failed_robot:
+                        self.get_logger().warn(
+                            f"Stale/duplicate reclamation for task '{task_id}': "
+                            f"expected failed owner '{expected_failed_robot}', "
+                            f"but task is currently assigned to '{task.assigned_robot_id}'. "
+                            'Safely discarding.'
+                        )
+                        return
+
+            # Idempotency check: redundant or late transitions should not throw errors
+            if task.state == target_state:
+                return
+            if (
+                task.state == TaskLifecycleState.IN_PROGRESS
+                and target_state == TaskLifecycleState.ASSIGNED
+            ):
+                return
+            if task.state == TaskLifecycleState.COMPLETED:
+                return
+
+            # Clear assigned_robot_id when transitioning to PENDING
+            assignee = (
+                None if target_state == TaskLifecycleState.PENDING
+                else (msg.robot_id or None)
+            )
+
             task.transition_to(
                 target_state,
                 timestamp=now_sec,
-                robot_id=msg.robot_id or None,
+                robot_id=assignee,
                 details=msg.details or 'Updated via ROS 2 interface',
             )
 
@@ -248,6 +307,224 @@ class TaskManagerNode(Node):
             self.get_logger().error(f"Rejected transition for task '{task_id}': {e}")
         except ValueError as e:
             self.get_logger().error(f"Malformed state name for task '{task_id}': {e}")
+
+    def _generate_unique_task_id(self) -> str:
+        """Generate a unique sequential task ID not currently present in the task pool."""
+        while True:
+            candidate = f'T{self._task_counter:03d}'
+            self._task_counter += 1
+            if candidate not in self.tasks:
+                return candidate
+
+    def _handle_create_task(
+        self,
+        request: CreateTask.Request,
+        response: CreateTask.Response,
+    ) -> CreateTask.Response:
+        """Handle live operator task creation via /tasks/create."""
+        # 1. Resolve Task ID
+        raw_id = request.task_id.strip()
+        if not raw_id or raw_id.upper() in ('AUTO', 'GENERATE', 'NONE'):
+            task_id = self._generate_unique_task_id()
+        else:
+            task_id = raw_id
+
+        # 2. Duplicate Check
+        if task_id in self.tasks:
+            response.accepted = False
+            response.task_id = task_id
+            response.message = f"Task ID '{task_id}' already exists in pool."
+            self.get_logger().warn(response.message)
+            return response
+
+        # 3. Warehouse Bounds Validation [0.0, 30.0]
+        px, py = float(request.pickup_x), float(request.pickup_y)
+        dx, dy = float(request.dropoff_x), float(request.dropoff_y)
+        if not (0.0 <= px <= 30.0 and 0.0 <= py <= 30.0):
+            response.accepted = False
+            response.task_id = task_id
+            response.message = (
+                f'Pickup coordinate ({px:.2f}, {py:.2f}) out of warehouse bounds [0, 30].'
+            )
+            self.get_logger().warn(response.message)
+            return response
+
+        if not (0.0 <= dx <= 30.0 and 0.0 <= dy <= 30.0):
+            response.accepted = False
+            response.task_id = task_id
+            response.message = (
+                f'Dropoff coordinate ({dx:.2f}, {dy:.2f}) out of warehouse bounds [0, 30].'
+            )
+            self.get_logger().warn(response.message)
+            return response
+
+        if math.hypot(dx - px, dy - py) < 0.2:
+            response.accepted = False
+            response.task_id = task_id
+            response.message = (
+                'Pickup and dropoff coordinates must be distinct (min distance 0.20 m).'
+            )
+            self.get_logger().warn(response.message)
+            return response
+
+        # 4. Priority Validation
+        prio_val = (
+            int(request.priority)
+            if request.priority in (1, 2, 3, 4)
+            else int(TaskPriority.NORMAL)
+        )
+        priority = TaskPriority(prio_val)
+
+        # 5. Deadline Validation
+        deadline = float(request.deadline) if request.deadline > 0.0 else None
+
+        # 6. Requested Robot Constraint Validation
+        raw_robot = request.requested_robot.strip()
+        if not raw_robot or raw_robot.upper() in ('AUTO', 'NONE', 'ALL'):
+            requested_robot = None
+        else:
+            if not re.match(r'^amr_\d+$', raw_robot):
+                response.accepted = False
+                response.task_id = task_id
+                response.message = (
+                    f"Invalid requested robot format '{raw_robot}'. Expected 'amr_X'."
+                )
+                self.get_logger().warn(response.message)
+                return response
+            requested_robot = raw_robot
+
+        # 7. Instantiate Task in PENDING state
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        task = Task(
+            task_id=task_id,
+            pickup=(px, py),
+            dropoff=(dx, dy),
+            priority=priority,
+            created_at=now_sec,
+            deadline=deadline,
+            requested_robot=requested_robot,
+        )
+        self.tasks[task_id] = task
+
+        # Publish creation event
+        latest_event = task.events[-1]
+        self.pub_events.publish(self.event_to_msg(latest_event, task_id))
+
+        alloc_mode = f'DIRECT ({requested_robot})' if requested_robot else 'AUTO (CBBA)'
+        response.accepted = True
+        response.task_id = task_id
+        response.message = (
+            f"Task '{task_id}' created successfully in PENDING state (allocation: {alloc_mode})"
+        )
+        self.get_logger().info(response.message)
+
+        # Trigger immediate publication of task lists
+        self._publish_task_lists()
+        return response
+
+    def _handle_cancel_service(
+        self,
+        request: ControlTask.Request,
+        response: ControlTask.Response,
+    ) -> ControlTask.Response:
+        """Route cancellation service call to the unified control handler."""
+        request.action = 'CANCEL'
+        return self._handle_control_task(request, response)
+
+    def _handle_requeue_service(
+        self,
+        request: ControlTask.Request,
+        response: ControlTask.Response,
+    ) -> ControlTask.Response:
+        """Route requeue service call to the unified control handler."""
+        request.action = 'REQUEUE'
+        return self._handle_control_task(request, response)
+
+    def _handle_control_task(
+        self,
+        request: ControlTask.Request,
+        response: ControlTask.Response,
+    ) -> ControlTask.Response:
+        """Handle live operator task control (CANCEL, REQUEUE)."""
+        task_id = request.task_id.strip()
+        action = request.action.strip().upper()
+
+        if task_id not in self.tasks:
+            response.success = False
+            response.message = f"Unknown task ID '{task_id}'."
+            self.get_logger().warn(response.message)
+            return response
+
+        task = self.tasks[task_id]
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+
+        if action == 'CANCEL':
+            if task.is_terminal:
+                response.success = False
+                response.message = (
+                    f"Task '{task_id}' is already in terminal state {task.state.value}."
+                )
+                self.get_logger().warn(response.message)
+                return response
+
+            try:
+                task.transition_to(
+                    TaskLifecycleState.CANCELLED,
+                    timestamp=now_sec,
+                    details='Cancelled by operator',
+                )
+                self.pub_events.publish(self.event_to_msg(task.events[-1], task_id))
+                self._publish_task_lists()
+                response.success = True
+                response.message = f"Task '{task_id}' cancelled successfully."
+                self.get_logger().info(response.message)
+                return response
+            except InvalidTaskTransitionError as e:
+                response.success = False
+                response.message = f"Cannot cancel task '{task_id}': {e}"
+                self.get_logger().error(response.message)
+                return response
+
+        elif action == 'REQUEUE':
+            if task.state == TaskLifecycleState.PENDING:
+                response.success = True
+                response.message = f"Task '{task_id}' is already PENDING."
+                return response
+            if task.state == TaskLifecycleState.COMPLETED:
+                response.success = False
+                response.message = f"Cannot requeue COMPLETED task '{task_id}'."
+                self.get_logger().warn(response.message)
+                return response
+            if task.state == TaskLifecycleState.CANCELLED:
+                response.success = False
+                response.message = f"Cannot requeue CANCELLED task '{task_id}'."
+                self.get_logger().warn(response.message)
+                return response
+
+            try:
+                task.transition_to(
+                    TaskLifecycleState.PENDING,
+                    timestamp=now_sec,
+                    details='Requeued by operator',
+                )
+                self.pub_events.publish(self.event_to_msg(task.events[-1], task_id))
+                self._publish_task_lists()
+                response.success = True
+                response.message = f"Task '{task_id}' successfully requeued to PENDING."
+                self.get_logger().info(response.message)
+                return response
+            except InvalidTaskTransitionError as e:
+                response.success = False
+                response.message = f"Cannot requeue task '{task_id}': {e}"
+                self.get_logger().error(response.message)
+                return response
+
+        else:
+            response.success = False
+            response.message = (
+                f"Unsupported control action '{action}'. Supported actions: CANCEL, REQUEUE."
+            )
+            return response
 
 
 def main(args=None) -> None:

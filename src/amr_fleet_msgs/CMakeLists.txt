@@ -33,6 +33,10 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/CommunicationMetrics.msg"
   "msg/ComputeModeEvent.msg"
   "msg/AisleBlockageEvent.msg"
+  "msg/RobotHealth.msg"
+  "srv/CreateTask.srv"
+  "srv/ControlTask.srv"
+  "srv/InjectFault.srv"
   DEPENDENCIES
     std_msgs
     geometry_msgs

@@ -1,0 +1,126 @@
+{
+  "suite": "NRDAS-FR Milestone 2 Network Resilience Validation Suite",
+  "timestamp": "2026-09-23T22:27:54.089967",
+  "all_passed": true,
+  "scenarios_count": 8,
+  "results": [
+    {
+      "scenario": "M2-A",
+      "title": "Short Network Outage (<= 2s) during Active Navigation",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "outage_duration_s": 1.5,
+      "self_in_comm_loss": true,
+      "local_autonomy_permitted": true,
+      "peer_declared_failed": false,
+      "task_reclaimed": false
+    },
+    {
+      "scenario": "M2-B",
+      "title": "Network Outage in ASSIGNED State (Pre-Departure Hold)",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "initial_state": "ASSIGNED",
+      "has_active_reservations": false,
+      "commanded_velocity": 0.0,
+      "unreserved_moves": 0,
+      "spurious_reclaim": false
+    },
+    {
+      "scenario": "M2-B2",
+      "title": "COMM_LOSS during active reserved navigation",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "velocity_initial": 0.4,
+      "in_comm_loss": true,
+      "continued_along_reservation": true,
+      "velocity_during_comm_loss": 0.4,
+      "local_safety_threshold_m": 0.28,
+      "local_safety_active": true,
+      "network_restored": true,
+      "reconciliation_yielded_count": 0,
+      "task_retained_by_amr1": true,
+      "duplicate_ownership": false
+    },
+    {
+      "scenario": "M2-C",
+      "title": "Network Outage in IN_PROGRESS State (Local Autonomy & Reservation Hold)",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "velocity_step_1": 0.4,
+      "velocity_step_2": 0.4,
+      "velocity_on_reservation_expiry": 0.0,
+      "safety_hold_engaged": true
+    },
+    {
+      "scenario": "M2-D",
+      "title": "Extended Outage (> 3.5s) with Autonomous M1 Reclamation",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "outage_duration_s": 5.0,
+      "peer_declared_failed": true,
+      "tasks_purged": [
+        "T_M2D"
+      ],
+      "task_reclaimed": true,
+      "reassigned_to": "amr_0",
+      "reassignment_count": 1
+    },
+    {
+      "scenario": "M2-E",
+      "title": "Post-Reconnection State Reconciliation & Invariant I_uniq",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "tasks_yielded": [
+        "T_M2E"
+      ],
+      "amr_0_owns": true,
+      "amr_1_owns": false,
+      "duplicate_ownership": false,
+      "i_uniq_satisfied": true,
+      "reconciliation_finding": "No duplicate task ownership was observed, and the implemented reconciliation invariant prevents duplicate ownership across the evaluated stale-state/reconnection cases."
+    },
+    {
+      "scenario": "M2-F",
+      "title": "High Packet Loss (35%) Resilience with Debounced Filtering",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "configured_loss_rate": 0.35,
+      "measured_loss_rate": 0.344,
+      "messages_sent": 1000,
+      "messages_delivered": 656,
+      "messages_dropped": 344,
+      "false_failures": 0
+    },
+    {
+      "scenario": "M2-G",
+      "title": "Bipartite Network Partition & Re-merge Convergence",
+      "execution_level": "INTEGRATION / SIMULATION",
+      "status": "PASSED",
+      "partition_enforced": true,
+      "during_partition_consensus": "GLOBAL CONSENSUS = NOT AVAILABLE",
+      "post_partition_recovery_convergence": "OBSERVED",
+      "duplicate_tasks_count": 0
+    }
+  ],
+  "provenance_metadata": {
+    "execution_level": "INTEGRATION / SIMULATION (Software Testbed / Simulated Fleet)",
+    "contact_detection_method": "2D OBB Geometric Proxy (Separating Axis Theorem on Odometry bounding boxes)",
+    "local_safety_threshold_m": 0.28,
+    "local_safety_status": "0.28 m is utilized as an experimental/design safety threshold; it is not characterized as optimal or universal.",
+    "local_autonomy_definition": {
+      "concept": "LOCAL_SAFETY_HOLD (Bounded Local Autonomy)",
+      "rules": [
+        "communication loss does not imply unrestricted autonomous navigation",
+        "valid reservations may permit continued local execution",
+        "expired reservations force LOCAL_SAFETY_HOLD",
+        "unreserved blind exploratory navigation is prohibited"
+      ]
+    },
+    "partition_consensus_rule": {
+      "during_partition": "GLOBAL CONSENSUS = NOT AVAILABLE",
+      "post_partition_recovery": "state reconciliation and convergence may be reported if actually observed"
+    },
+    "task_uniqueness_finding": "No duplicate task ownership was observed, and the implemented reconciliation invariant prevents duplicate ownership across the evaluated stale-state/reconnection cases."
+  }
+}

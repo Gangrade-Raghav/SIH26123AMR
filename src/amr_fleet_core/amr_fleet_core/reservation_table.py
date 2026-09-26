@@ -135,23 +135,6 @@ class SpaceTimeReservationTable:
                 return False
             return True
 
-    def is_edge_conflict(
-        self,
-        from_pos: Position,
-        to_pos: Position,
-        time_step: int,
-        robot_id: str = '',
-    ) -> bool:
-        """Check if an edge swap exists against to_pos -> from_pos at time_step."""
-        with self._lock:
-            rev_key = (to_pos, from_pos, time_step)
-            res = self._edge_reservations.get(rev_key)
-            if res is None:
-                return False
-            if robot_id and res.robot_id == robot_id:
-                return False
-            return True
-
     def is_headway_conflict(
         self,
         from_pos: Position,
@@ -212,10 +195,49 @@ class SpaceTimeReservationTable:
                     )
             return None
 
+    def is_edge_conflict(
+        self,
+        from_pos: Position,
+        to_pos: Position,
+        time_step: int,
+        robot_id: str = '',
+    ) -> bool:
+        """Check if an edge swap exists against to_pos -> from_pos at time_step."""
+        with self._lock:
+            rev_key = (to_pos, from_pos, time_step)
+            res = self._edge_reservations.get(rev_key)
+            if res is None:
+                return False
+            if robot_id and res.robot_id == robot_id:
+                return False
+            return True
+
     def get_reservation(self, cell: Position, time_step: int) -> Optional[Reservation]:
         """Return reservation at (cell, time_step) if present, else None."""
         with self._lock:
             return self._vertex_reservations.get((cell, time_step))
+
+    def get_authoritative_owners(
+        self, cell: Position, time_step: int,
+    ) -> Set[str]:
+        """Return the set of robot IDs that authoritatively own (cell, time_step)."""
+        with self._lock:
+            res = self._vertex_reservations.get((cell, time_step))
+            if res is not None and res.robot_id:
+                return {res.robot_id}
+            return set()
+
+    def get_owner(self, cell: Position, time_step: int) -> Optional[str]:
+        """Return authoritative robot owner of (cell, time_step), or None if free."""
+        with self._lock:
+            res = self._vertex_reservations.get((cell, time_step))
+            return res.robot_id if res is not None else None
+
+    def is_owner(self, cell: Position, time_step: int, robot_id: str) -> bool:
+        """Check if robot_id is the authoritative owner of (cell, time_step)."""
+        with self._lock:
+            res = self._vertex_reservations.get((cell, time_step))
+            return bool(res is not None and res.robot_id == robot_id)
 
     def get_conflict(
         self,
@@ -319,3 +341,45 @@ class SpaceTimeReservationTable:
         """Return shallow copy of all active edge reservations."""
         with self._lock:
             return dict(self._edge_reservations)
+
+    def invalidate_cells(
+        self,
+        cells: Set[Position],
+        min_time_step: int = 0,
+    ) -> List[Tuple[str, Position, int]]:
+        """
+        Withdraw any active reservations intersecting the specified grid cells.
+
+        Called when dynamic obstacles or environmental aisle blockages withdraw
+        cells from the traversable graph (Milestone 3).
+
+        :param cells: Set of grid cell positions withdrawn from traversability.
+        :param min_time_step: Earliest time step to consider for revocation.
+        :return: List of revoked (robot_id, cell, time_step) tuples.
+        """
+        with self._lock:
+            revoked: List[Tuple[str, Position, int]] = []
+
+            # Invalidate vertex reservations
+            v_keys_to_del = [
+                k for k in self._vertex_reservations
+                if k[0] in cells and k[1] >= min_time_step
+            ]
+            for vk in v_keys_to_del:
+                res = self._vertex_reservations.pop(vk)
+                if res.robot_id in self._robot_vertices:
+                    self._robot_vertices[res.robot_id].discard(vk)
+                revoked.append((res.robot_id, vk[0], vk[1]))
+
+            # Invalidate edge reservations intersecting cells
+            e_keys_to_del = [
+                k for k in self._edge_reservations
+                if (k[0] in cells or k[1] in cells) and k[2] >= min_time_step
+            ]
+            for ek in e_keys_to_del:
+                res = self._edge_reservations.pop(ek)
+                if res.robot_id in self._robot_edges:
+                    self._robot_edges[res.robot_id].discard(ek)
+                revoked.append((res.robot_id, ek[1], ek[2]))
+
+            return revoked

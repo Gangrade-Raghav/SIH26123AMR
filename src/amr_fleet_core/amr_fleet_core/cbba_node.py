@@ -11,6 +11,7 @@ from amr_fleet_core.communication_model import (
     PRESET_PROFILES,
 )
 from amr_fleet_core.compute_modes import ComputeMode, get_compute_mode_config
+from amr_fleet_core.fault_detector import FaultDetector
 from amr_fleet_core.stale_state_manager import (
     InformationState,
     StaleStateManager,
@@ -31,6 +32,11 @@ try:
     HAVE_M8B_MSGS = True
 except ImportError:
     HAVE_M8B_MSGS = False
+try:
+    from amr_fleet_msgs.msg import RobotHealth
+    HAVE_HEALTH_MSG = True
+except ImportError:
+    HAVE_HEALTH_MSG = False
 from builtin_interfaces.msg import Time as BuiltinTime
 from nav_msgs.msg import Odometry
 import rclpy
@@ -217,12 +223,36 @@ class CBBANode(Node):
                 10,
             )
 
+        # NRDAS-FR Fault Resilience Layer
+        self.fault_detector = FaultDetector(self.robot_id)
+        if HAVE_HEALTH_MSG:
+            self.sub_fleet_health = self.create_subscription(
+                RobotHealth,
+                '/fleet/robot_health',
+                self._handle_robot_health,
+                20,
+            )
+
         # Periodic timer
         timer_period = 1.0 / max(0.1, rate)
         self.timer = self.create_timer(timer_period, self._consensus_cycle)
 
         self.get_logger().info(
             f'CBBA Node initialized for {self.robot_id} (bundle cap: {max_bundle})'
+        )
+
+    def _handle_robot_health(self, msg: Any) -> None:
+        """Process peer robot health telemetry."""
+        if msg.robot_id == self.robot_id:
+            return
+        pose = (float(msg.last_pose.x), float(msg.last_pose.y))
+        now_sec = self.get_clock().now().nanoseconds * 1e-9
+        self.fault_detector.record_peer_heartbeat(
+            msg.robot_id,
+            msg.health_state,
+            pose,
+            msg.active_task_id,
+            now_sec,
         )
 
     def _handle_odom(self, msg: Odometry) -> None:
@@ -244,11 +274,13 @@ class CBBANode(Node):
                     td.deadline.sec + td.deadline.nanosec * 1e-9
                     if td.deadline.sec > 0 else None
                 ),
+                'requested_robot': getattr(td, 'requested_robot', '').strip(),
             }
         self.task_pool = current_map
 
     def _handle_all_tasks(self, msg: TaskList) -> None:
-        """Cache fleet-wide task definitions and lifecycle states."""
+        """Cache fleet-wide task definitions, lifecycle states, and prune cancelled tasks."""
+        cancelled_tasks = set()
         for td in msg.tasks:
             t_id = td.task_id
             self.task_all_states[t_id] = td.status
@@ -258,11 +290,31 @@ class CBBANode(Node):
                 'dropoff': (td.dropoff_pose.x, td.dropoff_pose.y),
                 'priority': td.priority,
                 'status': td.status,
+                'requested_robot': getattr(td, 'requested_robot', ''),
                 'deadline': (
                     td.deadline.sec + td.deadline.nanosec * 1e-9
                     if td.deadline.sec > 0 else None
                 ),
             }
+            if td.status.upper() == 'CANCELLED':
+                cancelled_tasks.add(t_id)
+
+        # Prune cancelled tasks from our local bundle and winning beliefs so CBBA
+        # does not re-commit or hold stale claims on operator-cancelled tasks.
+        if cancelled_tasks:
+            tasks_to_remove = cancelled_tasks & set(self.agent.state.bundle)
+            if tasks_to_remove:
+                self.agent.state.bundle = [
+                    t for t in self.agent.state.bundle if t not in tasks_to_remove
+                ]
+                for t in tasks_to_remove:
+                    self.agent.state.winning_robots.pop(t, None)
+                    self.agent.state.winning_bids.pop(t, None)
+                    self.agent.state.timestamps.pop(t, None)
+                    self.assigned_tasks_committed.discard(t)
+                if tasks_to_remove:
+                    full_map = {**self.task_metadata_cache, **self.task_pool}
+                    self.agent._rebuild_path(full_map)
 
     def _handle_comm_profile(self, msg: Any) -> None:
         """Dynamically update communication degradation profile across the fleet."""
@@ -386,18 +438,55 @@ class CBBANode(Node):
         self.delayed_queue.poll(now_sec)
         self.iteration += 1
 
-        # Free completed tasks from bundle to release capacity
-        completed_in_bundle = [
+        # NRDAS-FR: Evaluate peer failures and purge stale peer winning beliefs
+        if hasattr(self, 'fault_detector'):
+            self.fault_detector.update_self_telemetry(self.agent.position, '', now_sec)
+            if not self.fault_detector.is_self_healthy():
+                # Self is failed; do not build bundle or broadcast winning bids
+                return
+
+            newly_failed, newly_recovered = self.fault_detector.evaluate_peers(now_sec)
+            for failed_p in newly_failed:
+                freed = self.agent.purge_failed_peer_tasks(failed_p, now_sec)
+                if freed:
+                    self.get_logger().info(
+                        f'[{self.robot_id}] Purged tasks {freed} '
+                        f'previously held by failed peer {failed_p}'
+                    )
+                    self.consecutive_stable_rounds = 0
+                    self.is_converged = False
+
+            for rec_p in newly_recovered:
+                self.get_logger().info(
+                    f'[{self.robot_id}] Peer {rec_p} recovered. Triggering auction update.'
+                )
+                self.consecutive_stable_rounds = 0
+                self.is_converged = False
+
+        # Free completed, cancelled, or failed tasks from bundle to release capacity
+        stale_or_done = [
             t for t in self.agent.state.bundle
-            if self.task_all_states.get(t) == 'COMPLETED'
+            if self.task_all_states.get(t) in ('COMPLETED', 'CANCELLED', 'FAILED')
         ]
-        if completed_in_bundle:
+        # Also release any task in bundle that was externally requeued to PENDING
+        requeued_in_bundle = [
+            t for t in self.agent.state.bundle
+            if t in self.assigned_tasks_committed and self.task_all_states.get(t) == 'PENDING'
+        ]
+        to_purge = set(stale_or_done + requeued_in_bundle)
+        if to_purge:
             self.agent.state.bundle = [
                 t for t in self.agent.state.bundle
-                if t not in completed_in_bundle
+                if t not in to_purge
             ]
+            for t in to_purge:
+                self.assigned_tasks_committed.discard(t)
+                self.agent.state.winning_bids.pop(t, None)
+                self.agent.state.winning_robots.pop(t, None)
             full_map = {**self.task_metadata_cache, **self.task_pool}
             self.agent._rebuild_path(full_map)
+            self.consecutive_stable_rounds = 0
+            self.is_converged = False
 
         # Locked tasks are those already in-progress or committed
         locked_tasks = {
