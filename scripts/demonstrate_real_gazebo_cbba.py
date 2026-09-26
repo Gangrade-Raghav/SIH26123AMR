@@ -348,7 +348,7 @@ def main() -> int:
     print(f"  [+] Identical Task Winners Across Runs: {is_identical_winners}")
 
     # Save summary JSON for report inclusion
-    audit_file = '/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/checkpoints/m4_audit_evidence.json'
+    audit_file = os.path.join(os.getcwd(), 'docs', 'checkpoints', 'm4_audit_evidence.json')
     with open(audit_file, 'w') as f:
         json.dump({
             'run_1': run_1_data,

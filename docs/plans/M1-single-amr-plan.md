@@ -1,8 +1,8 @@
 # M1 Implementation Plan — Single AMR Simulation Foundation
 
 **Milestone**: M1 — Single AMR Simulation Foundation  
-**Author**: Lead Autonomous Engineering Agent (Antigravity)  
-**Target Repository**: `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project`  
+**Author**: Raghav Gangrade  
+**Target Repository**: `.`  
 **Status**: APPROVED & IN PROGRESS  
 
 ---

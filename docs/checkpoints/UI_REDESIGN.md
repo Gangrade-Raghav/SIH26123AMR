@@ -3,7 +3,7 @@
 **Milestone**: NRDAS Dashboard UI/UX Industrial Redesign  
 **Date**: 2026-09-15  
 **Status**: COMPLETE — WAITING FOR HUMAN APPROVAL  
-**Target Repository**: `antigravity_amr_project`  
+**Target Repository**: `SIH26123AMR`  
 **Core File Modified**: `scripts/fleet_dashboard.py`  
 **Reference Alignment**: `media_1789487330655.jpg` (EdgeFleet Autonomous Fleet Operations Console)
 

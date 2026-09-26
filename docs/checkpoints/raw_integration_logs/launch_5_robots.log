@@ -83,7 +83,7 @@
 [parameter_bridge-2] [INFO] [1789258207.235120368] [rclcpp]: signal_handler(SIGINT/SIGTERM)
 [parameter_bridge-5] [INFO] [1789258207.235537149] [rclcpp]: signal_handler(SIGINT/SIGTERM)
 [robot_state_publisher-3] [INFO] [1789258207.235537527] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[ERROR] [gazebo-1]: process has died [pid 88053, exit code -2, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf --force-version 8'].
+[ERROR] [gazebo-1]: process has died [pid 88053, exit code -2, cmd 'ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim -r -s /home/raghav/SIH26123AMR/install/amr_fleet_bringup/share/amr_fleet_bringup/worlds/warehouse_small.sdf --force-version 8'].
 [INFO] [parameter_bridge-2]: process has finished cleanly [pid 88054]
 [INFO] [parameter_bridge-17]: process has finished cleanly [pid 88076]
 [INFO] [parameter_bridge-8]: process has finished cleanly [pid 88061]

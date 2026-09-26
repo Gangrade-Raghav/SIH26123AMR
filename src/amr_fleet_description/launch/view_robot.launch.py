@@ -1,4 +1,4 @@
-# Copyright 2026 Antigravity Agent
+# Copyright 2026 Raghav Gangrade
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

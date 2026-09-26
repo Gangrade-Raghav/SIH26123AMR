@@ -1,9 +1,9 @@
 # M0 Bootstrap Implementation Plan — NRDAS AMR Fleet Coordination
 
 **Milestone**: M0 — Environment & Repository Bootstrap  
-**Author**: Lead Autonomous Engineering Agent (Antigravity)  
+**Author**: Raghav Gangrade  
 **Status**: AWAITING HUMAN APPROVAL (Checkpoint)  
-**Target Root**: `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project`  
+**Target Root**: `.`  
 
 ---
 
@@ -18,10 +18,10 @@ Bootstrap the development environment and repository control plane for the decen
 1. **Host Environment**: Verified Ubuntu 24.04.4 LTS on Intel Core i7-13620H (16 vCPUs), 30 GiB RAM, NVMe storage (209 GiB free).
 2. **ROS 2 & Middleware**: ROS 2 Jazzy desktop is fully installed and active. Gazebo Sim 8.11.0 (Harmonic) and `ros_gz_sim`/`ros_gz_bridge` (v1.0.22) verified functional in headless mode. `rmw_zenoh_cpp` (v0.2.10) and `rmw_zenohd` are installed and verified loadable.
 3. **Repository State**:
-   - The project directory `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project` contains complete control plane documentation (`AGENTS.md`, `PRD.md`, `README.md`, `docs/`, `.agents/`).
+   - The project directory `.` contains complete control plane documentation (`AGENTS.md`, `PRD.md`, `README.md`, `docs/`, `.agents/`).
    - The directory is **not yet a Git repository** (`fatal: not a git repository`).
    - No `src/` directory or ROS 2 packages exist yet.
-   - An audit report has been compiled at `docs/agent-reports/M0-environment-audit.md`.
+   - An audit report has been compiled at `docs/audit-reports/M0-environment-audit.md`.
 
 ---
 
@@ -79,7 +79,7 @@ Structure externalized configuration directories as dictated by `config/README.m
 ## 4. Files and Packages to Create
 
 ```text
-antigravity_amr_project/
+SIH26123AMR/
 ├── .git/                                         [Stage 1: Git initialization]
 ├── scripts/
 │   ├── verify_environment.py                     [Stage 4: Automated environment audit]
@@ -205,14 +205,14 @@ M0 will be accepted when:
 - [ ] All package unit tests pass (`colcon test`) with 0 failures and 0 errors.
 - [ ] Automated verification script `scripts/verify_environment.py` exits with code 0.
 - [ ] No algorithmic implementations (CBBA, RHCR, PIBT, WFG) are introduced prematurely.
-- [ ] A detailed completion report `docs/agent-reports/M0-completion-report.md` is generated.
+- [ ] A detailed completion report `docs/audit-reports/M0-completion-report.md` is generated.
 
 ---
 
 ## 9. Definition of Done
 
 In accordance with `docs/definition-of-done.md`, M0 is DONE only when an independent engineer can:
-1. Understand the environment requirements and audit findings from `docs/agent-reports/M0-environment-audit.md`.
+1. Understand the environment requirements and audit findings from `docs/audit-reports/M0-environment-audit.md`.
 2. Inspect the repository git history and package layout.
 3. Build the workspace cleanly with `colcon build` without missing dependencies.
 4. Execute `colcon test` and `scripts/verify_environment.py` and see 100% passing results.

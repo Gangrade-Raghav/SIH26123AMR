@@ -93,7 +93,7 @@
 [robot_state_publisher-16] [INFO] [1789368643.431117322] [amr_3.robot_state_publisher]: Robot initialized
 [create-21] [INFO] [1789368643.445113219] [amr_4_spawner]: Requesting list of world names.
 [parameter_bridge-10] [INFO] [1789368643.445667894] [amr_1_bridge]: Creating GZ->ROS Bridge: [/amr_1/joint_states (gz.msgs.Model) -> /amr_1/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
-[task_manager-24] [INFO] [1789368643.743527548] [amr_task_manager]: Loaded 15 tasks from workload: /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/workloads/workload_15_tasks.yaml
+[task_manager-24] [INFO] [1789368643.743527548] [amr_task_manager]: Loaded 15 tasks from workload: /home/raghav/SIH26123AMR/config/workloads/workload_15_tasks.yaml
 [create-5] [INFO] [1789368643.769620401] [amr_0_spawner]: Waiting messages on topic [amr_0/robot_description].
 [task_manager-24] [INFO] [1789368643.834000504] [amr_task_manager]: Task Manager Node initialized.
 [cbba_node-27] [INFO] [1789368643.848445125] [amr_2.cbba_node]: CBBA Node initialized for amr_2 (bundle cap: 4)

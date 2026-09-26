@@ -93,18 +93,18 @@
 [parameter_bridge-6] [INFO] [1789372546.289805642] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/scan (gz.msgs.LaserScan) -> /amr_0/scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
 [parameter_bridge-6] [INFO] [1789372546.310100301] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/tf (gz.msgs.Pose_V) -> /amr_0/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
 [parameter_bridge-6] [INFO] [1789372546.320707214] [amr_0_bridge]: Creating GZ->ROS Bridge: [/amr_0/joint_states (gz.msgs.Model) -> /amr_0/joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
-[task_manager-24] [INFO] [1789372546.485762817] [amr_task_manager]: Loaded 15 tasks from workload: /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/workloads/workload_15_tasks_m9_v1.yaml
+[task_manager-24] [INFO] [1789372546.485762817] [amr_task_manager]: Loaded 15 tasks from workload: /home/raghav/SIH26123AMR/config/workloads/workload_15_tasks_m9_v1.yaml
 [task_manager-24] [INFO] [1789372546.572444897] [amr_task_manager]: Task Manager Node initialized.
-[rh_node-34] [INFO] [1789372546.804382421] [amr_4.rh_node]: [amr_4] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v1.yaml (64x64)
+[rh_node-34] [INFO] [1789372546.804382421] [amr_4.rh_node]: [amr_4] Loaded custom grid from /home/raghav/SIH26123AMR/config/maps/warehouse_m9_v1.yaml (64x64)
 [rh_node-34] [INFO] [1789372546.936753374] [amr_4.rh_node]: Rolling-Horizon Planner initialized for amr_4 (h=10, w=4, heuristic=PRIORITY_FIRST)
 [cbba_node-29] [INFO] [1789372546.946252251] [amr_4.cbba_node]: CBBA Node initialized for amr_4 (bundle cap: 4)
 [create-13] [INFO] [1789372546.951194342] [amr_2_spawner]: Waiting messages on topic [amr_2/robot_description].
-[rh_node-31] [INFO] [1789372546.970671293] [amr_1.rh_node]: [amr_1] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v1.yaml (64x64)
+[rh_node-31] [INFO] [1789372546.970671293] [amr_1.rh_node]: [amr_1] Loaded custom grid from /home/raghav/SIH26123AMR/config/maps/warehouse_m9_v1.yaml (64x64)
 [cbba_node-27] [INFO] [1789372546.983627401] [amr_2.cbba_node]: CBBA Node initialized for amr_2 (bundle cap: 4)
-[rh_node-33] [INFO] [1789372547.031103779] [amr_3.rh_node]: [amr_3] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v1.yaml (64x64)
+[rh_node-33] [INFO] [1789372547.031103779] [amr_3.rh_node]: [amr_3] Loaded custom grid from /home/raghav/SIH26123AMR/config/maps/warehouse_m9_v1.yaml (64x64)
 [create-17] [INFO] [1789372547.049551722] [amr_3_spawner]: Waiting messages on topic [amr_3/robot_description].
-[rh_node-32] [INFO] [1789372547.056642873] [amr_2.rh_node]: [amr_2] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v1.yaml (64x64)
-[rh_node-30] [INFO] [1789372547.065841498] [amr_0.rh_node]: [amr_0] Loaded custom grid from /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/config/maps/warehouse_m9_v1.yaml (64x64)
+[rh_node-32] [INFO] [1789372547.056642873] [amr_2.rh_node]: [amr_2] Loaded custom grid from /home/raghav/SIH26123AMR/config/maps/warehouse_m9_v1.yaml (64x64)
+[rh_node-30] [INFO] [1789372547.065841498] [amr_0.rh_node]: [amr_0] Loaded custom grid from /home/raghav/SIH26123AMR/config/maps/warehouse_m9_v1.yaml (64x64)
 [cbba_node-25] [INFO] [1789372547.103785119] [amr_0.cbba_node]: CBBA Node initialized for amr_0 (bundle cap: 4)
 [cbba_node-28] [INFO] [1789372547.104315151] [amr_3.cbba_node]: CBBA Node initialized for amr_3 (bundle cap: 4)
 [cbba_node-26] [INFO] [1789372547.133152245] [amr_1.cbba_node]: CBBA Node initialized for amr_1 (bundle cap: 4)

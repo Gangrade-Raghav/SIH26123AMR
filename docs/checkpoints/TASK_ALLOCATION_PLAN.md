@@ -1,7 +1,7 @@
 # NRDAS — OPERATOR TASK ALLOCATION & LIVE TASK CONTROL PLAN
 
 **Milestone / Feature**: Operator Task Allocation & Live Task Control Layer  
-**Target Repository**: `antigravity_amr_project`  
+**Target Repository**: `SIH26123AMR`  
 **Date**: September 15, 2026  
 **Status**: DESIGN COMPLETE — AWAITING IMPLEMENTATION
 

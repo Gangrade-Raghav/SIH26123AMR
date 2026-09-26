@@ -4,7 +4,7 @@
   <name>amr_fleet_msgs</name>
   <version>0.1.0</version>
   <description>Standard ROS 2 message definitions for decentralized AMR fleet coordination.</description>
-  <maintainer email="antigravity@local.dev">Antigravity Agent</maintainer>
+  <maintainer email="raghavgangrade72009@gmail.com">Raghav Gangrade</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

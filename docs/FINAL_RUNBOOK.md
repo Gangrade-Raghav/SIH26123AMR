@@ -22,7 +22,7 @@ ps aux | grep -E 'gz|ros2|amr_fleet' | grep -v grep || true
 In every terminal used for this project, source the ROS 2 and workspace underlays:
 ```bash
 source /opt/ros/jazzy/setup.bash
-source /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/install/setup.bash
+source ./install/setup.bash
 ```
 
 Verify the environment:
@@ -44,7 +44,7 @@ To compile the 5 core packages from source with symlink installation:
 
 ### Terminal 1 — Build Sequence
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 
 # Clean build
@@ -77,7 +77,7 @@ This demonstration showcases 5 AMRs operating in the baseline warehouse (`wareho
 
 ### TERMINAL 1 — Gazebo Simulation & AMR Fleet Bringup
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -98,7 +98,7 @@ ros2 launch amr_fleet_bringup m8b_adaptive_fleet.launch.py \
 ### TERMINAL 2 — 3D Fleet RViz Visualization
 *(Wait until Terminal 1 prints `[amr_task_manager]: Task Manager Node initialized`)*
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -112,7 +112,7 @@ rviz2 -d $(ros2 pkg prefix amr_fleet_bringup)/share/amr_fleet_bringup/rviz/fleet
 
 ### TERMINAL 3 — Fleet Observability Web Dashboard & TUI
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -127,7 +127,7 @@ python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 5 --world warehouse_
 ### TERMINAL 4 — Fleet Presentation Trajectory Demo (Optional)
 *(If running the deterministic multi-stage waypoint presentation coordinator)*
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -145,7 +145,7 @@ This demonstration launches the full 10-AMR fleet in the expanded congested ware
 
 ### TERMINAL 1 — 10-AMR Congested Warehouse Simulation
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -165,7 +165,7 @@ ros2 launch amr_fleet_bringup m8b_adaptive_fleet.launch.py \
 
 ### TERMINAL 2 — Fleet Dashboard (10 AMRs)
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 

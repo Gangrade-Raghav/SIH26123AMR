@@ -3,7 +3,7 @@
 **Milestone**: NRDAS Dashboard UI/UX Second Redesign Pass (Clean Industrial Fleet Operations Console)  
 **Date**: 2026-09-15  
 **Status**: COMPLETE — WAITING FOR HUMAN APPROVAL  
-**Repository**: `antigravity_amr_project`  
+**Repository**: `SIH26123AMR`  
 **Core File Modified**: `scripts/fleet_dashboard.py`  
 **Core Philosophy**: **Visual Clarity > Information Density**
 
@@ -223,7 +223,7 @@ Tested via background subprocess test on port 8089:
 ## 9. Launch Command
 
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 

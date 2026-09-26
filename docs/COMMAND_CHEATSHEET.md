@@ -9,12 +9,12 @@ Lauches **Gazebo Harmonic (3D GUI)** + **RViz 2** + **AMR Fleet Autonomy Stack**
 
 #### Option 1: Big Congested Warehouse (10 AMRs, `warehouse_m9_v2`) [Recommended]
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project && ./scripts/launch_all_in_one.sh --world warehouse_m9_v2 --robots 10
+cd . && ./scripts/launch_all_in_one.sh --world warehouse_m9_v2 --robots 10
 ```
 
 #### Option 2: Standard Warehouse (5 AMRs, `warehouse_small`)
 ```bash
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project && ./scripts/launch_all_in_one.sh --world warehouse_small --robots 5
+cd . && ./scripts/launch_all_in_one.sh --world warehouse_small --robots 5
 ```
 
 > **Web Interfaces**:
@@ -42,7 +42,7 @@ ps aux | grep -E 'gz|ros2|amr_fleet|parameter_bridge' | grep -v grep || echo "Al
 ### 1. BUILD WORKSPACE
 ```bash
 # Terminal 1 — Build from repository root
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 colcon build --symlink-install
 source install/setup.bash
@@ -69,7 +69,7 @@ ament_pep257 src/amr_fleet_core
 #### Option A: Normal Visual Demo (5 AMRs, warehouse_small)
 ```bash
 # Terminal 1
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -85,7 +85,7 @@ ros2 launch amr_fleet_bringup m8b_adaptive_fleet.launch.py \
 #### Option B: Congested Warehouse Demo (10 AMRs, warehouse_m9_v2)
 ```bash
 # Terminal 1
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -103,7 +103,7 @@ ros2 launch amr_fleet_bringup m8b_adaptive_fleet.launch.py \
 ### 4. LAUNCH RVIZ VISUALIZATION (TERMINAL 2)
 ```bash
 # Terminal 2 — Start RViz once Terminal 1 simulation is running
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -115,7 +115,7 @@ rviz2 -d $(ros2 pkg prefix amr_fleet_bringup)/share/amr_fleet_bringup/rviz/fleet
 ### 5. LAUNCH OBSERVABILITY DASHBOARD (TERMINAL 3)
 ```bash
 # Terminal 3 — Launch Dashboard Server & Terminal UI
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -134,7 +134,7 @@ python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 10 --world warehouse
 ### 5B. LAUNCH RESILIENCE & FAULT INJECTION DASHBOARD (TERMINAL 3B)
 ```bash
 # Terminal 3B — Launch Resilience Console (Port 8081)
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -149,7 +149,7 @@ python3 scripts/resilience_dashboard.py --port 8081 --world warehouse_m9_v2
 ### 6. RUN DETERMINISTIC WAYPOINT DEMO TRAJECTORY (TERMINAL 4)
 ```bash
 # Terminal 4 — Optional waypoint presentation controller
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 

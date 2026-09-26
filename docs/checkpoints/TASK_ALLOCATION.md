@@ -158,7 +158,7 @@ Created in package `amr_fleet_msgs`:
 
 ### 4.3 Full 5-AMR Gazebo Harmonic Live Demonstration
 - **Script**: `scripts/demonstrate_real_gazebo_operator_control.py`
-- **Evidence File**: [`docs/checkpoints/task_allocation_evidence.json`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/checkpoints/task_allocation_evidence.json)
+- **Evidence File**: [`docs/checkpoints/task_allocation_evidence.json`](docs/checkpoints/task_allocation_evidence.json)
 - **Results Summary**:
   ```json
   {

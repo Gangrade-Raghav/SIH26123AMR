@@ -1,8 +1,8 @@
 # M0 Environment Audit Report — NRDAS AMR Fleet Coordination
 
 **Date**: September 13, 2026  
-**Auditor**: Lead Autonomous Engineering Agent (Antigravity)  
-**Target Repository**: `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project`  
+**Auditor**: Raghav Gangrade  
+**Target Repository**: `.`  
 **Milestone**: M0 — Environment & Repository Bootstrap  
 
 ---
@@ -40,7 +40,7 @@ Key findings requiring attention:
 | 12 | **Python Toolchain** | Python $\ge 3.10$ | Python 3.12.3, numpy 1.26.4, scipy 1.11.4, matplotlib 3.6.3, pyyaml 6.0.1, pytest 7.4.4, flake8 7.0.0 | **PASS** | `python3 --version` & module import checks | `networkx`, `pandas`, `pydantic` not installed system-wide. | Pure Python MAPF implementations can run without extra dependencies; install `python3-networkx` / `python3-pandas` if needed. |
 | 13 | **C++ Toolchain** | GCC $\ge 13$, CMake $\ge 3.22$ | GCC/G++ 13.3.0, CMake 3.28.3, Make 4.3, Ninja 1.11.1 | **PASS** | `g++ --version`, `cmake --version`, `ninja --version` | None. Full C++20 and C++23 standards supported. | Use modern C++20 standard in CMake targets. |
 | 14 | **colcon Build System** | colcon with ament extensions | colcon-core 0.21.1 with complete ament/cmake/python plugins | **PASS** | `colcon version-check` | None. Standard ROS 2 build toolchain functional. | Use `colcon build --symlink-install`. |
-| 15 | **Git Version Control** | Git $\ge 2.30$ | Git 2.43.0 | **WARNING** | `git --version` & `git status` | Directory `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project` is **not a git repository**. | Initialize Git repository (`git init`) in M0 bootstrap and commit baseline control plane. |
+| 15 | **Git Version Control** | Git $\ge 2.30$ | Git 2.43.0 | **WARNING** | `git --version` & `git status` | Directory `.` is **not a git repository**. | Initialize Git repository (`git init`) in M0 bootstrap and commit baseline control plane. |
 | 16 | **Docker** | Containerization tool | Not installed | **WARNING** | `which docker` | No Docker daemon available on host. Container-based orchestration cannot run natively without Docker. | Native Ubuntu 24.04 execution is preferred; Docker is optional for M0-M3. Document as optional. |
 | 17 | **Existing Workspaces** | Inspect user workspaces | Found `~/nomeer_ws`, `~/sih_ws`, `~/install`, and `amr_fleet_ws.zip` | **PASS** | `find /home/raghav -maxdepth 2 -name "*ws*"` | `nomeer_ws` has `bcr_bot` (industrial AMR model); `sih_ws` has `sih_fleet`; `amr_fleet_ws.zip` has starter packages. `~/.bashrc` only sources `/opt/ros/jazzy/setup.bash`. | Do not overwrite or contaminate existing workspaces. Consider referencing `bcr_bot` URDF/SDF assets if needed. |
 | 18 | **Installed ROS Robot Pkgs** | Robot descriptions / drivers | `nav2_minimal_tb3_sim`, `nav2_minimal_tb4_description`, `nav2_minimal_tb4_sim`, `diff_drive_controller`, `robot_state_publisher`, `xacro` | **PASS** | `ros2 pkg list \| grep -iE 'turtle\|tb\|diff\|robot'` | Standard differential drive controllers and robot description tools exist out of the box. | Utilize differential drive controller models and parameterized URDF/Xacro for fleet simulation. |
@@ -156,7 +156,7 @@ Key findings requiring attention:
 
 ## 5. Recommended Actions for M0 Bootstrap
 
-1. **Initialize Git Repository**: Run `git init` in `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project` and create the initial commit covering the control plane.
+1. **Initialize Git Repository**: Run `git init` in `.` and create the initial commit covering the control plane.
 2. **Establish ROS 2 Workspace Structure**: Create `src/` directory with a standard modular package skeleton:
    - `amr_fleet_msgs`: Custom message, service, and action definitions.
    - `amr_fleet_core`: Core algorithmic abstractions (TaskAllocator, GlobalPlanner, LocalPlanner, DeadlockManager).

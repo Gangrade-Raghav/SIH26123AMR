@@ -1,9 +1,9 @@
 # M0 Human Review
 
 **Checkpoint**: Milestone M0 — Environment Audit & Repository Bootstrap  
-**Target Repository**: `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project`  
+**Target Repository**: `.`  
 **Date**: September 13, 2026  
-**Auditor**: Lead Autonomous Engineering Agent (Antigravity)  
+**Auditor**: Raghav Gangrade  
 
 ---
 
@@ -98,7 +98,7 @@ nothing to commit, working tree clean
  config/maps/warehouse_grid_small.yaml              |  33 ++++++
  config/planners/baseline_planner.yaml              |  14 +++
  config/robots/amr_default.yaml                     |  18 +++
- docs/agent-reports/M0-completion-report.md         |  95 +++++++++++++++
+ docs/audit-reports/M0-completion-report.md         |  95 +++++++++++++++
  scripts/build_workspace.sh                         |  29 +++++
  scripts/run_tests.sh                               |  29 +++++
  scripts/verify_environment.py                      |  82 +++++++++++++
@@ -156,9 +156,9 @@ nothing to commit, working tree clean
    - `scripts/build_workspace.sh` (executable)
    - `scripts/run_tests.sh` (executable)
 3. **Audit & Checkpoint Documentation (`docs/`)**:
-   - `docs/agent-reports/M0-environment-audit.md`
+   - `docs/audit-reports/M0-environment-audit.md`
    - `docs/plans/M0-bootstrap-plan.md`
-   - `docs/agent-reports/M0-completion-report.md`
+   - `docs/audit-reports/M0-completion-report.md`
    - `docs/checkpoints/M0-review.md` (this file)
 4. **Interface Package (`src/amr_fleet_msgs/`)**:
    - `package.xml`, `CMakeLists.txt`
@@ -266,7 +266,7 @@ All 31 automated tests passed with 0 errors, 0 failures, and 0 skipped.
 - **Environment variables**: **NONE**. System environment remains unchanged.
 - **Shell configuration**: **NONE**. `~/.bashrc` was inspected but never modified (timestamp remains Sep 12 19:34).
 - **External user projects**: **NONE**. Existing workspaces (`/home/raghav/nomeer_ws`, `/home/raghav/sih_ws`, `/home/raghav/Downloads/amr_fleet_ws.zip`) were untouched.
-- **Files outside project repository**: **NONE** (except standard Antigravity session artifacts in `~/.gemini/antigravity/brain/...`).
+- **Files outside project repository**: **NONE** (except standard temporary session artifacts in `~/.gemini/nrdas/brain/...`).
 
 ---
 

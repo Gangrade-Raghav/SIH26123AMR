@@ -36,14 +36,8 @@ class WarehouseVisualizerNode(Node):
             candidate_paths = [
                 os.path.join(os.getcwd(), 'config', 'maps', 'warehouse_m9_v2.yaml'),
                 os.path.join(os.getcwd(), 'config', 'maps', 'warehouse_grid_small.yaml'),
-                os.path.expanduser(
-                    '~/Downloads/NRDAS_Antigravity_Project_Starter/'
-                    'antigravity_amr_project/config/maps/warehouse_m9_v2.yaml'
-                ),
-                os.path.expanduser(
-                    '~/Downloads/NRDAS_Antigravity_Project_Starter/'
-                    'antigravity_amr_project/config/maps/warehouse_grid_small.yaml'
-                ),
+                
+                
             ]
             for c in candidate_paths:
                 if os.path.isfile(c):

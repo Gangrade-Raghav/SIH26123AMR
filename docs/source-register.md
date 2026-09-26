@@ -1,73 +1,23 @@
 # Source Register
 
-## Antigravity official documentation
+## AMR Architecture & Theoretical Literature
 
-1. Antigravity Best Practices
-https://antigravity.google/docs/cli/best-practices/
+The project architecture is grounded in established robotics and multi-agent coordination literature:
 
-Key points used in this repository:
-- explore → plan → execute
-- verification loops
-- workspace `AGENTS.md` / `GEMINI.md`
-- structured permissions
-- parallel subagents
-- `/rewind`, `/fork`
+1. **Decentralized Task Allocation**:
+   - Consensus-Based Bundle Algorithm (CBBA) & Asynchronous CBBA (ACBBA) (Choi et al., 2009; Johnson et al., 2011).
+   - Time-windowed bundle allocation and auction mechanisms.
 
-2. Antigravity IDE Overview
-https://antigravity.google/docs/ide/overview/
+2. **Multi-Agent Path Finding (MAPF)**:
+   - Rolling-Horizon Collision Resolution (RHCR) for lifelong windowed planning (Li et al., 2021).
+   - Priority-Inheritance Backtracking (PIBT) for fast dynamic conflict resolution (Okumura et al., 2022).
+   - Spacetime Reservation Tables with velocity headway safety margins.
 
-Key points:
-- agentic IDE
-- asynchronous agents
-- browser/terminal/editor operation
-- artifacts and transparency
+3. **Distributed Deadlock & Fault Management**:
+   - Wait-For-Graph (WFG) cycle detection and distributed deadlock resolution.
+   - Dynamic keep-out zones and heartbeat timeout discrimination.
+   - Adaptive compute degradation profiles for resource-constrained robotics nodes.
 
-3. Antigravity Rules
-https://www.antigravity.google/docs/ide/rules/
-
-Key points:
-- `.agents/rules`
-- global/workspace rules
-- rule activation modes
-
-4. Antigravity Skills
-https://www.antigravity.google/docs/ide/skills/
-
-Key points:
-- `.agents/skills/<skill>/SKILL.md`
-- progressive disclosure
-- focused reusable skills
-
-5. Antigravity Settings
-https://www.antigravity.google/docs/ide/settings/
-
-Key points:
-- command execution permissions
-- workspace isolation
-- artifact review
-- sandboxing
-
-## AMR architecture source
-
-The finalized project architecture is based on the audited document:
-
-Advanced Decentralized AMR Fleet Coordination Architecture.docx
-
-The audit identified the following as core candidates:
-- ROS 2 Jazzy
-- Zenoh
-- CBBA/ACBBA
-- RHCR
-- PIBT
-- WFG deadlock reasoning
-- compute-aware fallback
-- controlled fault injection
-
-The audit also identified the following as optional/deferred:
-- TLC-CBBA
-- GD-RHCR as an emerging research candidate
-- NH-ORCA
-- MAPF-LNS2
-- heterogeneous PIBT
-
-The project must preserve the distinction between established literature and the proposed system integration.
+4. **Middleware & Simulation**:
+   - ROS 2 Jazzy Jalisco ecosystem and rclpy execution frameworks.
+   - Gazebo Harmonic physics simulation and diff-drive AMR kinematics.

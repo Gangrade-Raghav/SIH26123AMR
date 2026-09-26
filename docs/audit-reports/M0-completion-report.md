@@ -15,7 +15,7 @@
    - Audited 18 system components on Ubuntu 24.04.4 LTS / ROS 2 Jazzy.
    - Identified hardware strengths (16 vCPU i7-13620H, 30 GiB RAM, 209 GiB free NVMe storage).
    - Identified constraints (Intel UHD graphics with Mesa drivers, zero discrete GPU/CUDA; headless Gazebo simulation established as standard).
-   - Compiled full audit details in [`docs/agent-reports/M0-environment-audit.md`](./M0-environment-audit.md).
+   - Compiled full audit details in [`docs/audit-reports/M0-environment-audit.md`](./M0-environment-audit.md).
 
 2. **Git Repository Initialization**:
    - Initialized Git on branch `main`.

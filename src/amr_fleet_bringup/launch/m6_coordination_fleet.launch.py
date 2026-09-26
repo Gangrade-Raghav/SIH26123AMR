@@ -122,10 +122,7 @@ def launch_setup(context, *args, **kwargs):
     if not workload_file:
         candidate_paths = [
             os.path.join(os.getcwd(), 'config', 'workloads', 'workload_medium_priority.yaml'),
-            os.path.expanduser(
-                '~/Downloads/NRDAS_Antigravity_Project_Starter/'
-                'antigravity_amr_project/config/workloads/workload_medium_priority.yaml'
-            ),
+            
         ]
         for candidate in candidate_paths:
             if os.path.isfile(candidate):

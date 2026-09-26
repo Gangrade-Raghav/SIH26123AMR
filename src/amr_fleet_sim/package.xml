@@ -4,7 +4,7 @@
   <name>amr_fleet_sim</name>
   <version>0.1.0</version>
   <description>Lightweight discrete-event MAPF simulation backend for large-scale algorithmic evaluation.</description>
-  <maintainer email="antigravity@local.dev">Antigravity Agent</maintainer>
+  <maintainer email="raghavgangrade72009@gmail.com">Raghav Gangrade</maintainer>
   <license>Apache-2.0</license>
 
   <depend>rclpy</depend>

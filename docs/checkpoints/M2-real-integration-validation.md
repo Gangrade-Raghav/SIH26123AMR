@@ -1,9 +1,9 @@
 # M2 Real ROS 2 + Gazebo Integration Validation Report
 
 **Milestone**: M2 — Parameterized Multi-Robot Fleet Simulation  
-**Target Repository**: `/home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project`  
+**Target Repository**: `.`  
 **Date**: September 13, 2026  
-**Auditor**: Lead Autonomous Engineering Agent (Antigravity)  
+**Auditor**: Raghav Gangrade  
 **Status**: **PASS — REAL INTEGRATION VERIFIED ON GAZEBO HARMONIC**  
 
 ---
@@ -57,7 +57,7 @@ During initial execution of the real integration validation script, two validato
 
 Every test below was executed by starting the simulation through `ros2 launch amr_fleet_bringup fleet.launch.py`, querying the running OS and middleware with official CLI tools, and capturing raw terminal outputs.
 
-Raw logs are preserved under [`docs/checkpoints/raw_integration_logs/`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/checkpoints/raw_integration_logs/).
+Raw logs are preserved under [`docs/checkpoints/raw_integration_logs/`](docs/checkpoints/raw_integration_logs/).
 
 ### 3.1 Two-Robot Fleet Real Integration (`fleet_2_robots.yaml`)
 

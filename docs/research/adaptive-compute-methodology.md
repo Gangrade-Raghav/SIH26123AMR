@@ -2,7 +2,7 @@
 
 **Document**: `docs/research/adaptive-compute-methodology.md`  
 **Milestone**: M8B  
-**Author**: Antigravity Multi-Agent Research System  
+**Author**: Autonomous Multi-Agent Research System  
 
 ---
 

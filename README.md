@@ -69,7 +69,7 @@ empirically prevents collisions and deadlocks under severe concurrent operationa
 ### Build Sequence
 ```bash
 # Clone and enter workspace root
-cd /home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project
+cd .
 
 # Source ROS 2 environment
 source /opt/ros/jazzy/setup.bash
@@ -154,7 +154,7 @@ python3 scripts/create_task.py \
   --priority NORMAL \
   --robot amr_2
 ```
-For complete details, see [`docs/TASK_ALLOCATION_GUIDE.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/TASK_ALLOCATION_GUIDE.md).
+For complete details, see [`docs/TASK_ALLOCATION_GUIDE.md`](docs/TASK_ALLOCATION_GUIDE.md).
 
 ---
 
@@ -162,20 +162,20 @@ For complete details, see [`docs/TASK_ALLOCATION_GUIDE.md`](file:///home/raghav/
 
 | Document | File Path | Purpose |
 | :--- | :--- | :--- |
-| **Task Allocation Operator Guide** | [`docs/TASK_ALLOCATION_GUIDE.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/TASK_ALLOCATION_GUIDE.md) | Operator guide for live task creation, CLI, and dashboard controls |
-| **Final Operator Runbook** | [`docs/FINAL_RUNBOOK.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/FINAL_RUNBOOK.md) | Terminal-by-terminal commands for build, demo, inspection, and shutdown |
-| **Command Cheat Sheet** | [`docs/COMMAND_CHEATSHEET.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/COMMAND_CHEATSHEET.md) | Quick-reference copy-pasteable commands |
-| **Final Research Report** | [`docs/FINAL_RESEARCH_REPORT.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/FINAL_RESEARCH_REPORT.md) | 27-section comprehensive academic research paper |
-| **System Architecture** | [`docs/FINAL_ARCHITECTURE.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/FINAL_ARCHITECTURE.md) | Architectural hierarchy, authority models, and preemption rules |
-| **Experiment Matrix** | [`results/final/FINAL_EXPERIMENT_MATRIX.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/results/final/FINAL_EXPERIMENT_MATRIX.md) | Empirical cross-milestone benchmark table (M7 through M9-V3-E) |
-| **Presentation & Demo Script** | [`docs/DEMO_SCRIPT.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/DEMO_SCRIPT.md) | 30s, 2m, and 5m demonstration scripts with judge Q&A |
-| **Definition of Done** | [`docs/FINAL_DEFINITION_OF_DONE.md`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/docs/FINAL_DEFINITION_OF_DONE.md) | Complete engineering and research sign-off checklist |
+| **Task Allocation Operator Guide** | [`docs/TASK_ALLOCATION_GUIDE.md`](docs/TASK_ALLOCATION_GUIDE.md) | Operator guide for live task creation, CLI, and dashboard controls |
+| **Final Operator Runbook** | [`docs/FINAL_RUNBOOK.md`](docs/FINAL_RUNBOOK.md) | Terminal-by-terminal commands for build, demo, inspection, and shutdown |
+| **Command Cheat Sheet** | [`docs/COMMAND_CHEATSHEET.md`](docs/COMMAND_CHEATSHEET.md) | Quick-reference copy-pasteable commands |
+| **Final Research Report** | [`docs/FINAL_RESEARCH_REPORT.md`](docs/FINAL_RESEARCH_REPORT.md) | 27-section comprehensive academic research paper |
+| **System Architecture** | [`docs/FINAL_ARCHITECTURE.md`](docs/FINAL_ARCHITECTURE.md) | Architectural hierarchy, authority models, and preemption rules |
+| **Experiment Matrix** | [`results/final/FINAL_EXPERIMENT_MATRIX.md`](results/final/FINAL_EXPERIMENT_MATRIX.md) | Empirical cross-milestone benchmark table (M7 through M9-V3-E) |
+| **Presentation & Demo Script** | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) | 30s, 2m, and 5m demonstration scripts with judge Q&A |
+| **Definition of Done** | [`docs/FINAL_DEFINITION_OF_DONE.md`](docs/FINAL_DEFINITION_OF_DONE.md) | Complete engineering and research sign-off checklist |
 
 ---
 
 ## 9. Where Are the Results & Experimental Artifacts?
 
-All empirical artifacts are archived and structured under [`results/final/`](file:///home/raghav/Downloads/NRDAS_Antigravity_Project_Starter/antigravity_amr_project/results/final/):
+All empirical artifacts are archived and structured under [`results/final/`](results/final/):
 
 - **Canonical Raw Trial Telemetry**: `results/final/canonical/` (e.g. `m9_v3_e_canonical_raw.json`)
 - **Aggregated Summaries**: `results/final/aggregated/` (e.g. `m9_v3_e_aggregated.json`)
