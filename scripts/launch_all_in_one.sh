@@ -138,17 +138,27 @@ if [ -z "${WORKLOAD}" ]; then
     fi
 fi
 
-# Pre-flight cleanup of old processes and locked ports
+# Pre-flight cleanup of old AMR processes and locked ports
 echo "================================================================================"
 echo " [NRDAS-FR] PRE-FLIGHT CHECK & INITIALIZATION"
 echo "================================================================================"
-echo " - Cleaning up any dangling Gazebo, RViz, ROS bridge, or Dashboard processes..."
-killall -9 gz sim-server sim-gui ruby ros2 rviz2 parameter_bridge robot_state_publisher static_transform_publisher task_manager cbba_node rh_node warehouse_visualizer 2>/dev/null || true
+echo " - Cleaning up any dangling AMR simulation, RViz, or Dashboard processes..."
 pkill -9 -f "amr_fleet" 2>/dev/null || true
 pkill -9 -f "fleet_dashboard" 2>/dev/null || true
 pkill -9 -f "resilience_dashboard" 2>/dev/null || true
-rm -f /dev/shm/sem.fastrtps* /dev/shm/fastrtps* 2>/dev/null || true
+pkill -9 -f "warehouse_m9" 2>/dev/null || true
+pkill -9 -f "warehouse_small" 2>/dev/null || true
+pkill -9 -f "fleet_default.rviz" 2>/dev/null || true
+pkill -9 -f "m8b_adaptive_fleet" 2>/dev/null || true
+pkill -9 -f "cbba_node" 2>/dev/null || true
+pkill -9 -f "rh_node" 2>/dev/null || true
+pkill -9 -f "task_manager_node" 2>/dev/null || true
+pkill -9 -f "warehouse_visualizer" 2>/dev/null || true
 sleep 1
+
+# Environment Setup
+export ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-42}"
+echo " - Using ROS_DOMAIN_ID=${ROS_DOMAIN_ID} (isolated DDS domain)"
 
 # Environment Setup
 echo " - Sourcing ROS 2 Jazzy and Workspace Overlay..."
@@ -199,11 +209,17 @@ cleanup() {
         fi
     done
 
-    killall -9 gz sim-server sim-gui ruby ros2 rviz2 parameter_bridge robot_state_publisher static_transform_publisher task_manager cbba_node rh_node warehouse_visualizer 2>/dev/null || true
     pkill -9 -f "amr_fleet" 2>/dev/null || true
     pkill -9 -f "fleet_dashboard" 2>/dev/null || true
     pkill -9 -f "resilience_dashboard" 2>/dev/null || true
-    rm -f /dev/shm/sem.fastrtps* /dev/shm/fastrtps* 2>/dev/null || true
+    pkill -9 -f "warehouse_m9" 2>/dev/null || true
+    pkill -9 -f "warehouse_small" 2>/dev/null || true
+    pkill -9 -f "fleet_default.rviz" 2>/dev/null || true
+    pkill -9 -f "m8b_adaptive_fleet" 2>/dev/null || true
+    pkill -9 -f "cbba_node" 2>/dev/null || true
+    pkill -9 -f "rh_node" 2>/dev/null || true
+    pkill -9 -f "task_manager_node" 2>/dev/null || true
+    pkill -9 -f "warehouse_visualizer" 2>/dev/null || true
 
     echo " [NRDAS-FR] All simulation and dashboard processes cleanly terminated."
     echo "================================================================================"
