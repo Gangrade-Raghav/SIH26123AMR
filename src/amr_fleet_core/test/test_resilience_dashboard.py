@@ -244,6 +244,8 @@ class TestResilienceDashboardServer(unittest.TestCase):
 
     def test_post_scenario_trigger_m1_a(self) -> None:
         """Verify POST /api/scenario/trigger executes scenario M1-A."""
+        if self.node:
+            self.node.scenario_status = 'IDLE'
         status, content = self._request('POST', '/api/scenario/trigger', {
             'scenario_id': 'M1-A',
         })
@@ -497,3 +499,74 @@ class TestResilienceDashboardServer(unittest.TestCase):
         pipe = state['recovery_pipeline']
         self.assertEqual(pipe.get('mode'), 'M4')
         self.assertEqual(len(pipe.get('stages', [])), 7)
+
+    def test_post_m4_compose_and_run(self) -> None:
+        """Verify POST /api/m4/compose_and_run configures and executes custom compound."""
+        if self.node:
+            self.node.scenario_status = 'IDLE'
+        status, content = self._request('POST', '/api/m4/compose_and_run', {
+            'scenario_id': 'CUSTOM_COMPOUND',
+            'robot_ids': ['amr_1'],
+            'fault_type': 'KILL',
+            'network_profile': 'LOSS_HIGH',
+            'packet_loss_rate': 0.35,
+            'duration_sec': 5.0,
+            'blockage_cells': [[7, 4], [7, 5]],
+        })
+        self.assertEqual(status, 200)
+        res = json.loads(content)
+        self.assertTrue(res.get('success'))
+
+        _, state_content = self._request('GET', '/api/state')
+        state = json.loads(state_content)
+        self.assertIn('compound_fleet_response', state)
+        cmp_resp = state['compound_fleet_response']
+        self.assertIn('cbba_reallocation', cmp_resp)
+        self.assertIn('dynamic_replanning', cmp_resp)
+        self.assertIn('local_recovery', cmp_resp)
+
+        invs = state.get('invariants', {})
+        self.assertIn('m4_task_uniqueness_i1', invs)
+        self.assertIn('m4_reservation_exclusivity_i2', invs)
+        self.assertIn('m4_local_clearance_i3', invs)
+        self.assertIn('m4_tiered_fault_discrimination', invs)
+        self.assertIn('m4_monotonic_cas_reconnection', invs)
+        self.assertEqual(invs['m4_task_uniqueness_i1']['status'], 'PASS')
+        self.assertEqual(invs['m4_reservation_exclusivity_i2']['status'], 'PASS')
+        self.assertEqual(invs['m4_local_clearance_i3']['status'], 'PASS')
+
+    def test_m4_markdown_report_includes_compound_telemetry(self) -> None:
+        """Verify markdown report formatting for Milestone 4 compound resilience."""
+        if self.node:
+            self.node.recovery_tracker.mode = 'M4'
+        status, md_content = self._request('GET', '/api/export/markdown')
+        self.assertEqual(status, 200)
+        self.assertIn('Milestone 4 Compound Fault & Multi-Domain Resilience Report', md_content)
+        self.assertIn('Milestone 4 Formal Invariants & Compound Verification', md_content)
+        self.assertIn('I1: Task Uniqueness', md_content)
+        self.assertIn('I2: Spacetime Exclusivity', md_content)
+        self.assertIn('I3: Local LiDAR Clearance', md_content)
+        self.assertIn('Three-Tier Fleet Response Telemetry', md_content)
+
+    def test_clear_all_blockages(self) -> None:
+        """Verify clearing all blockages via action=CLEAR and blockage_id=ALL."""
+        # Add 2 blockages
+        self._request('POST', '/api/environment/blockage', {
+            'action': 'INJECT', 'blockage_id': 'B1', 'cells': [[1, 1]]
+        })
+        self._request('POST', '/api/environment/blockage', {
+            'action': 'INJECT', 'blockage_id': 'B2', 'cells': [[2, 2]]
+        })
+        # Clear all
+        status, content = self._request('POST', '/api/environment/blockage', {
+            'action': 'CLEAR', 'blockage_id': 'ALL'
+        })
+        self.assertEqual(status, 200)
+        res = json.loads(content)
+        self.assertTrue(res.get('success'))
+
+        _, state_content = self._request('GET', '/api/state')
+        state = json.loads(state_content)
+        blockages = state.get('environment_telemetry', {}).get('active_blockages', [])
+        self.assertEqual(len(blockages), 0)
+
