@@ -9,18 +9,23 @@
 
 Before starting any simulation or test, ensure no orphaned ROS 2 daemons or Gazebo processes occupy ports or system resources.
 
-### Emergency Process Cleanup Command
-Execute in any terminal:
+### Safe Process Cleanup Command
+Execute in any terminal (targeted to AMR fleet processes, preserving any other user ROS projects):
 ```bash
-killall -9 gz sim-server sim-gui ruby ros2 rviz2 python3 2>/dev/null || true
+pkill -9 -f "amr_fleet" 2>/dev/null || true
+pkill -9 -f "warehouse_m9" 2>/dev/null || true
+pkill -9 -f "fleet_dashboard" 2>/dev/null || true
+pkill -9 -f "resilience_dashboard" 2>/dev/null || true
+killall -9 parameter_bridge task_manager cbba_node rh_node warehouse_visualizer 2>/dev/null || true
+rm -f /dev/shm/sem.fastrtps* /dev/shm/fastrtps* 2>/dev/null || true
 sleep 1
-ps aux | grep -E 'gz|ros2|amr_fleet' | grep -v grep || true
+ps aux | grep -E 'amr_fleet|warehouse_m9|fleet_dashboard|resilience_dashboard' | grep -v grep || echo "AMR processes all clean!"
 ```
-*Expected Output*: No processes returned by `grep`.
 
-### Environment Setup Verification
-In every terminal used for this project, source the ROS 2 and workspace underlays:
+### Environment Setup Verification & Domain Isolation
+In every terminal used for this project, source the ROS 2 and workspace underlays and export the isolated domain ID:
 ```bash
+export ROS_DOMAIN_ID=42
 source /opt/ros/jazzy/setup.bash
 source ./install/setup.bash
 ```
@@ -226,11 +231,75 @@ python3 scripts/run_benchmark.py \
 
 ---
 
+## SECTION E.2 — Milestone 4 Compound Fault & Adversarial Resilience Testing Console
+
+The **NRDAS-FR Milestone 4** testbed evaluates the fleet's response to compound, simultaneous multi-domain disturbances on **Port 8081**.
+
+### 1. Launching the M4 Adversarial Resilience Dashboard
+```bash
+cd /home/raghav/Downloads/SIH26123AMR
+export ROS_DOMAIN_ID=42
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+# Standalone simulation mode (no live Gazebo needed; instant testbed):
+python3 scripts/resilience_dashboard.py --port 8081 --sim-mode
+
+# Or live ROS 2 mode (with running Gazebo fleet):
+python3 scripts/resilience_dashboard.py --port 8081 --world warehouse_m9_v2
+```
+Access GUI at: **`http://localhost:8081`**
+
+### 2. Executing Automated M4 Validation Scenarios
+```bash
+# Run the 7-benchmark compound validation harness:
+python3 scripts/validate_m4_compound_scenarios.py
+```
+*Expected Output*:
+- `[PASS] M4-A - Robot Failure + Dynamic Blockage` (0 overlaps, 13-cell detour)
+- `[PASS] M4-B - Comm Loss vs Hard Failure Discrimination` (0 false positives)
+- `[PASS] M4-C - Multiple Overlapping Robot Failures` (atomic CAS, 0 stale reservations)
+- `[PASS] M4-D - Sensor-Visible Decoupled Obstacle` (reactive brake to 0.0 m/s)
+- `[PASS] M4-E - Network Partition + Robot Failure` (monotonic Lamport reconciliation)
+- `[PASS] M4-F - Network Loss + Dynamic Blockage` (local safety hold, 0 advances)
+- `[PASS] M4-G - Master Compound Quad Failure` (full composite recovery converged)
+
+### 3. REST API Interaction & Experiment Control
+```bash
+# Query active scenario and 5 formal mathematical invariants:
+curl -s http://localhost:8081/api/m4/status | jq .
+
+# Trigger M4-G Master Compound Quad Failure benchmark:
+curl -X POST http://localhost:8081/api/scenario/trigger \
+  -H "Content-Type: application/json" \
+  -d '{"scenario_id": "M4-G"}'
+
+# Compose a custom multi-disturbance experiment:
+curl -X POST http://localhost:8081/api/m4/compose_and_run \
+  -H "Content-Type: application/json" \
+  -d '{
+    "scenario_id": "CUSTOM_COMPOUND",
+    "robot_ids": ["amr_1"],
+    "fault_type": "KILL",
+    "network_profile": "LOSS_HIGH",
+    "packet_loss_rate": 0.35,
+    "duration_sec": 5.0,
+    "blockage_cells": [[7, 4], [7, 5]]
+  }'
+
+# Reset all faults and clear obstacles:
+curl -X POST http://localhost:8081/api/fault/restore -H "Content-Type: application/json" -d '{"robot_id": "ALL_ROBOTS"}'
+curl -X POST http://localhost:8081/api/network/reconnect -H "Content-Type: application/json" -d '{"robot_id": "ALL_ROBOTS"}'
+curl -X POST http://localhost:8081/api/environment/blockage -H "Content-Type: application/json" -d '{"action": "CLEAR", "blockage_id": "ALL"}'
+```
+
+---
+
 ## SECTION F — Live Demonstration Flow (Step-by-Step Script)
 
 1. **Step 1: Introduction (30s)**:
    - State research question: *"Can decentralized multi-agent coordination maintain safety and efficiency under dynamic arrivals, physical corridor blockages, and wireless degradation?"*
-   - Launch Section D (10-AMR simulation) in Terminal 1.
+   - Launch Section D (10-AMR simulation) in Terminal 1 or use `./scripts/launch_all_in_one.sh`.
 2. **Step 2: Decentralized Task Allocation (1m)**:
    - Observe Terminal 1 logs: CBBA consensus achieves initial bundle allocation across 10 AMRs in under $15\,\text{ms}$.
    - Open Web Dashboard (`http://localhost:8080`) to show assigned task bundles per AMR.
@@ -242,9 +311,13 @@ python3 scripts/run_benchmark.py \
      1. Dynamic arrival of 15 tasks at $t=45\,\text{s}$ (CBBA reallocates without disrupting active tasks).
      2. Physical corridor obstruction at Aisle 1 South for $45\,\text{s}$ (local GridWorlds detect and route around).
      3. Wireless packet degradation to $35\%$ packet drop (stale reservations pruned, zero safety aborts).
-5. **Step 5: Results & Verification (1m)**:
-   - Present `results/final/figures/final_m9_cross_scenario_comparison.png` and `final_m9_v3_e_stress_timeline.png`.
-   - Conclude with zero physical contacts across all canonical experiments.
+5. **Step 5: M4 Compound Fault Resilience Testing (1m)**:
+   - Open M4 Resilience Dashboard (`http://localhost:8081`).
+   - Trigger benchmark scenario `M4-A` (Crash + Corridor Blockage) or `M4-G` (Master Quad Failure).
+   - Demonstrate the live Three-Tier Fleet Response Telemetry (CBBA Reallocation, Dynamic Replanning, Local Safety) and 5 formal invariant badges.
+6. **Step 6: Results & Verification (30s)**:
+   - Present `results/final/figures/final_m9_cross_scenario_comparison.png` and `docs/evidence/m4_compound_validation.md`.
+   - Conclude with zero physical contacts and 100% invariant satisfaction.
 
 ---
 
@@ -254,6 +327,7 @@ While the simulation is running, execute these inspection commands in a fresh te
 
 ### Inspect Active ROS 2 Nodes
 ```bash
+export ROS_DOMAIN_ID=42
 source /opt/ros/jazzy/setup.bash
 ros2 node list
 ```
@@ -304,10 +378,15 @@ gz model --list
 2. **Clean Teardown Verification**:
    Verify that all simulation processes have terminated:
    ```bash
-   ps aux | grep -E 'gz|ros2|amr_fleet' | grep -v grep || true
+   ps aux | grep -E 'amr_fleet|warehouse_m9|fleet_dashboard|resilience_dashboard' | grep -v grep || echo "AMR processes all stopped."
    ```
 
-3. **Emergency Cleanup (if processes hang)**:
+3. **Safe Process Cleanup (preserves other host ROS projects)**:
    ```bash
-   killall -9 gz sim-server sim-gui ruby ros2 rviz2 python3 2>/dev/null || true
+   pkill -9 -f "amr_fleet" 2>/dev/null || true
+   pkill -9 -f "warehouse_m9" 2>/dev/null || true
+   pkill -9 -f "fleet_dashboard" 2>/dev/null || true
+   pkill -9 -f "resilience_dashboard" 2>/dev/null || true
+   killall -9 parameter_bridge task_manager cbba_node rh_node warehouse_visualizer 2>/dev/null || true
+   rm -f /dev/shm/sem.fastrtps* /dev/shm/fastrtps* 2>/dev/null || true
    ```

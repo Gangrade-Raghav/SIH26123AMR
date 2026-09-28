@@ -20,6 +20,7 @@
 10. [Adaptive Compute Policy Engine: Dynamic Hysteresis & Throttling](#10-adaptive-compute-policy-engine-dynamic-hysteresis--throttling)
 11. [Task Accounting, Fleet Metrics & Verification Invariants](#11-task-accounting-fleet-metrics--verification-invariants)
 12. [End-to-End Implementation Parameter Reference Table](#12-end-to-end-implementation-parameter-reference-table)
+13. [Milestone 4: Compound Fault Resilience & Invariant Formulation](#13-milestone-4-compound-fault-resilience--invariant-formulation)
 
 ---
 
@@ -468,3 +469,99 @@ During any valid benchmark execution:
 | **Adaptive Compute**| `cpu_high_threshold` | `85.0` | percent ($\%$) | `adaptive_compute_policy.py` |
 | **Adaptive Compute**| `cpu_normal_recovery` | `65.0` | percent ($\%$) | `adaptive_compute_policy.py` |
 | **Adaptive Compute**| `telemetry_timeout_s` | `5.0` | seconds ($\text{s}$) | `adaptive_compute_policy.py` |
+
+---
+
+## 13. Milestone 4: Compound Fault Resilience & Invariant Formulation
+
+Milestone 4 formalizes the mathematical and algorithmic architecture required for a decentralized AMR fleet to withstand compound, overlapping disturbances across physical, communication, and environmental domains.
+
+### 13.1 Orthogonal 5-Dimensional State Space Formulation
+
+To guarantee deterministic multi-agent state convergence under simultaneous disruptions, each robot $i \in \mathcal{V}$ is characterized by an orthogonal 5-dimensional state tuple:
+
+$$\mathcal{S}_i = \langle s_{health}, s_{comm}, s_{task}, s_{nav}, s_{res} \rangle$$
+
+1. **Health State** $s_{health} \in \{\text{HEALTHY}, \text{COMM\_LOSS}, \text{FAILED}, \text{ESTOP}\}$:
+   $$s_{health}(t) = \begin{cases}
+   \text{ESTOP} & \text{if } \text{estop\_active}_i(t) \\
+   \text{FAILED} & \text{if } t - t_{last\_hb, i} > T_{fail} = 3.5\,\text{s} \\
+   \text{COMM\_LOSS} & \text{if } t - t_{last\_hb, i} > T_{comm} = 1.5\,\text{s} \\
+   \text{HEALTHY} & \text{otherwise}
+   \end{cases}$$
+
+2. **Communication State** $s_{comm} \in \{\text{CONNECTED}, \text{IMPAIRED}, \text{PARTITIONED}, \text{DISCONNECTED}\}$:
+   Evaluated over sliding transmission window $W_{pkt} = 20$ packets with measured packet loss $p_{loss} \in [0, 1]$ and peer partition topology matrix $\mathbf{A}_{comm} \in \{0, 1\}^{N \times N}$.
+
+3. **Task Lifecycle State** $s_{task} \in \{\text{STAGED}, \text{PENDING}, \text{ASSIGNED}, \text{IN\_PROGRESS}, \text{COMPLETED}, \text{FAILED}, \text{CANCELLED}\}$:
+   Enforces strictly valid state transitions governed by compare-and-swap (CAS) state semantics.
+
+4. **Navigation Mode** $s_{nav} \in \{\text{IDLE}, \text{TRANSIT}, \text{LOCAL\_SAFETY\_HOLD}, \text{SIDESTEP\_RECOVERY}, \text{ESTOP\_HOLD}\}$:
+   Dictates local velocity command generation and collision avoidance behavior.
+
+5. **Space-Time Reservation Leases** $s_{res} \subseteq \mathcal{G} \times \mathbb{N}$:
+   The set of discrete spacetime coordinates $\{(c, \tau)\}$ held by robot $i$ in the distributed space-time reservation table.
+
+### 13.2 Formal Verification Invariants
+
+The compound resilience system maintains five rigorous system-level mathematical invariants:
+
+#### Invariant $I_1$: Task Mutual Exclusion (Task Uniqueness)
+At all physical times $t \ge 0$, no active task $T \in \mathcal{T}_{active}$ can be simultaneously assigned to or executed by more than one AMR:
+$$\forall T \in \mathcal{T}_{active}, \quad \sum_{i \in \mathcal{V}} \mathbb{I}[T \in \mathcal{B}_i(t)] \le 1$$
+When an AMR crashes ($s_{health} = \text{FAILED}$), its tasks are reclaimed to `PENDING` via an atomic CAS primitive:
+$$\text{CAS}(T, \text{expected}=\text{ASSIGNED}(i_{victim}), \text{target}=\text{PENDING})$$
+This guarantees that concurrent peer detections produce exactly one successful transition to `PENDING`, completely eliminating double-execution races.
+
+#### Invariant $I_2$: Spacetime Reservation Exclusivity & Dynamic Invalidation
+At any discrete spacetime cell $(c, \tau) \in \mathcal{G} \times \mathbb{N}$, at most one robot can possess an active reservation:
+$$\forall c \in \mathcal{G}, \forall \tau \in \mathbb{N}, \quad |\{i \in \mathcal{V} : (c, \tau) \in \mathcal{R}_i(t)\}| \le 1$$
+Upon corridor blockage or robot failure, the Invalidation Manager instantly purges all conflicting leases:
+$$\mathcal{R}(t^+) = \mathcal{R}(t^-) \setminus \{(c, \tau) : c \in \mathcal{O}_{blocked} \lor \text{owner}(c, \tau) \in \mathcal{V}_{failed}\}$$
+
+#### Invariant $I_3$: Local Safety & Clearance Guarantee
+Every active AMR must maintain a physical clearance strictly greater than or equal to the minimum safety envelope $r_{robot} = 0.28\,\text{m}$ from any static or dynamic obstacle:
+$$\forall i \in \mathcal{V}_{active}, \quad \min_{\mathbf{p}_{obs} \in \mathcal{O}(t)} \|\mathbf{x}_i(t) - \mathbf{p}_{obs}\|_2 \ge r_{robot} = 0.28\,\text{m}$$
+If $\min_{\theta \in [-12^\circ, +12^\circ]} d_{LiDAR}(\theta) \le 0.28\,\text{m}$, the reactive safety layer immediately overrides all motor controllers with zero velocity ($v=0, \omega=0$).
+
+#### Invariant $I_4$: Tiered Fault Discrimination
+Transient communication loss must never trigger false-positive robot failure reallocations:
+$$T_{comm\_loss} = 1.5\,\text{s} < T_{fail\_confirm} = 3.5\,\text{s}$$
+During the window $t \in [1.5\,\text{s}, 3.5\,\text{s}]$, the robot transitions to `COMM_LOSS`, preserving its assigned tasks while surviving peers prepare fallback bids without committing reallocation.
+
+#### Invariant $I_5$: Monotonic CAS Partition Reconciliation
+During a network partition splitting $\mathcal{V}$ into cliques $\mathcal{V}_A$ and $\mathcal{V}_B$, tasks carry assignment timestamps $t_{assign}$. Upon partition healing at time $t_{heal}$, reconciliation satisfies:
+$$\text{Resolve}(T, \mathcal{B}_A, \mathcal{B}_B) = \begin{cases}
+\text{Winner}_A & \text{if } t_{assign}(A) > t_{assign}(B) \\
+\text{Winner}_B & \text{if } t_{assign}(B) > t_{assign}(A) \\
+\min(\text{ID}_A, \text{ID}_B) & \text{if } t_{assign}(A) = t_{assign}(B)
+\end{cases}$$
+Ensuring monotonic convergence to a single authoritative assignment across merged subgraphs.
+
+### 13.3 Three-Tier Fleet Response Dynamics
+
+When an adversarial compound disruption occurs, the fleet coordinates across three decoupled response layers:
+
+```
+Disturbance Injected (Robot Crash + Network Loss + Corridor Blockage)
+      │
+      ├────────────────────────┬────────────────────────┐
+      ▼                        ▼                        ▼
+[ Tier 1: Allocation ]   [ Tier 2: Planning ]     [ Tier 3: Safety ]
+- Heartbeat debounce     - Invalidate corridor    - 20 Hz LiDAR scan
+- CAS task reclamation   - SingleAgentAStar /     - Reactive zero-brake
+- CBBA rebidding           RHCR detour search       at d <= 0.28m
+- Converged in <=150ms   - Latency <= 0.1ms       - 0 collisions
+```
+
+### 13.4 M4 Parameter Specifications
+
+| Parameter | Symbol | Canonical Value | Units | Implementation Location |
+| :--- | :---: | :---: | :---: | :--- |
+| **Comm Loss Timeout** | $T_{comm}$ | `1.5` | seconds ($\text{s}$) | `resilience_manager.py` |
+| **Robot Failure Timeout**| $T_{fail}$ | `3.5` | seconds ($\text{s}$) | `resilience_manager.py` |
+| **LiDAR Clearance Threshold** | $d_{clear}$ | `0.28` | meters ($\text{m}$) | `local_safety_monitor.py` |
+| **LiDAR Forward Arc** | $\theta_{arc}$ | `24` ($\pm 12$) | degrees ($^\circ$) | `local_safety_monitor.py` |
+| **AStar Detour Budget** | $\tau_{detour}$ | `10.0` | milliseconds ($\text{ms}$) | `single_agent_astar.py` |
+| **Adversarial Dashboard Port** | $P_{m4}$ | `8081` | TCP Port | `resilience_dashboard.py` |
+

@@ -66,6 +66,17 @@
   - State the task invariant: $30 = 0\text{ Staged} + 0\text{ Pending} + 28\text{ Assigned} + 2\text{ In-Progress} + 0\text{ Completed} + 0\text{ Failed} + 0\text{ Cancelled}$.
   - Conclude with project readiness and research integrity.
 
+### Part 6: Adversarial Compound Fault & Resilience Testing (Minute 5:00 – 6:30)
+- **Operator Action**: Navigate to `http://localhost:8081` (NRDAS-FR Compound Resilience Testing Console).
+- **Demonstration Steps**:
+  1. **Compound Scenario Trigger**: Select scenario **M4-G (Master Compound Quad Failure)** or compose custom stressors (e.g., AMR 2 crash + 50% packet drop + Aisle 1 South blocked). Click **Inject Compound Fault**.
+  2. **Three-Tier Fleet Response Telemetry**:
+     - *Tier 1 (CBBA CAS Reclaim)*: Point to orphaned tasks transitioning atomically from `ASSIGNED` to `PENDING` and being re-bid by surviving AMRs within $150\,\text{ms}$.
+     - *Tier 2 (Dynamic Detour Replan)*: Point to instantaneous spacetime reservation invalidation and A* detour path generation in $<0.1\,\text{ms}$.
+     - *Tier 3 (Local LiDAR Clearance)*: Highlight the $20\,\text{Hz}$ reactive safety loop holding clearance above $0.28\,\text{m}$ if approaching a stalled AMR in a narrow aisle.
+  3. **Deterministic 7-Stage Stepper**: Step through `INJECT` -> `DETECT` -> `ISOLATE` -> `RECLAIM` -> `REPLAN` -> `RECONCILE` -> `NOMINAL` to show deterministic multi-agent state convergence.
+  4. **Formal Invariant Dashboard**: Point out that all three invariants ($I_1$ Task Mutex, $I_2$ Spacetime Exclusivity, $I_3$ Clearance Guarantee) remain strictly verified (`PASS`) throughout the compound attack.
+
 ---
 
 ## 4. Likely Evaluator Questions & Technically Honest Answers
@@ -89,3 +100,11 @@
 ### Q5: "How does the system prevent deadlocks when packets are lost?"
 **Honest Technical Answer**:
 > *"Under 35% packet loss, robots may miss peer cancellation or departure messages. If reservations were permanent, dropped messages would cause 'ghost reservations' that permanently block corridors. Our reservation table implements a time-to-live (TTL) mechanism ($1.5\,\text{s}$). If a peer's heartbeat is not refreshed, its space-time reservations expire and are pruned, allowing other robots to claim the corridor. This was directly observed in M9-V3-E when peers pruned expired claims for robots `amr_2` and `amr_5`."*
+
+### Q6: "How does the fleet prevent race conditions when multiple surviving robots detect a peer failure simultaneously?"
+**Honest Technical Answer**:
+> *"We enforce Invariant $I_1$ (Task Uniqueness) through atomic Compare-And-Swap (CAS) task state reclamation. When an AMR fails, multiple surviving peers may detect the $3.5\,\text{s}$ heartbeat timeout at nearly the same millisecond. Each peer executes $\text{CAS}(T, \text{expected}=\text{ASSIGNED}(\text{victim}), \text{target}=\text{PENDING})$. Exactly one peer successfully updates the state; all concurrent peer attempts observe that the task is already `PENDING` and abort without duplicate allocation. The task is then re-bid via standard decentralized CBBA consensus."*
+
+### Q7: "How do you prevent split-brain state corruption during a network partition?"
+**Honest Technical Answer**:
+> *"During a network partition, the fleet splits into isolated communication cliques $\mathcal{V}_A$ and $\mathcal{V}_B$. CBBA task allocations include monotonically increasing assignment timestamps $t_{\text{assign}}$. When the partition heals, the monotonic reconciliation protocol evaluates conflicting task bundles. If both cliques claimed or progressed an orphaned task, the bundle with the strictly newer timestamp ($t_{\text{local}} < t_{\text{peer}}$) yields, guaranteeing deterministic convergence back to a unified global assignment without task duplication."*

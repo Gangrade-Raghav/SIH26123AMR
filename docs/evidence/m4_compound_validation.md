@@ -1,6 +1,6 @@
 # Milestone 4 Compound Fault Resilience Validation
 
-**Generated:** 2026-09-27T09:50:06.020189+00:00  
+**Generated:** 2026-09-28T16:15:55.176944+00:00  
 **Execution Level:** INTEGRATION / SIMULATION  
 **Result:** ALL PASSED (7/7)
 
@@ -29,7 +29,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "replan_runtime_ms": 0.186,
+  "replan_runtime_ms": 0.167,
   "detour_path_len": 13,
   "geometric_overlap_proxy_count": 0,
   "resolving_component": "FaultDetector + ReservationTable + SingleAgentAStar",
@@ -45,7 +45,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "evaluation_runtime_ms": 0.054,
+  "evaluation_runtime_ms": 0.053,
   "comm_loss_threshold_s": 1.5,
   "failure_timeout_s": 3.5,
   "false_positive_failures": 0,
@@ -64,7 +64,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "execution_runtime_ms": 0.133,
+  "execution_runtime_ms": 0.127,
   "tasks_reclaimed_count": 2,
   "surviving_robot_bundle_size": 2,
   "stale_reservations_remaining": 0,
@@ -81,7 +81,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "sensor_process_runtime_ms": 0.145,
+  "sensor_process_runtime_ms": 0.144,
   "detected_obstacle_count": 1,
   "safety_threshold_m": 0.28,
   "hazard_detected_at_threshold": true,
@@ -98,7 +98,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "reconciliation_runtime_ms": 0.079,
+  "reconciliation_runtime_ms": 0.083,
   "partition_yielded_tasks": 1,
   "amr0_claim_timestamp_s": 105.0,
   "amr2_claim_timestamp_s": 90.0,
@@ -115,7 +115,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "safety_hold_runtime_ms": 0.017,
+  "safety_hold_runtime_ms": 0.016,
   "local_autonomy_permitted": true,
   "obstacle_detected": true,
   "robot_action": "LOCAL_SAFETY_HOLD",
@@ -132,7 +132,7 @@
 - **Detailed Metrics:**
 ```json
 {
-  "quad_resolution_runtime_ms": 0.379,
+  "quad_resolution_runtime_ms": 0.444,
   "loss_probability": 0.5,
   "shared_bundle_tasks": 0,
   "path_obstacle_intersection": false,

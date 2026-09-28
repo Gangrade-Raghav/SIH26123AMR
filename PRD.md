@@ -81,6 +81,14 @@ Every experiment shall save:
 - software revision,
 - environment information.
 
+### FR-11: Compound Fault Injection & Adversarial Scenario Resilience (Milestone M4)
+The experiment framework shall support adversarial multi-domain disturbance composition:
+- Simultaneous and cascading fault injection across Robot (crash, comm-loss, e-stop), Network (packet drop, partitions, jitter), and Environment (aisle blockages, unmapped obstacles) domains.
+- Web-based Adversarial Experiment Controller dashboard running on port 8081 (`scripts/resilience_dashboard.py`).
+- Three-tier fleet response telemetry tracking: Tier 1 CBBA atomic CAS task reclamation, Tier 2 Spatiotemporal A* reservation invalidation and detour replanning, Tier 3 Local 20 Hz LiDAR clearance enforcement ($r_{robot} = 0.28\,\text{m}$).
+- Real-time continuous evaluation of 5 formal mathematical invariants ($I_1$ Task Mutex, $I_2$ Spacetime Exclusivity, $I_3$ Clearance Guarantee, Tiered Fault Discrimination, Monotonic CAS Reconnection).
+- Deterministic 7-stage recovery stepper (`INJECT` -> `DETECT` -> `ISOLATE` -> `RECLAIM` -> `REPLAN` -> `RECONCILE` -> `NOMINAL`) and exportable JSON scenario reporting.
+
 ## 4. Non-Functional Requirements
 
 - Reproducible experiments.

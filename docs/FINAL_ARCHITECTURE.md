@@ -10,6 +10,17 @@ The software architecture is structured into a strict priority hierarchy where l
 
 ```
 +-------------------------------------------------------------------------+
+|      NRDAS-FR ADVERSARIAL EXPERIMENT & RESILIENCE CONTROLLER (M4)       |
+|                        (Web Dashboard @ Port 8081)                      |
+|  [Multi-Domain Disturbance Matrix]   [Three-Tier Response Engine]       |
+|  - Robot Crash / Comm Loss           - Tier 1: CBBA CAS Task Reclaim    |
+|  - Packet Loss / Partition           - Tier 2: Dynamic Detour Replan    |
+|  - Corridor / Aisle Blockage         - Tier 3: 20Hz LiDAR Clearance     |
+|  [Formal Invariant Engine: Inv 1 (Task Mutex), Inv 2 (Resv), Inv 3 (Clear)]
++-------------------------------------------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
 |                       CROSS-CUTTING CONTROLS                            |
 |                                                                         |
 |  [Adaptive Compute Policy Layer]      [Decentralized Comm Fabric]       |
@@ -29,6 +40,7 @@ The software architecture is structured into a strict priority hierarchy where l
 |  - Greedy Task Bundle Construction                                      |
 |  - Distributed Consensus via Maximum-Bid Resolution                     |
 |  - Dynamic Bundle Expansion without Disrupting Active Tasks             |
+|  - Atomic Compare-And-Swap (CAS) Task Reclamation on Node Failure       |
 +-------------------------------------------------------------------------+
                                     |
                                     v
@@ -39,6 +51,7 @@ The software architecture is structured into a strict priority hierarchy where l
 |  - Windowed Spatio-Temporal A* Search (h=10 steps, w=4 steps)           |
 |  - Local GridWorld Map with Dynamic Obstacle Rasterization              |
 |  - Station-Resource & Headway Queue Claim Logic                         |
+|  - Dynamic Graph Re-routing on Corridor Invalidation (<0.1ms latency)  |
 +-------------------------------------------------------------------------+
                                     |
                                     v
@@ -47,7 +60,7 @@ The software architecture is structured into a strict priority hierarchy where l
 |                                                                         |
 |  [Space-Time Reservation Table]                                         |
 |  - Forward Corridor Occupancy Claims [x, y, t_start, t_end]             |
-|  - Autonomous TTL-Based Reservation Expiry & Pruning                    |
+|  - Autonomous TTL-Based Reservation Expiry & Invalidation Pruning       |
 |                                                                         |
 |  [Wait-For Graph (WFG) Deadlock Detection & Recovery]                   |
 |  - Cycle Detection in Spatial Claims                                    |
@@ -63,9 +76,9 @@ The software architecture is structured into a strict priority hierarchy where l
 |                     (ABSOLUTE PREEMPTION AUTHORITY)                     |
 |                                                                         |
 |  [Reactive LiDAR Safety Braking Controller]                             |
-|  - 10 Hz Independent Execution Loop                                     |
+|  - 10-20 Hz Independent Execution Loop                                  |
 |  - Direct 2D LaserScan Distance Thresholding                            |
-|  - Emergency Stop & Corridor Deceleration (<0.35m Safety Threshold)     |
+|  - Emergency Stop & Corridor Deceleration (0.28m-0.35m Safety Envelope) |
 +-------------------------------------------------------------------------+
                                     |
                                     v
@@ -128,3 +141,42 @@ The `AdaptiveComputePolicy` runs as a cross-cutting telemetry-driven policy engi
 
 - Anti-oscillation guards: Minimum dwell time $T_{\text{dwell}} = 3.0\,\text{s}$, $K=3$ consecutive confirmation samples, and asymmetric hysteresis thresholds.
 - Failsafe mechanism: If telemetry becomes unavailable for $>5.0\,\text{s}$, the policy safely falls back to `NORMAL`.
+
+---
+
+## 5. NRDAS-FR Compound Resilience & Adversarial Scenario Architecture (Milestone M4)
+
+Milestone 4 introduces compound fault resilience, enabling the decentralized fleet to survive concurrent, cascading failures across physical, network, and environmental domains.
+
+### 5.1 Orthogonal 5-Dimensional State Modeling
+
+To prevent split-brain state divergence and race conditions during simultaneous failures, each AMR $i$ maintains a 5-tuple state:
+$$\mathcal{S}_i = \langle s_{health}, s_{comm}, s_{task}, s_{nav}, s_{res} \rangle$$
+- $s_{health} \in \{\text{HEALTHY}, \text{COMM\_LOSS}, \text{FAILED}, \text{ESTOP}\}$
+- $s_{comm} \in \{\text{CONNECTED}, \text{IMPAIRED}, \text{PARTITIONED}, \text{DISCONNECTED}\}$
+- $s_{task} \in \{\text{STAGED}, \text{PENDING}, \text{ASSIGNED}, \text{IN\_PROGRESS}, \text{COMPLETED}, \text{FAILED}, \text{CANCELLED}\}$
+- $s_{nav} \in \{\text{IDLE}, \text{TRANSIT}, \text{LOCAL\_SAFETY\_HOLD}, \text{SIDESTEP\_RECOVERY}, \text{ESTOP\_HOLD}\}$
+- $s_{res} \in 2^{\mathcal{G} \times \mathbb{N}}$: Spacetime reservation ownership set.
+
+### 5.2 Three-Tier Decentralized Fleet Response
+
+When compound disruptions strike, the fleet activates three synchronized recovery tiers:
+1. **Tier 1: Task Reallocation (CBBA Consensus Engine)**:
+   - When node failure is confirmed ($t > 3.5\,\text{s}$), orphaned tasks are reclaimed via atomic Compare-And-Swap (`CAS(T, ASSIGNED(victim) -> PENDING)`).
+   - Surviving agents dynamically re-bid without disrupting tasks already in progress.
+2. **Tier 2: Dynamic Replanning (Spatiotemporal Graph)**:
+   - Blocked corridors and crashed AMR positions are invalidated across local occupancy grids.
+   - Forward reservations are purged instantly ($|\{i : (c, \tau) \in \mathcal{R}_i\}| \le 1$).
+   - SingleAgentAStar / RHCR generates valid alternative detours in $<0.1\,\text{ms}$.
+3. **Tier 3: Local Safety & Clearance (Reactive Sensor Backstop)**:
+   - $20\,\text{Hz}$ onboard LiDAR obstacle scanning operating autonomously from the network.
+   - Enforces minimum clearance envelope $r_{robot} = 0.28\,\text{m}$.
+   - Triggers emergency reactive braking ($v=0, \omega=0$) upon sudden unmapped corridor obstruction.
+
+### 5.3 Web-Based Adversarial Experiment Controller (Port 8081)
+
+The system exposes an interactive operator dashboard via `scripts/resilience_dashboard.py`:
+- **Real-time REST API**: `/api/m4/status`, `/api/m4/inject_compound`, `/api/m4/compose_and_run`, `/api/m4/step`, `/api/m4/clear`, `/api/m4/report`.
+- **7-Stage Deterministic Recovery Stepper**: Allows deterministic step-by-step inspection of failure propagation and recovery.
+- **Continuous Invariant Auditing**: Evaluates $I_1$ (Task Mutex), $I_2$ (Spacetime Reservation Exclusivity), and $I_3$ (Clearance Guarantee) continuously during adversarial testing.
+

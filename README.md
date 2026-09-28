@@ -56,6 +56,14 @@ empirically prevents collisions and deadlocks under severe concurrent operationa
    - In-flight task cancellation and failure requeuing with clean bundle purging.
    - Web console modal and tactical controls with real-time CBBA Bid Inspector.
    - Standalone operator CLI tool: `scripts/create_task.py`.
+11. **NRDAS-FR Fault Injection & Resilience Testing System**:
+   - Dedicated human-in-the-loop web console (`http://localhost:8081`) operating as an Adversarial Experiment Controller (`scripts/resilience_dashboard.py`).
+   - Zero-SPOF decoupled architecture: autonomous recovery logic lives entirely on decentralized AMR nodes; the console strictly injects perturbations and monitors invariants.
+12. **Milestone 4 Compound Fault & Multi-Domain Stress Testing**:
+   - Simultaneous composition across 3 orthogonal disturbance domains: Robot Faults (`KILL`, `COMM_LOSS`, `ACTUATOR_FAIL`), Network Impairments (`LOSS_HIGH` 35%, `OUTAGE`, `PARTITION`), and Environmental Blockages (corridor obstacles, choke points).
+   - Live **Three-Tier Fleet Response Telemetry**: Tier 1 (CBBA Reallocation via atomic CAS), Tier 2 (Dynamic Spacetime Replanning via SingleAgentAStar / RHCR), Tier 3 (Local Safety & $0.28\,\text{m}$ LiDAR envelope).
+   - Continuous formal invariant verification: $I_1$ (Task Uniqueness), $I_2$ (Spacetime Reservation Exclusivity), $I_3$ (Local Clearance $\ge 0.28\,\text{m}$), Non-Blocking Tiered Fault Discrimination ($T_{\text{transient}} \le 1.5\,\text{s} \ll T_{\text{fail}} = 3.5\,\text{s}$), and Monotonic CAS Reconnection.
+   - 7 automated adversarial benchmark scenarios (`M4-A` through `M4-G`) with 7-stage recovery pipeline stepper and structured JSON/Markdown export.
 
 ---
 
@@ -81,49 +89,118 @@ colcon build --symlink-install
 source install/setup.bash
 ```
 
-### Run Regression Test Suite
+### Run Full Test Suites
 ```bash
+# Core regression test suite (216 tests)
 colcon test && colcon test-result --verbose
+
+# Dedicated NRDAS-FR Resilience test suite (79 unit & integration tests)
+export ROS_DOMAIN_ID=42
+python3 -m pytest \
+  src/amr_fleet_core/test/test_fault_resilience.py \
+  src/amr_fleet_core/test/test_m2_network_resilience.py \
+  src/amr_fleet_core/test/test_m3_adversarial_resilience.py \
+  src/amr_fleet_core/test/test_m4_compound_resilience.py \
+  src/amr_fleet_core/test/test_resilience_dashboard.py -v
+
+# Milestone 4 Compound Scenarios Validation Harness (7/7 Benchmark Scenarios)
+python3 scripts/validate_m4_compound_scenarios.py
 ```
-*Result*: **216 tests passed, 0 failures, 0 errors, 0 skipped**.
+*Result*: **295 total tests passed, 0 failures, 0 errors**.
 
 ---
 
-## 5. How Do I Run the Live Demos?
+## 5. Master Launch (All-in-One Single Command)
+
+To launch the complete system—**Gazebo Harmonic 3D GUI**, **RViz 2**, **Fleet Autonomy Stack**, **Fleet Observability Dashboard (Port 8080)**, and the **M4 Adversarial Resilience Dashboard (Port 8081)**—in a single terminal with clean `Ctrl+C` process teardown and ROS domain isolation:
+
+```bash
+cd /home/raghav/Downloads/SIH26123AMR
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+# Master launch (10 AMRs, Big Congested Warehouse, 30-task schedule):
+./scripts/launch_all_in_one.sh
+
+# Or headless mode (low GPU/CPU overhead):
+./scripts/launch_all_in_one.sh --headless
+```
+
+- **Fleet Observability & Task Console**: [http://localhost:8080](http://localhost:8080)
+- **M4 Adversarial Resilience Console**: [http://localhost:8081](http://localhost:8081)
+
+---
+
+## 6. How Do I Run the Live Demos Individually?
 
 ### Normal Visual Demonstration (5 AMRs, `warehouse_small`)
 ```bash
 # Terminal 1 — Gazebo Simulation & AMR Fleet
+export ROS_DOMAIN_ID=42
 ros2 launch amr_fleet_bringup m8b_adaptive_fleet.launch.py \
   robot_count:=5 world:=warehouse_small headless:=false \
   compute_mode:=ADAPTIVE comm_profile:=NORMAL workload_file:=config/workloads/workload_15_tasks.yaml
 
 # Terminal 2 — 3D RViz Visualization
+export ROS_DOMAIN_ID=42
 rviz2 -d $(ros2 pkg prefix amr_fleet_bringup)/share/amr_fleet_bringup/rviz/fleet_default.rviz
 
 # Terminal 3 — Live Observability Dashboard
+export ROS_DOMAIN_ID=42
 python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 5 --world warehouse_small --tui
 # Open browser at: http://localhost:8080
 ```
 
 ---
 
-## 6. How Do I Run the 10-AMR Congested Fleet Demo?
+## 7. How Do I Run the 10-AMR Congested Fleet Demo?
 
 ```bash
 # Terminal 1 — Launch 10 AMRs in the 32m x 32m Congested Warehouse
+export ROS_DOMAIN_ID=42
 ros2 launch amr_fleet_bringup m8b_adaptive_fleet.launch.py \
   robot_count:=10 world:=warehouse_m9_v2 headless:=false \
   compute_mode:=ADAPTIVE comm_profile:=NORMAL workload_file:=config/workloads/workload_30_tasks_m9_v2.yaml
 
 # Terminal 2 — 10-AMR Observability Dashboard
+export ROS_DOMAIN_ID=42
 python3 scripts/fleet_dashboard.py --port 8080 --fleet-size 10 --world warehouse_m9_v2 --tui
 # Open browser at: http://localhost:8080
 ```
 
 ---
 
-## 7. How Do I Use Operator Task Allocation & Live Control?
+## 8. How Do I Run the M4 Compound Resilience Testing System?
+
+The **Milestone 4 (M4)** testbed allows operators to inject compound, multi-domain disturbances (simultaneous robot failure + network degradation + corridor obstruction) and observe the fleet's decentralized response.
+
+### Option A: Standalone Simulation Mode (No Gazebo Needed)
+```bash
+cd /home/raghav/Downloads/SIH26123AMR
+export ROS_DOMAIN_ID=42
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+python3 scripts/resilience_dashboard.py --sim-mode --port 8081
+# Open browser at: http://localhost:8081
+```
+
+### Option B: Benchmark Scenario Validation Harness
+```bash
+python3 scripts/validate_m4_compound_scenarios.py
+```
+Validates the 7 core M4 benchmarks:
+1. **M4-A**: Robot Failure + Dynamic Blockage (Dual Obstacle Corridor Detour)
+2. **M4-B**: Robot Failure + Comm Loss Discrimination (1.5s vs 3.5s; 0 false failures)
+3. **M4-C**: Multiple Overlapping Robot Failures (Staggered crashes; atomic CAS task reclamation)
+4. **M4-D**: Robot Failure + Sensor-Visible Obstacle (Decoupled 0.9m perception vs 0.22m reactive brake)
+5. **M4-E**: Network Partition + Robot Failure (Monotonic Lamport timestamp reconciliation)
+6. **M4-F**: Network Loss + Dynamic Blockage (Safe local hold upon dynamic obstruction)
+7. **M4-G**: Master Compound Quad Failure (2 crashes + 50% loss + corridor blockage)
+
+---
+
+## 9. How Do I Use Operator Task Allocation & Live Control?
 
 Operators can inject tasks dynamically or control in-flight missions using either the Web Dashboard or the CLI tool.
 
@@ -158,17 +235,21 @@ For complete details, see [`docs/TASK_ALLOCATION_GUIDE.md`](docs/TASK_ALLOCATION
 
 ---
 
-## 8. Key Documentation Links
+## 10. Key Documentation Links
 
 | Document | File Path | Purpose |
 | :--- | :--- | :--- |
+| **M4 Compound Resilience Guide** | [`docs/NRDAS_FR_M4_COMPOUND_RESILIENCE.md`](docs/NRDAS_FR_M4_COMPOUND_RESILIENCE.md) | M4 compound disturbance formalization, mathematical invariants, and validation |
+| **Resilience Dashboard Spec** | [`docs/NRDAS_FR_FAULT_DASHBOARD.md`](docs/NRDAS_FR_FAULT_DASHBOARD.md) | Dedicated testbed documentation, REST API, and recovery pipeline stepper |
+| **M4 Validation Evidence** | [`docs/evidence/m4_compound_validation.md`](docs/evidence/m4_compound_validation.md) | Canonical benchmark execution results and invariant verification logs |
 | **Task Allocation Operator Guide** | [`docs/TASK_ALLOCATION_GUIDE.md`](docs/TASK_ALLOCATION_GUIDE.md) | Operator guide for live task creation, CLI, and dashboard controls |
 | **Final Operator Runbook** | [`docs/FINAL_RUNBOOK.md`](docs/FINAL_RUNBOOK.md) | Terminal-by-terminal commands for build, demo, inspection, and shutdown |
 | **Command Cheat Sheet** | [`docs/COMMAND_CHEATSHEET.md`](docs/COMMAND_CHEATSHEET.md) | Quick-reference copy-pasteable commands |
 | **Final Research Report** | [`docs/FINAL_RESEARCH_REPORT.md`](docs/FINAL_RESEARCH_REPORT.md) | 27-section comprehensive academic research paper |
 | **System Architecture** | [`docs/FINAL_ARCHITECTURE.md`](docs/FINAL_ARCHITECTURE.md) | Architectural hierarchy, authority models, and preemption rules |
+| **Mathematical Specification** | [`docs/MATHEMATICAL_AND_ALGORITHMIC_SPECIFICATION.md`](docs/MATHEMATICAL_AND_ALGORITHMIC_SPECIFICATION.md) | Core derivations, kinematics, CBBA, RHCR, PIBT, and invariants |
 | **Experiment Matrix** | [`results/final/FINAL_EXPERIMENT_MATRIX.md`](results/final/FINAL_EXPERIMENT_MATRIX.md) | Empirical cross-milestone benchmark table (M7 through M9-V3-E) |
-| **Presentation & Demo Script** | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) | 30s, 2m, and 5m demonstration scripts with judge Q&A |
+| **Presentation & Demo Script** | [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) | Demonstration sequences and technically honest judge Q&A |
 | **Definition of Done** | [`docs/FINAL_DEFINITION_OF_DONE.md`](docs/FINAL_DEFINITION_OF_DONE.md) | Complete engineering and research sign-off checklist |
 
 ---

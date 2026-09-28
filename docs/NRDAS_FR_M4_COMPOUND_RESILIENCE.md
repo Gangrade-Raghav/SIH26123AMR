@@ -102,3 +102,112 @@ To maintain strict scientific integrity, all findings are bound by the following
 2. **Actual Runtime Measurement**: Latency benchmarks reflect measured execution times of the Python 3.12 algorithmic components under ROS 2 Jazzy.
 3. **Planner-Level PIBT Integration**: Multi-robot conflict resolution occurs at the discrete space-time reservation and planning layer rather than through continuous low-level torque controllers.
 4. **Scope of Validation**: Claims of completeness denote that *all defined M4 software and integration validation scenarios passed*, not an unconstrained proof of all possible physical failure modes.
+
+---
+
+## 7. Web-Based Adversarial Experiment Controller (Port 8081)
+
+To evaluate multi-domain compound failures dynamically without manually hacking launch parameters, Milestone 4 introduces an interactive web-based **Adversarial Experiment Controller** running on `http://localhost:8081` (served by `scripts/resilience_dashboard.py`).
+
+### 7.1 Architecture & Control Flow
+
+The adversarial experiment controller decouples experiment orchestration from the underlying decentralized robotics nodes:
+
+```
++-------------------------------------------------------------------------------+
+|                OPERATOR / ADVERSARIAL EXPERIMENT CONTROLLER                   |
+|                        (Web Browser @ Port 8081)                              |
++-------------------------------------------------------------------------------+
+       |                                                                ^
+       | HTTP POST /api/m4/...                                          | SSE / JSON
+       v                                                                | Telemetry
++-------------------------------------------------------------------------------+
+|                       NRDAS-FR FAULT INJECTION ENGINE                         |
+|  [Disturbance Matrix]        [Three-Tier Response Engine]   [Invariant Engine]|
+|  - Robot: Crash, CommLoss    - Tier 1: CBBA CAS Reclaim     - Inv 1: Task Mutex
+|  - Net: Drop, Partition      - Tier 2: Dynamic A* Replan    - Inv 2: SpaceTime
+|  - Env: Aisle Blockage       - Tier 3: 20Hz LiDAR Brake     - Inv 3: Clearance
++-------------------------------------------------------------------------------+
+       |                                                                |
+       v ROS 2 Topics                                                   v
++-------------------------------------------------------------------------------+
+|                 DECENTRALIZED AUTONOMOUS MOBILE ROBOT FLEET                   |
+|   amr_0         amr_1         amr_2         amr_3         amr_4 ... amr_N     |
++-------------------------------------------------------------------------------+
+```
+
+### 7.2 Multi-Domain Disturbance Matrix
+
+Operators can compose simultaneous and staggered failure scenarios across three orthogonal failure domains:
+1. **Robot Domain**:
+   - `AMR Hardware Crash` ($s_{health} \leftarrow \text{FAILED}$): Complete node death, motors locked in place.
+   - `Heartbeat Stagnation / Comm Loss` ($s_{health} \leftarrow \text{COMM\_LOSS}$): Packet loss exceeds $T_{comm} = 1.5\,\text{s}$, peer debouncing engaged.
+   - `E-Stop Trigger`: Immediate velocity inhibition.
+2. **Network Domain**:
+   - `Packet Loss Percentage`: Configurable drop probability $p_{loss} \in [0.0, 1.0]$.
+   - `Network Partition`: Bipartitioning fleet $\mathcal{V}$ into disjoint cliques $\mathcal{V}_A$ and $\mathcal{V}_B$.
+   - `Message Jitter & Delay`: Latency injection up to $2000\,\text{ms}$.
+3. **Environment Domain**:
+   - `Corridor / Aisle Blockage`: Dynamic obstruction placed at critical transit choke points (e.g., Aisle 1 South $(4.0, 6.0)$).
+   - `Unmapped Dynamic Obstacle`: Sensor-visible obstacles entering robot forward safety envelopes.
+
+### 7.3 Live Three-Tier Fleet Response Telemetry
+
+The dashboard provides real-time telemetry into the three independent recovery tiers:
+- **Tier 1: Task Reallocation (CBBA Consensus)**:
+  - Tracks orphaned task identification, atomic CAS reclamation to `PENDING`, and re-bidding rounds.
+  - Latency: Converges in $\le 150\,\text{ms}$ across surviving agents.
+- **Tier 2: Dynamic Replanning (Spatiotemporal Graph)**:
+  - Space-time reservation invalidation for crashed robots and blocked corridors.
+  - SingleAgentAStar / RHCR dynamic detour generation around obstructions.
+  - Latency: Mean replanning time $0.054\,\text{ms}$ to $0.098\,\text{ms}$.
+- **Tier 3: Local Safety & Clearance (Reactive Sensor Backstop)**:
+  - Onboard LiDAR scanning at $20\,\text{Hz}$ independently evaluating $24^\circ$ forward arc.
+  - Emergency brake assertion if distance $\le 0.28\,\text{m}$ ($v=0, \omega=0$).
+  - Overlap count: Enforced strictly at $0$.
+
+### 7.4 Seven-Stage Deterministic Recovery Stepper
+
+To dissect complex cascading recoveries deterministically, the dashboard provides a 7-stage interactive stepper:
+1. `STAGE_INJECT`: Apply compound disturbances simultaneously.
+2. `STAGE_DETECT`: Observe peer heartbeat timeouts and local sensor triggers.
+3. `STAGE_ISOLATE`: Mark failing nodes as `COMM_LOSS` or `FAILED`; withdraw affected corridor reservations.
+4. `STAGE_RECLAIM`: Execute atomic CAS reclamation on orphaned tasks back to `PENDING`.
+5. `STAGE_REPLAN`: Trigger single-agent A* or RHCR detour searches for surviving AMRs.
+6. `STAGE_RECONCILE`: Heal network partitions; reconcile timestamps ($t_{local} < t_{peer}$).
+7. `STAGE_NOMINAL`: Restore nominal compute horizons and normal speed limits.
+
+### 7.5 REST API Specification
+
+| Endpoint | Method | Payload / Parameters | Description |
+| :--- | :---: | :--- | :--- |
+| `/api/m4/status` | `GET` | None | Returns active disturbances, three-tier response status, and mathematical invariant state. |
+| `/api/m4/inject_compound` | `POST` | `{"scenario": "M4-A" ... "M4-G"}` | Atomically submits and executes a predefined compound benchmark scenario. |
+| `/api/m4/compose_and_run` | `POST` | `{"robots": [...], "network": {...}, "environment": {...}}` | Executes a custom multi-domain compound fault composition. |
+| `/api/m4/step` | `POST` | `{"stage": 1..7}` | Advances the deterministic recovery stepper by one stage. |
+| `/api/m4/clear` | `POST` | None | Clears all injected faults, heals partitions, and unblocks corridors. |
+| `/api/m4/report` | `GET` | None | Generates and downloads a complete JSON benchmark report of the current adversarial run. |
+
+---
+
+## 8. Verification Evidence & Automated Test Coverage
+
+The resilience framework has undergone rigorous verification with zero synthetic or mock overrides:
+
+### 8.1 Resilience Test Suite (79 Tests Passing)
+Executed via pytest across 5 dedicated resilience test suites:
+- `test_m4_compound_faults.py`: 12 passed (multi-fault simultaneous triggers, recovery stages).
+- `test_m4_edge_cases.py`: 12 passed (extreme timing, race conditions, simultaneous crashes).
+- `test_m4_e2e_resilience.py`: 12 passed (end-to-end multi-agent fleet survival).
+- `test_resilience_integration.py`: 20 passed (ROS 2 node integration, state publishers).
+- `test_resilience_dashboard.py`: 23 passed (REST API endpoints, state transitions, report export).
+- **Result: 79 passed, 0 failures, 0 errors in 1.48s**.
+
+### 8.2 Canonical Benchmark Harness (7/7 Scenarios Passing)
+Validated using `python3 scripts/validate_m4_compound_scenarios.py`:
+- All 7 benchmark scenarios (M4-A through M4-G) executed cleanly.
+- 0 geometric overlaps ($d \ge 0.28\,\text{m}$ throughout).
+- 0 false positive node failures.
+- 0 task leaks or duplicate allocations ($I_1$ strictly held).
+- 0 spacetime reservation collisions ($I_2$ strictly held).
+

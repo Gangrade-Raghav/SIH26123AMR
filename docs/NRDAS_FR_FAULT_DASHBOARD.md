@@ -173,6 +173,32 @@ The recovery stepper dynamically adapts based on the active test mode:
 - **M3 Validation Quick-Triggers**:
   - Interactive execution of all 9 M3 scenarios: `M3-A`, `M3-B`, `M3-B2`, `M3-C1`, `M3-C2`, `M3-C3`, `M3-C4`, `M3-C5`, `M3-H`.
 
+### 2.13 Milestone 4 Compound Fault & Adversarial Testing Console
+Milestone 4 evolves the testbed into an **Adversarial Experiment Controller** capable of composing multi-domain disturbances and monitoring the fleet's decentralized three-tier response:
+- **Compound Fault Scenario Composer (Column 1)**:
+  - **Robot Disturbance**: Target single or multiple AMRs (`amr_1`, `amr_0`, `amr_2`, `amr_1 & amr_2`), fault type (`KILL`, `COMM_LOSS`, `ACTUATOR_FAIL`, `HEARTBEAT_TIMEOUT`).
+  - **Network Stressor**: Impairment profile (`LOSS_HIGH`, `OUTAGE`, `PARTITION`, `NORMAL`), packet loss rate ($0.0$ to $1.0$), and duration.
+  - **Environmental Disturbance**: Corridor obstacle preset (`(7,4) & (7,5)`, `(7,7)`, `(5,5)`, or `NONE`).
+  - **One-Click Controls**: `⚡ LAUNCH COMPOUND EXPERIMENT` (dispatches to `/api/m4/compose_and_run`) and `🔄 RESET` (restores all robots, clears all blockages, reconnects network).
+- **Three-Tier Fleet Response Telemetry Panel (Column 2)**:
+  - **Tier 1 (CBBA Reallocation)**: Monitors atomic CAS task reclamation (`ASSIGNED` $\to$ `PENDING`), consensus rounds, and winning peer assignment without duplicate ownership.
+  - **Tier 2 (Dynamic Replanning)**: Monitors space-time reservation invalidation, alternate corridor graph withdrawal, detour length, and SingleAgentAStar replanning latency ($<0.3\,\text{ms}$).
+  - **Tier 3 (Local Safety & Reactive Braking)**: Monitors the $0.28\,\text{m}$ LiDAR safety envelope, clearance distances, and the $0.8\,\text{m}$ stranded chassis keep-out exclusion boundary.
+- **Formal Invariant Verification Badges (Column 3)**:
+  - **$I_1$ (Task Uniqueness)**: $\forall t \in \mathcal{T},\; \sum_{i=1}^N \mathbb{I}[t \in B_i] \le 1$ (mutual exclusion of task bundles).
+  - **$I_2$ (Spacetime Exclusivity)**: $\forall (x,y,t),\; |\{i \mid R_i(t)=(x,y)\}| \le 1$ (zero reservation overlaps).
+  - **$I_3$ (Local LiDAR Clearance)**: $\min_{i \ne j} \|p_i - p_j\|_2 \ge 0.28\,\text{m}$ (0 physical contacts).
+  - **Tiered Fault Discrimination**: $T_{\text{transient}} \le 1.5\,\text{s} \ll T_{\text{fail}} = 3.5\,\text{s}$ (non-blocking discrimination; 0 false failures).
+  - **Monotonic CAS Reconnection**: Partition reconciliation yields monotonically to newer assignment timestamps.
+- **M4 Benchmark Scenarios (7-Stage Recovery Stepper)**:
+  - `M4-A`: Robot Failure + Dynamic Blockage (Dual Obstacle Navigation)
+  - `M4-B`: Comm Loss vs Failure Discrimination (1.5s vs 3.5s; 0 false failures)
+  - `M4-C`: Multiple Overlapping Robot Failures (Staggered crashes; atomic CAS task reclamation)
+  - `M4-D`: Robot Failure + Sensor-Visible Obstacle (Decoupled 0.9m perception vs 0.22m reactive brake)
+  - `M4-E`: Network Partition + Robot Failure (Monotonic Lamport timestamp reconciliation)
+  - `M4-F`: Network Loss + Dynamic Blockage (Safe local hold upon dynamic obstruction)
+  - `M4-G`: Master Compound Quad Failure (2 crashes + 50% packet loss + corridor blockage)
+
 ---
 
 ## 3. REST API Reference
@@ -181,18 +207,21 @@ The recovery stepper dynamically adapts based on the active test mode:
 | :--- | :--- | :--- | :--- |
 | `GET` | `/` | Web console single-page interface | None |
 | `GET` | `/api/state` | Full fleet health, telemetry, invariants, and logs | None |
+| `GET` | `/api/m4/status` | Active scenario status, compound faults, and 5 formal invariants | None |
 | `POST` | `/api/fault/inject` | Inject simulated robot fault | `{"robot_id": "amr_1", "fault_type": "KILL", "duration_sec": 0.0}` |
-| `POST` | `/api/fault/restore` | Restore robot to healthy state | `{"robot_id": "amr_1"}` |
-| `POST` | `/api/network/impairment` | Apply network impairment profile | `{"profile_name": "LOSS_HIGH", "loss_probability": 0.35, "latency_ms": 50}` |
-| `POST` | `/api/network/reconnect` | Reconnect robot or restore normal network | `{"robot_id": "amr_1"}` |
-| `POST` | `/api/environment/blockage` | Inject or clear dynamic aisle blockage | `{"action": "INJECT", "blockage_id": "BLK_01", "cells": [[7, 4], [7, 5]], "duration_sec": 0.0}` |
+| `POST` | `/api/fault/restore` | Restore robot to healthy state (`ALL_ROBOTS` supported) | `{"robot_id": "amr_1"}` |
+| `POST` | `/api/network/impairment` | Apply network impairment profile | `{"robot_id": "amr_1", "profile": "LOSS_HIGH", "loss_rate": 0.35, "delay_ms": 50}` |
+| `POST` | `/api/network/reconnect` | Reconnect robot or restore normal network (`ALL_ROBOTS` supported) | `{"robot_id": "amr_1"}` |
+| `POST` | `/api/environment/blockage` | Inject or clear dynamic aisle blockage (`blockage_id: "ALL"` clears all) | `{"action": "INJECT", "blockage_id": "BLK_01", "cells": [[7, 4], [7, 5]], "duration_sec": 0.0}` |
 | `POST` | `/api/environment/conflict` | Inject adversarial contention condition | `{"conflict_type": "CROSSING_TRAJECTORIES", "robot_ids": ["amr_0", "amr_1"], "cell": [4, 5], "time_step": 3}` |
 | `POST` | `/api/environment/step` | Advance M3 recovery pipeline stepper | `{"stage_name": "01_OBSTACLE_DETECTED"}` |
+| `POST` | `/api/m4/inject_compound` | Inject multi-domain compound fault | `{"scenario_id": "M4-A", "robot_ids": ["amr_1"], "blockage_cells": [[7, 4], [7, 5]], "packet_loss_rate": 0.35}` |
+| `POST` | `/api/m4/compose_and_run` | Compose custom compound experiment and trigger execution | `{"scenario_id": "CUSTOM_COMPOUND", "robot_ids": ["amr_1"], "fault_type": "KILL", "network_profile": "LOSS_HIGH", "packet_loss_rate": 0.35, "duration_sec": 5.0, "blockage_cells": [[7, 4], [7, 5]]}` |
 | `POST` | `/api/fleet/estop` | Emergency stop all AMRs | None |
 | `POST` | `/api/fleet/resume` | Resume all AMRs to normal operation | None |
-| `POST` | `/api/scenario/trigger` | Trigger automated validation scenario | `{"scenario_id": "M3-A"}` |
-| `GET` | `/api/export` | Download JSON experiment report | None |
-| `GET` | `/api/export/markdown` | Download Markdown experiment report | None |
+| `POST` | `/api/scenario/trigger` | Trigger automated validation scenario (M1-A..F, M2-A..G, M3-A..H, M4-A..G) | `{"scenario_id": "M4-G"}` |
+| `GET` | `/api/export` | Download JSON experiment evidence report | None |
+| `GET` | `/api/export/markdown` | Download Markdown experiment evidence report | None |
 
 ---
 
@@ -200,15 +229,16 @@ The recovery stepper dynamically adapts based on the active test mode:
 
 ### Launching the Dashboard
 ```bash
-# Sourcing environment
+# Sourcing environment & setting isolated ROS Domain
+export ROS_DOMAIN_ID=42
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
-# Launch live dashboard on default port 8081
-python3 scripts/resilience_dashboard.py --port 8081
-
-# Or launch in autonomous simulation testbed mode (runs without live Gazebo)
+# Option 1: Launch in autonomous simulation testbed mode (instant run, zero external dependencies)
 python3 scripts/resilience_dashboard.py --port 8081 --sim-mode
+
+# Option 2: Launch live dashboard connected to Gazebo Harmonic fleet
+python3 scripts/resilience_dashboard.py --port 8081 --world warehouse_m9_v2
 ```
 
 ### Accessing the Web UI
@@ -217,3 +247,17 @@ Open any modern web browser to:
 http://localhost:8081
 ```
 *(No external npm, node_modules, or build steps required; zero dependencies).*
+
+### Automated Verification & Validation
+```bash
+# Run all 79 unit and integration tests across the 5 resilience suites:
+python3 -m pytest \
+  src/amr_fleet_core/test/test_fault_resilience.py \
+  src/amr_fleet_core/test/test_m2_network_resilience.py \
+  src/amr_fleet_core/test/test_m3_adversarial_resilience.py \
+  src/amr_fleet_core/test/test_m4_compound_resilience.py \
+  src/amr_fleet_core/test/test_resilience_dashboard.py -v
+
+# Run the automated 7-benchmark M4 validation harness:
+python3 scripts/validate_m4_compound_scenarios.py
+```
